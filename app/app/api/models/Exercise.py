@@ -13,3 +13,6 @@ class Exercise:
 
     def get_solution(self):
         return self.solution
+
+    def validate_answer(self, answer):
+        return self.solution == answer
