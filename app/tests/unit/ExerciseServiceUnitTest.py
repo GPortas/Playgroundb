@@ -5,6 +5,8 @@ from ddt import data, ddt
 from django.core.serializers.json import json
 
 from app.api.dal.ExerciseQueryRepository import ExerciseQueryRepository
+from app.api.dal.command.ExerciseCommandRepository import ExerciseCommandRepository
+from app.api.dal.command.errors.CommandError import CommandError
 from app.api.dal.errors.QueryError import QueryError
 from app.api.dal.errors.ResourceNotFoundQueryError import ResourceNotFoundQueryError
 from app.api.models.Exercise import Exercise
@@ -18,7 +20,8 @@ class ExerciseServiceUnitTest(unittest.TestCase):
 
     def setUp(self):
         self.stub_exercise_query_repository = mock.Mock(spec=ExerciseQueryRepository)
-        self.sut = ExerciseService(self.stub_exercise_query_repository)
+        self.stub_exercise_command_repository = mock.Mock(spec=ExerciseCommandRepository)
+        self.sut = ExerciseService(self.stub_exercise_query_repository, self.stub_exercise_command_repository)
 
     @data(
         {'exercise_id': None, 'answer': 'testanswer'},
@@ -37,7 +40,8 @@ class ExerciseServiceUnitTest(unittest.TestCase):
         self.stub_exercise_query_repository.get_exercise_by_id.return_value = Exercise(_id='fakeid',
                                                                                        question='fakequestion',
                                                                                        solution=json.dumps(
-                                                                                           input['solution']))
+                                                                                           input['solution']),
+                                                                                       author='fakeauthor')
         self.assertEqual(self.sut.check_if_answer_is_correct(exercise_id='fakeid', answer=json.dumps(input['answer'])),
                          input['expected'])
 
@@ -67,3 +71,15 @@ class ExerciseServiceUnitTest(unittest.TestCase):
             self):
         self.stub_exercise_query_repository.get_exercise_by_id.side_effect = ResourceNotFoundQueryError()
         self.assertRaises(ResourceNotFoundServiceError, self.sut.get_exercise_by_id, exercise_id='fakeid')
+
+    def test_createExercise_calledWithNoneExercise_raiseValueError(self):
+        self.assertRaises(ValueError, self.sut.create_exercise, exercise=None)
+
+    def test_createExercise_calledWithValidExercise_innerCommandRepositoryCalledOnce(self):
+        self.sut.create_exercise(exercise=Exercise(author='fakeauthor'))
+        actual = self.stub_exercise_command_repository.create_exercise.call_count
+        self.assertEqual(actual, 1)
+
+    def test_createExercise_calledWithCommandRepositoryWhichThrowsCommandError_throwServiceError(self):
+        self.stub_exercise_command_repository.create_exercise.side_effect = CommandError()
+        self.assertRaises(ServiceError, self.sut.create_exercise, exercise=Exercise(author='fakeauthor'))
