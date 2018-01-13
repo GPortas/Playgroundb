@@ -1,4 +1,4 @@
-from app.api.dal.query.errors import QueryError
+from app.api.dal.query.errors.QueryError import QueryError
 
 
 class ResourceNotFoundQueryError(QueryError):
