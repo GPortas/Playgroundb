@@ -1,4 +1,4 @@
-sbk_mongodb:
+pdb_mongodb:
   image: 'pdb_mongodb:1.0.0'
   environment:
     - MONGODB_ADMIN_USER=pdbroot

@@ -1,4 +1,4 @@
-from app.api.dal.ExerciseQueryRepository import ExerciseQueryRepository
+from app.api.dal.query.ExerciseQueryRepository import ExerciseQueryRepository
 from app.api.dal.command.ExerciseCommandRepository import ExerciseCommandRepository
 from app.api.dal.command.errors.CommandError import CommandError
 from app.api.dal.query.errors.QueryError import QueryError

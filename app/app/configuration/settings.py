@@ -88,6 +88,8 @@ DATABASES = {
     }
 }
 
+PDB_MONGO_CONNECTION_PROPS = parser.getObjectProperty('db', 'PDB_MONGO_CONNECTION_PROPS')
+
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 

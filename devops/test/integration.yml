@@ -1,0 +1,8 @@
+pdb_mongodb_test:
+  image: 'mongo:3.4.2'
+  ports:
+    - '5501:27017'
+  privileged: true
+  volumes:
+    - '~/environment/test/mongodb/data:/data/db'
+  restart: always
