@@ -4,13 +4,13 @@ from unittest import mock
 from ddt import data, ddt
 from django.core.serializers.json import json
 
-from app.api.dal.query.ExerciseQueryRepository import ExerciseQueryRepository
-from app.api.dal.command.ExerciseCommandRepository import ExerciseCommandRepository
 from app.api.dal.command.errors.CommandError import CommandError
 from app.api.dal.query.errors.QueryError import QueryError
 from app.api.dal.query.errors.ResourceNotFoundQueryError import ResourceNotFoundQueryError
 from app.api.models.Exercise import Exercise
 from app.api.services.ExerciseService import ExerciseService
+from app.api.services.dalinterfaces.command.IExerciseCommandRepository import IExerciseCommandRepository
+from app.api.services.dalinterfaces.query.IExerciseQueryRepository import IExerciseQueryRepository
 from app.api.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
 from app.api.services.errors.ServiceError import ServiceError
 
@@ -19,8 +19,8 @@ from app.api.services.errors.ServiceError import ServiceError
 class ExerciseServiceUnitTest(unittest.TestCase):
 
     def setUp(self):
-        self.stub_exercise_query_repository = mock.Mock(spec=ExerciseQueryRepository)
-        self.stub_exercise_command_repository = mock.Mock(spec=ExerciseCommandRepository)
+        self.stub_exercise_query_repository = mock.Mock(spec=IExerciseQueryRepository)
+        self.stub_exercise_command_repository = mock.Mock(spec=IExerciseCommandRepository)
         self.sut = ExerciseService(self.stub_exercise_query_repository, self.stub_exercise_command_repository)
 
     @data(

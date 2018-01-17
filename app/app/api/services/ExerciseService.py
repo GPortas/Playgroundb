@@ -1,5 +1,3 @@
-from app.api.dal.query.ExerciseQueryRepository import ExerciseQueryRepository
-from app.api.dal.command.ExerciseCommandRepository import ExerciseCommandRepository
 from app.api.dal.command.errors.CommandError import CommandError
 from app.api.dal.query.errors.QueryError import QueryError
 from app.api.dal.query.errors.ResourceNotFoundQueryError import ResourceNotFoundQueryError
@@ -9,16 +7,9 @@ from app.api.services.errors.ServiceError import ServiceError
 
 class ExerciseService:
 
-    def __init__(self, exercise_query_repository=None, exercise_command_repository=None):
-        if not exercise_query_repository:
-            self.__exercise_query_repository = ExerciseQueryRepository()
-        else:
-            self.__exercise_query_repository = exercise_query_repository
-
-        if not exercise_command_repository:
-            self.__exercise_command_repository = ExerciseCommandRepository()
-        else:
-            self.__exercise_command_repository = exercise_command_repository
+    def __init__(self, exercise_query_repository, exercise_command_repository):
+        self.__exercise_query_repository = exercise_query_repository
+        self.__exercise_command_repository = exercise_command_repository
 
     def create_exercise(self, exercise):
         if exercise is None:
