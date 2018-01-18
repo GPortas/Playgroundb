@@ -1,8 +1,14 @@
 pdb_mongodb_test:
-  image: 'mongo:3.4.2'
+  image: 'pdb_mongodb:1.0.0'
+  environment:
+    - MONGODB_ADMIN_USER=pdbroot
+    - MONGODB_ADMIN_PASS=pdbroot1234
+    - MONGODB_APPLICATION_DATABASE=pdbdb
+    - MONGODB_APPLICATION_USER=pdbuser
+    - MONGODB_APPLICATION_PASS=pdbuser1234
   ports:
     - '5501:27017'
   privileged: true
   volumes:
-    - '~/environment/test/mongodb/data:/data/db'
+    - '~/pdbenvironment/test/mongodb/data:/data/db'
   restart: always

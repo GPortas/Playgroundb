@@ -3,7 +3,7 @@ pdb_mongodb:
   environment:
     - MONGODB_ADMIN_USER=pdbroot
     - MONGODB_ADMIN_PASS=pdbroot1234
-    - MONGODB_APPLICATION_DATABASE=development
+    - MONGODB_APPLICATION_DATABASE=pdbdb
     - MONGODB_APPLICATION_USER=pdbuser
     - MONGODB_APPLICATION_PASS=pdbuser1234
   ports:
