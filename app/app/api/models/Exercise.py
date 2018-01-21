@@ -1,3 +1,8 @@
+import copy
+
+from bson import ObjectId
+
+
 class Exercise:
 
     def __init__(self, author, _id=None, question=None, solution=None):
@@ -20,3 +25,9 @@ class Exercise:
 
     def validate_answer(self, answer):
         return self.solution == answer
+
+    def to_json_dict(self):
+        result = copy.deepcopy(self.__dict__)
+        if result.get("_id") is not None:
+            result["_id"] = ObjectId(result.get("_id"))
+        return result

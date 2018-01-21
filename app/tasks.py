@@ -18,6 +18,20 @@ def testoneunit(ctx, test_case):
     ctx.run("export PYTHONPATH='.';python3 " + MANAGE_PATH + " tests unit " + test_case)
 
 @task
+def testintegration(ctx):
+    setupintegration(ctx)
+    ctx.run("export PYTHONPATH='.';python3 " + MANAGE_PATH + " tests integration")
+
+@task
+def testoneintegration(ctx, test_case):
+    setupintegration(ctx)
+    ctx.run("export PYTHONPATH='.';python3 " + MANAGE_PATH + " tests integration " + test_case)
+
+def setupintegration(ctx):
+    build(ctx, "api-test")
+    print('Executing integration tests...')
+
+@task
 def build(ctx, env):
     checkenvironment(env)
     print("Building environment %s..." % env)
