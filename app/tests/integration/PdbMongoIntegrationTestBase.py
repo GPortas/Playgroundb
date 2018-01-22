@@ -3,6 +3,8 @@ from pymongo import MongoClient
 from app.configuration import settings
 from tests.integration.IntegrationTestBase import IntegrationTestBase
 
+from tests.integration.fixtures.ExerciseFixture import *
+
 
 class PdbMongoIntegrationTestBase(IntegrationTestBase):
     def setUp(self):
@@ -22,10 +24,10 @@ class PdbMongoIntegrationTestBase(IntegrationTestBase):
 
     def tearDown(self):
         for item in self.fixtures:
-            collection = eval("self.db" + eval(item).get_collection_name())
+            collection = eval("self.db." + eval(item).get_collection_name())
             collection.delete_many({})
 
     def saveObject(self, object_item):
-        collection = eval("self.db." + object_item.get_collection_name())
+        collection = eval("self.db." + eval(object_item.__class__.__name__ + "Fixture").get_collection_name())
         json_object = object_item.to_json_dict()
         collection.insert_one(json_object)

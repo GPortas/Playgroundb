@@ -1,4 +1,5 @@
 from app.api.dal.command.ExerciseMongoCommandRepository import ExerciseMongoCommandRepository
+from app.api.dal.command.errors.CommandError import CommandError
 from app.api.models.Exercise import Exercise
 from tests.integration.PdbMongoIntegrationTestBase import PdbMongoIntegrationTestBase
 
@@ -8,12 +9,21 @@ class ExerciseMongoCommandRepositoryIntegrationTest(PdbMongoIntegrationTestBase)
         self.fixtures = []
         super(ExerciseMongoCommandRepositoryIntegrationTest, self).setUp()
         self.sut = ExerciseMongoCommandRepository()
-        self.tearDown()
 
     def tearDown(self):
         self.db.exercises.delete_many({})
 
-    def test_createExercise_calledWithExercise_correctInsertion(self):
-        self.sut.create_exercise(Exercise(_id="666f6f2d6261722d71757578", question="testquestion", solution="testsolution", author="author1"))
-        #todo: how to test this correctly?
-        self.assertTrue(True)
+    # def test_createExercise_calledWithExercise_correctInsertion(self):
+    #   exercise = self.__exercise_get_exercise_instance()
+    #  self.sut.create_exercise(self.__exercise_get_exercise_instance())
+    # expected = exercise.get_author()
+    # self.assertEqual(expected, actual)
+
+    def test_createExercise_calledWithExistentExercise_throwCommandError(self):
+        exercise = self.__exercise_get_exercise_instance()
+        self.sut.create_exercise(exercise)
+        self.assertRaises(CommandError, self.sut.create_exercise, exercise)
+
+    def __exercise_get_exercise_instance(self):
+        return Exercise(_id="666f6f2d6261722d71757578", question="testquestion", solution="testsolution",
+                        author="author1")

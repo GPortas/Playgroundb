@@ -9,7 +9,7 @@ class ExerciseMongoCommandRepository(IExerciseCommandRepository, PdbMongoBaseRep
     def __init__(self):
         super(ExerciseMongoCommandRepository, self).__init__(
             connection_uri=settings.PDB_MONGO_CONNECTION_PROPS['CONNECTION_URI'],
-            dbname=settings.PDB_MONGO_CONNECTION_PROPS['DBNAME'])
+            db_name=settings.PDB_MONGO_CONNECTION_PROPS['DBNAME'])
 
     def create_exercise(self, exercise):
         try:

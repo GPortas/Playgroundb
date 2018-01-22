@@ -7,10 +7,16 @@ def installrequirements(ctx):
     ctx.run("pip3 install -r requirements.txt")
 
 @task
+def testall(ctx):
+    testunit(ctx)
+    testintegration(ctx)
+
+@task
 def testunit(ctx):
     build(ctx, 'api-test')
     print('Executing unit tests...')
     ctx.run("export PYTHONPATH='.';python3 " + MANAGE_PATH + " tests unit")
+
 @task
 def testoneunit(ctx, test_case):
     build(ctx, 'api-test')

@@ -31,3 +31,9 @@ class Exercise:
         if result.get("_id") is not None:
             result["_id"] = ObjectId(result.get("_id"))
         return result
+
+    @staticmethod
+    def from_json(json_source):
+        exercise = Exercise(author=json_source["author"], _id=json_source["_id"], question=json_source["question"],
+                            solution=json_source["solution"])
+        return exercise
