@@ -3,13 +3,24 @@ from app.api.dal.query.errors.QueryError import QueryError
 from app.api.dal.query.errors.ResourceNotFoundQueryError import ResourceNotFoundQueryError
 from app.api.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
 from app.api.services.errors.ServiceError import ServiceError
+from app.api.services.factories.ExerciseCommandRepositoryFactory import ExerciseCommandRepositoryFactory
+from app.api.services.factories.ExerciseQueryRepositoryFactory import ExerciseQueryRepositoryFactory
 
 
 class ExerciseService:
 
-    def __init__(self, exercise_query_repository, exercise_command_repository):
-        self.__exercise_query_repository = exercise_query_repository
-        self.__exercise_command_repository = exercise_command_repository
+    def __init__(self, exercise_query_repository=None, exercise_command_repository=None):
+        if exercise_query_repository is not None:
+            self.__exercise_query_repository = exercise_query_repository
+        else:
+            exercise_query_repository_factory = ExerciseQueryRepositoryFactory()
+            self.__exercise_query_repository = exercise_query_repository_factory.create_exercise_query_repository()
+
+        if exercise_command_repository is not None:
+            self.__exercise_command_repository = exercise_command_repository
+        else:
+            exercise_command_repository_factory = ExerciseCommandRepositoryFactory()
+            self.__exercise_command_repository = exercise_command_repository_factory.create_exercise_command_repository()
 
     def create_exercise(self, exercise):
         if exercise is None:
