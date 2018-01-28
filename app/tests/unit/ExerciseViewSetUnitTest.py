@@ -27,7 +27,7 @@ class ExerciseViewSetUnitTest(BaseViewSetUnitTest):
     def test_create_calledWithInnerServiceWhichRaisesResourceNotFoundServiceError_returnCorrectJSONResponse(self):
         json_raw = '{"author": "author1", "question": "this is a question", "solution": {"item1": "item1", "item2": "item2"}}'
         self.stub_exercise_service.create_exercise.side_effect = ResourceNotFoundServiceError('error')
-        expected = '{"code":0,"data":"","field":"error","message":"resource not found"}'
+        expected = '{"code":0,"data":"","message":"resource not found","field": ""}'
         request = self._configure_sut_request(json_raw)
         self.__exercise_create_exercise(expected, request)
 
