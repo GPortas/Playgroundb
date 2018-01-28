@@ -1,9 +1,7 @@
-import copy
-
-from bson import ObjectId
+from app.api.models.BaseModel import BaseModel
 
 
-class Exercise:
+class Exercise(BaseModel):
 
     def __init__(self, author, _id=None, question=None, solution=None):
         self._id = _id
@@ -26,14 +24,9 @@ class Exercise:
     def validate_answer(self, answer):
         return self.solution == answer
 
-    def to_json_dict(self):
-        result = copy.deepcopy(self.__dict__)
-        if result.get("_id") is not None:
-            result["_id"] = ObjectId(result.get("_id"))
-        return result
-
     @staticmethod
     def from_json(json_source):
-        exercise = Exercise(author=json_source["author"], _id=json_source["_id"], question=json_source["question"],
+        exercise = Exercise(author=json_source["author"], _id=json_source.get("_id"),
+                            question=json_source["question"],
                             solution=json_source["solution"])
         return exercise
