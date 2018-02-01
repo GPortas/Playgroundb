@@ -1,21 +1,55 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="App">
+                <header className="App-header">
+                    <h1 className="App-title" align="left">Playgroun
+                        <text style={{color: "#ffa54c"}}>db</text>
+                    </h1>
+                </header>
+                <div className="exercise-creation-forms-div">
+                    <form>
+                        <div className="form-group">
+                            <label for="inputStatement" className="exercise-creation-label">Write the statement of the
+                                exercise:</label>
+                            <textarea type="statement" className="form-control" id="inputStatement"
+                                      aria-describedby="statement" rows="3"/>
+                            <small id="statementHelp" className="form-text text-muted">Try to be as concise as possible
+                                because this will be the statement that your students will receive.
+                            </small>
+                        </div>
+                        <div className="form-group">
+                            <label for="inputSolution" className="exercise-creation-label">Write the expected result
+                                after executing the necessary query:</label>
+                            <textarea type="solution" className="form-control" id="inputSolution" rows="3"
+                                      placeholder={"{\"data\": {}}"}/>
+                            <small id="solutionHelp" className="form-text text-muted">Remember to verify that the format
+                                is correct.
+                            </small>
+                        </div>
+                        <div className="form-group">
+                            <label for="inputQuery" className="exercise-creation-label">If you wish, you can also obtain
+                                the solution to this exercise by consulting the database:</label>
+                            <textarea type="query" className="form-control queryTextArea" id="inputQuery" rows="6"/>
+                            <button type="submit" className="btn btn-warning exercise-creation-execute-query-button"
+                                    id="executeQueryButton">Execute Query
+                            </button>
+                        </div>
+                        <div align="center" className="form-group">
+                            <button type="submit" className="btn btn-danger exercise-creation-execute-cancel-button"
+                                    id="cancelButton">Cancell Exercise
+                            </button>
+                            <button type="submit" className="btn btn-success" id="submitButton">Submit Exercise</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        );
+    }
 }
 
 export default App;

@@ -1,28 +1,71 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+    background-color: #141517;
+    height: 80px;
+    padding: 10px;
+    color: white;
 }
 
 .App-title {
-  font-size: 1.5em;
+    padding-left: 10px;
+    color: white;
+    font-size: 2.2em;
 }
 
 .App-intro {
-  font-size: large;
+    color: white;
+    font-size: large;
 }
 
+
+/* Exercise creation panel */
+
+.queryTextArea{
+    background-color:#2b2727 !important;
+    color: #ffa54c !important;
+}
+
+div.exercise-creation-forms-div {
+    position: absolute;
+    width: 1000px;
+    z-index: 15;
+    top: 50%;
+    left: 50%;
+    margin: -300px 0 0 -500px;
+}
+
+label.exercise-creation-label {
+    font-size: large;
+    color: white;
+    text-align: left;
+    float: left;
+}
+
+.exercise-creation-execute-query-button {
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.exercise-creation-execute-cancel-button {
+    margin-right:30px;
+}
+
+/**/
+
+
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
