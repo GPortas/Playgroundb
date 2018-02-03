@@ -1,15 +1,27 @@
-import './App.css';
+import '../../styles/App.css';
+import $ from 'jquery';
 
 var React = require('react');
 var createReactClass = require('create-react-class');
 
 const ExerciseCreationFormComponent = createReactClass({
+    componentDidMount() {
+        $("#submitButton").click(function(){
+            console.log("submit clicked!");
+            window.alert("submit clicked!");
+        });
+
+        $("#executeQueryButton").click(function(){
+            console.log("execute query clicked!");
+            window.alert("execute query clicked!");
+        });
+    },
     render() {
         return (
             <div className="exercise-creation-forms-div">
                 <form>
                     <div className="form-group">
-                        <label for="inputStatement" className="exercise-creation-label">Write the statement of the
+                        <label htmlFor="inputStatement" className="exercise-creation-label">Write the statement of the
                             exercise:</label>
                         <textarea type="statement" className="form-control" id="inputStatement"
                                   aria-describedby="statement" rows="3"/>
@@ -18,7 +30,7 @@ const ExerciseCreationFormComponent = createReactClass({
                         </small>
                     </div>
                     <div className="form-group">
-                        <label for="inputSolution" className="exercise-creation-label">Write the expected result
+                        <label htmlFor="inputSolution" className="exercise-creation-label">Write the expected result
                             after executing the necessary query:</label>
                         <textarea type="solution" className="form-control" id="inputSolution" rows="3"
                                   placeholder={"{\"data\": {}}"}/>
@@ -27,7 +39,7 @@ const ExerciseCreationFormComponent = createReactClass({
                         </small>
                     </div>
                     <div className="form-group">
-                        <label for="inputQuery" className="exercise-creation-label">If you wish, you can also obtain
+                        <label htmlFor="inputQuery" className="exercise-creation-label">If you wish, you can also obtain
                             the solution to this exercise by consulting the database:</label>
                         <textarea type="query" className="form-control queryTextArea" id="inputQuery" rows="6"/>
                         <button type="submit" className="btn btn-warning exercise-creation-execute-query-button"

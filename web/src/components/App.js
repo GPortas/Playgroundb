@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import ExerciseCreationFormComponent from './ExerciseCreationComponent.js'
-import './App.css';
+import ExerciseCreationFormComponent from './exercise/ExerciseCreationComponent.js'
+import '../styles/App.css';
 
 class App extends Component {
     render() {
@@ -8,7 +8,7 @@ class App extends Component {
             <div className="App">
                 <header className="App-header">
                     <h1 className="App-title" align="left">Playgroun
-                        <text style={{color: "#ffa54c"}}>db</text>
+                        <label style={{color: "#ffa54c"}}>db</label>
                     </h1>
                 </header>
                 <ExerciseCreationFormComponent/>
