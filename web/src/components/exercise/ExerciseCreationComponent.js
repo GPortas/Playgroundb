@@ -9,6 +9,42 @@ const ExerciseCreationFormComponent = createReactClass({
         $("#submitButton").click(function(){
             console.log("submit clicked!");
             window.alert("submit clicked!");
+            const exerciseStatement = $('#inputStatement').val();
+            const exerciseSolution = $('#inputSolution').val();
+            var formData = {
+                "data": {
+                    "author": "testauthor",
+                    "question": exerciseStatement,
+                    "solution": exerciseSolution
+                }
+            }
+            $.ajax({
+                url: "http://127.0.0.1:8000/exercises/",
+                dataType: 'json',
+                type: 'post',
+                data: formData,
+                crossDomain: true,
+                success: function(data) {
+                    window.alert('yeah');
+                },
+                error: function(jqXHR, exception) {
+                    if (jqXHR.status === 0) {
+                        window.alert('Not connect.\n Verify Network.');
+                    } else if (jqXHR.status == 404) {
+                        window.alert('Requested page not found. [404]');
+                    } else if (jqXHR.status == 500) {
+                        window.alert('Internal Server Error [500].');
+                    } else if (exception === 'parsererror') {
+                        window.alert('Requested JSON parse failed.');
+                    } else if (exception === 'timeout') {
+                        window.alert('Time out error.');
+                    } else if (exception === 'abort') {
+                        window.alert('Ajax request aborted.');
+                    } else {
+                        window.alert('Uncaught Error.\n' + jqXHR.responseText);
+                    }
+                }
+            });
         });
 
         $("#executeQueryButton").click(function(){

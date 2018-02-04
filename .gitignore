@@ -3,6 +3,8 @@
 # SQlite tests db
 :memory:?cache=shared
 
+db.sqlite3
+
 # Byte-compiled / optimized / DLL files
 __pycache__
 *.py[cod]

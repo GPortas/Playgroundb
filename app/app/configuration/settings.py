@@ -19,7 +19,7 @@ from app.configuration.utils.PropertyParser import PropertyParser
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 try:
-    parser = PropertyParser(os.path.join(BASE_DIR, 'configuration/properties/api-test.properties'))
+    parser = PropertyParser(os.path.join(BASE_DIR, 'configuration/properties/api-development.properties'))
 except:
     sys.exit('FATAL: Properties file not found')
 

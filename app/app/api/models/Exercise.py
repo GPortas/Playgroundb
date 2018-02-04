@@ -4,7 +4,8 @@ from app.api.models.BaseModel import BaseModel
 class Exercise(BaseModel):
 
     def __init__(self, author, _id=None, question=None, solution=None):
-        self._id = _id
+        if _id is not None:
+            self._id = _id
         self.question = question
         self.solution = solution
         self.author = author
@@ -26,7 +27,8 @@ class Exercise(BaseModel):
 
     @staticmethod
     def from_json(json_source):
+        print(str(json_source))
         exercise = Exercise(author=json_source["author"], _id=json_source.get("_id"),
-                            question=json_source["question"],
-                            solution=json_source["solution"])
+                            question=json_source.get("question"),
+                            solution=json_source.get("solution"))
         return exercise
