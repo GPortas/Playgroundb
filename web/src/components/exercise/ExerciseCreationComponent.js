@@ -1,5 +1,6 @@
 import '../../styles/App.css';
 import $ from 'jquery';
+import CommandLineComponent from '../general/CommandLineComponent'
 
 var React = require('react');
 var createReactClass = require('create-react-class');
@@ -7,8 +8,7 @@ var createReactClass = require('create-react-class');
 const ExerciseCreationFormComponent = createReactClass({
     componentDidMount() {
         $("#submitButton").click(function(){
-            console.log("submit clicked!");
-            window.alert("submit clicked!");
+            $('#submitButton').attr('disabled', true);
             const exerciseStatement = $('#inputStatement').val();
             const exerciseSolution = $('#inputSolution').val();
             var formData = {
@@ -22,32 +22,10 @@ const ExerciseCreationFormComponent = createReactClass({
                 type: 'post',
                 data: formData,
                 crossDomain: true,
-                success: function(data) {
-                    window.alert('yeah');
-                },
-                error: function(jqXHR, exception) {
-                    if (jqXHR.status === 0) {
-                        window.alert('Not connect.\n Verify Network.');
-                    } else if (jqXHR.status == 404) {
-                        window.alert('Requested page not found. [404]');
-                    } else if (jqXHR.status == 500) {
-                        window.alert('Internal Server Error [500].');
-                    } else if (exception === 'parsererror') {
-                        window.alert('Requested JSON parse failed.');
-                    } else if (exception === 'timeout') {
-                        window.alert('Time out error.');
-                    } else if (exception === 'abort') {
-                        window.alert('Ajax request aborted.');
-                    } else {
-                        window.alert('Uncaught Error.\n' + jqXHR.responseText);
-                    }
+                complete: function () {
+                    $('#submitButton').attr('disabled', false);
                 }
             });
-        });
-
-        $("#executeQueryButton").click(function(){
-            console.log("execute query clicked!");
-            window.alert("execute query clicked!");
         });
     },
     render() {
@@ -75,10 +53,7 @@ const ExerciseCreationFormComponent = createReactClass({
                     <div className="form-group">
                         <label htmlFor="inputQuery" className="exercise-creation-label">If you wish, you can also obtain
                             the solution to this exercise by consulting the database:</label>
-                        <textarea type="query" className="form-control queryTextArea" id="inputQuery" rows="6"/>
-                        <button type="submit" className="btn btn-warning exercise-creation-execute-query-button"
-                                id="executeQueryButton">Execute Query
-                        </button>
+                        <CommandLineComponent/>
                     </div>
                     <div align="center" className="form-group">
                         <button type="submit" className="btn btn-danger exercise-creation-execute-cancel-button"
