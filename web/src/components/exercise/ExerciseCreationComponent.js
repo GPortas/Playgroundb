@@ -12,11 +12,9 @@ const ExerciseCreationFormComponent = createReactClass({
             const exerciseStatement = $('#inputStatement').val();
             const exerciseSolution = $('#inputSolution').val();
             var formData = {
-                "data": {
                     "author": "testauthor",
                     "question": exerciseStatement,
                     "solution": exerciseSolution
-                }
             }
             $.ajax({
                 url: "http://127.0.0.1:8000/exercises/",

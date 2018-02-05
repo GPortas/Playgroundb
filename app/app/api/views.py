@@ -77,7 +77,6 @@ class ExerciseViewSet(BaseViewSet):
         try:
             exercise = Exercise.from_json(request.data)
         except Exception as e:
-            print(str(e))
             return self._create_generic_response(response_type=ResponseType.server_error, exception=e)
 
         return self._create_response_by_inner_service_call(self.__exercise_service.create_exercise,
