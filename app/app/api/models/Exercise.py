@@ -27,7 +27,6 @@ class Exercise(BaseModel):
 
     @staticmethod
     def from_json(json_source):
-        print(str(json_source))
         exercise = Exercise(author=json_source["author"], _id=json_source.get("_id"),
                             question=json_source.get("question"),
                             solution=json_source.get("solution"))

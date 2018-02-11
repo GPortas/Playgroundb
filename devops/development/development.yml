@@ -12,3 +12,18 @@ pdb_mongodb:
   volumes:
     - '~/pdbenvironment/mongodb/data:/data/db'
   restart: always
+
+pdb_playground_mongodb:
+  image: 'pdb_mongodb:1.0.0'
+  environment:
+    - MONGODB_ADMIN_USER=pdbroot
+    - MONGODB_ADMIN_PASS=pdbroot1234
+    - MONGODB_APPLICATION_DATABASE=playground
+    - MONGODB_APPLICATION_USER=pdbuser
+    - MONGODB_APPLICATION_PASS=pdbuser1234
+  ports:
+    - '5503:27017'
+  privileged: true
+  volumes:
+    - '~/pdbenvironment/playground/mongodb/data:/data/db'
+  restart: always
