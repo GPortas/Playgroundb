@@ -33,6 +33,18 @@ def testoneintegration(ctx, test_case):
     setupintegration(ctx)
     ctx.run("export PYTHONPATH='.';python3 " + MANAGE_PATH + " tests integration " + test_case)
 
+@task
+def testfunctional(ctx):
+    build(ctx, "api-development")
+    print('Executing functional tests...')
+    ctx.run("export PYTHONPATH='.';python3 " + MANAGE_PATH + " tests functional")
+
+@task
+def testonefunctional(ctx, test_case):
+    build(ctx, "api-development")
+    print('Executing functional tests...')
+    ctx.run("export PYTHONPATH='.';python3 " + MANAGE_PATH + " tests functional " + test_case)
+
 def setupintegration(ctx):
     build(ctx, "api-test")
     print('Executing integration tests...')

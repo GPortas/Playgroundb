@@ -1,0 +1,2 @@
+class MongoWrapperException(Exception):
+    pass
