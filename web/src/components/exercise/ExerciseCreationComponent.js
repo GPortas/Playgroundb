@@ -25,6 +25,7 @@ const ExerciseCreationFormComponent = createReactClass({
                 complete: function () {
                     $('#submitButton').attr('disabled', false);
                 }
+                //todo: Errors treatment!
             });
         });
     },
