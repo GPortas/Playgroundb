@@ -1,12 +1,15 @@
 import json
 
+from django.http import HttpResponse
 from rest_framework import permissions, viewsets
 from rest_framework import status
+from rest_framework.decorators import list_route
 from rest_framework.response import Response
 
 from app.api.models.BaseModel import BaseModel
 from app.api.models.Exercise import Exercise
 from app.api.services.ExerciseService import ExerciseService
+from app.api.services.QueryExecutionService import QueryExecutionService
 from app.api.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
 from app.api.utils.enums import ResponseType
 
@@ -61,7 +64,9 @@ class BaseViewSet(viewsets.ViewSet):
         if exception_message is not None:
             response_body['exception_message'] = exception_message
 
-        return Response(response_body, status=response_status)
+        cors_header = {'Access-Control-Allow-Origin': '*'}
+
+        return Response(response_body, status=response_status, headers=cors_header)
 
 
 class ExerciseViewSet(BaseViewSet):
@@ -82,3 +87,23 @@ class ExerciseViewSet(BaseViewSet):
         return self._create_response_by_inner_service_call(self.__exercise_service.create_exercise,
                                                            exercise,
                                                            message='exercise created')
+
+
+class QueryExecutionViewSet(BaseViewSet):
+    # todo: permissions
+    def __init__(self, query_execution_service=None, *args, **kwargs):
+        if query_execution_service is None:
+            self.__query_execution_service = QueryExecutionService()
+        else:
+            self.__query_execution_service = query_execution_service
+        super(QueryExecutionViewSet, self).__init__(*args, **kwargs)
+
+    @list_route(methods=['POST'], url_path='execute-query')
+    def execute_query(self, request, pk=None):
+        try:
+            raw_query = request.data["query"]
+        except Exception as e:
+            return self._create_generic_response(response_type=ResponseType.server_error, exception=e)
+        return self._create_response_by_inner_service_call(self.__query_execution_service.execute_query,
+                                                           raw_query,
+                                                           message='query executed')

@@ -19,7 +19,7 @@ from app.configuration.utils.PropertyParser import PropertyParser
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 try:
-    parser = PropertyParser(os.path.join(BASE_DIR, 'configuration/properties/api-development.properties'))
+    parser = PropertyParser(os.path.join(BASE_DIR, 'configuration/properties/api-test.properties'))
 except:
     sys.exit('FATAL: Properties file not found')
 
@@ -45,11 +45,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app.configuration',
     'app.api',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -126,3 +128,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# CORS Configuration
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000'
+)

@@ -23,13 +23,18 @@ class MongoWrapper:
         self.db = client[self.db_name]
 
     def execute_query(self, query):
-        query_components = query.split(".")
-        not_eval_ops = re.compile('find\(')
         try:
+            query_components = query.split(".")
+            not_eval_ops = re.compile('find\(')
             if not_eval_ops.search(query_components[2]):
-                result = list(eval("self." + query))
+                result_list = (list(eval("self." + query)))
+                result = ""
+                for item in result_list:
+                    result = result + str(item) + "\n"
             else:
-                result = self.db.eval(Code('function () { return ' + query + ' }'))
+                result = str(self.db.eval(Code('function () { return ' + query + ' }')))
             return result
         except OperationFailure as of:
-            raise MongoWrapperException(str(of))
+            return str(of)
+        except Exception:
+            raise MongoWrapperException('Please, insert a valid operation')

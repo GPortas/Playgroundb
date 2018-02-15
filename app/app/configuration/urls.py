@@ -22,6 +22,7 @@ from app.api import views
 # Django REST router
 router = DefaultRouter()
 router.register(r'exercises', views.ExerciseViewSet, base_name='exercises')
+router.register(r'query-execution', views.QueryExecutionViewSet, base_name='query-executor')
 
 urlpatterns = [
 ]

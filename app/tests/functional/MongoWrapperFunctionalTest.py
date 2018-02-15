@@ -34,14 +34,14 @@ class MongoWrapperFunctionalTest(unittest.TestCase):
         self.db.playgroundtest.insert_one({"_id": ObjectId("56a942bfec926681f17f09b6"), "name": "foo"})
         actual = self.sut.execute_query(query="db.playgroundtest.findOne({})")
         expected = {'_id': ObjectId('56a942bfec926681f17f09b6'), 'name': 'foo'}
-        self.assertEqual(str(sorted(expected)), str(sorted(actual)))
+        self.assertEqual(str(expected), actual)
 
+    #TODO: fix
     def test_executeQuery_calledWithFindQuery_returnCorrectResult(self):
         self.__fill_collection_with_elements()
         actual = self.sut.execute_query(query="db.playgroundtest.find({})")
-        expected = [{'_id': ObjectId('56a942bfec926681f17f09b6'), 'name': 'foo'},
-                    {'_id': ObjectId('56a941afec926681f17f09b6'), 'name': 'buu'}]
-        self.assertEqual(str(expected), str(actual))
+        expected = "{'_id': ObjectId('56a942bfec926681f17f09b6'), 'name': 'foo'}\n{'_id': ObjectId('56a941afec926681f17f09b6'), 'name': 'buu'}"
+        self.assertEqual(expected, actual)
 
     def test_executeQuery_calledWithDeleteOneCommand_returnCorrectResult(self):
         self.__fill_collection_with_elements()
@@ -60,8 +60,5 @@ class MongoWrapperFunctionalTest(unittest.TestCase):
     def __fill_collection_with_elements(self):
         self.db.playgroundtest.insert_one({"_id": ObjectId("56a942bfec926681f17f09b6"), "name": "foo"})
         self.db.playgroundtest.insert_one({"_id": ObjectId("56a941afec926681f17f09b6"), "name": "buu"})
-
-    def test_executeQuery_calledWithInvalidQueryOrCommand_raiseMongoWrapperException(self):
-        self.assertRaises(MongoWrapperException, self.sut.execute_query, "db.playgroundtest.fakecommand({})")
 
     #TODO: IMPROVE TEST COVERAGE FOR MORE CASES
