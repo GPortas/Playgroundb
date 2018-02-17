@@ -6,6 +6,10 @@ var React = require('react');
 var createReactClass = require('create-react-class');
 
 const ExerciseCreationFormComponent = createReactClass({
+    changeHandler(solutionText) {
+        $("#inputSolution").val(solutionText);
+    },
+
     componentDidMount() {
         $("#submitButton").click(function(){
             $('#submitButton').attr('disabled', true);
@@ -54,7 +58,7 @@ const ExerciseCreationFormComponent = createReactClass({
                     <div className="form-group">
                         <label htmlFor="inputQuery" className="exercise-creation-label">If you wish, you can also obtain
                             the solution to this exercise by consulting the database:</label>
-                        <CommandLineComponent/>
+                        <CommandLineComponent func={this.changeHandler}/>
                     </div>
                     <div align="center" className="form-group">
                         <button type="submit" className="btn btn-danger exercise-creation-execute-cancel-button"

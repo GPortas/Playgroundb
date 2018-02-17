@@ -6,6 +6,7 @@ var createReactClass = require('create-react-class');
 
 const CommandLineComponent = createReactClass({
     componentDidMount() {
+        const self = this;
         $("#executeQueryButton").click(function(){
             $('#executeQueryButton').attr('disabled', true);
             const inputQuery = $('#inputQuery').val();
@@ -20,7 +21,7 @@ const CommandLineComponent = createReactClass({
                 success: function(output, status, xhr) {
                     const data=xhr.responseText;
                     const jsonResponse = $.parseJSON(data);
-                    const queryResult = jsonResponse["data"]["execution_result"]
+                    self.setState({ data: jsonResponse["data"]["execution_result"] });
                 },
                 complete: function () {
                     $('#executeQueryButton').attr('disabled', false);
@@ -30,6 +31,9 @@ const CommandLineComponent = createReactClass({
         });
     },
     render() {
+        if (this.state && this.state.data) {
+            this.props.func(this.state.data)
+        }
         return (
             <div>
                 <textarea type="query" className="form-control queryTextArea" id="inputQuery" rows="6"/>
