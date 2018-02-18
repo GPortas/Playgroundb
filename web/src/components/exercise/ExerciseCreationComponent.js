@@ -40,20 +40,20 @@ const ExerciseCreationFormComponent = createReactClass({
                     <div className="form-group">
                         <label htmlFor="inputStatement" className="exercise-creation-label">Write the statement of the
                             exercise:</label>
-                        <textarea type="statement" className="form-control" id="inputStatement"
-                                  aria-describedby="statement" rows="3"/>
-                        <small id="statementHelp" className="form-text text-muted">Try to be as concise as possible
+                        <textarea type="statement" className="form-control input-text" id="inputStatement"
+                                  aria-describedby="statement" rows="6"/>
+                        <label id="statementHelp" className="form-text text-muted">Try to be as concise as possible
                             because this will be the statement that your students will receive.
-                        </small>
+                        </label>
                     </div>
                     <div className="form-group">
                         <label htmlFor="inputSolution" className="exercise-creation-label">Write the expected result
                             after executing the necessary query:</label>
-                        <textarea type="solution" className="form-control" id="inputSolution" rows="3"
+                        <textarea type="solution" className="form-control input-text" id="inputSolution" rows="6"
                                   placeholder={"{\"data\": {}}"}/>
-                        <small id="solutionHelp" className="form-text text-muted">Remember to verify that the format
+                        <label id="solutionHelp" className="form-text text-muted">Remember to verify that the format
                             is correct.
-                        </small>
+                        </label>
                     </div>
                     <div className="form-group">
                         <label htmlFor="inputQuery" className="exercise-creation-label">If you wish, you can also obtain
@@ -61,10 +61,10 @@ const ExerciseCreationFormComponent = createReactClass({
                         <CommandLineComponent func={this.changeHandler}/>
                     </div>
                     <div align="center" className="form-group">
-                        <button type="submit" className="btn btn-danger exercise-creation-execute-cancel-button"
+                        <button type="submit" className="btn btn-danger exercise-creation-button"
                                 id="cancelButton">Cancell Exercise
                         </button>
-                        <button type="submit" className="btn btn-success" id="submitButton">Submit Exercise</button>
+                        <button type="submit" className="btn btn-success exercise-creation-button" id="submitButton">Submit Exercise</button>
                     </div>
                 </form>
             </div>
