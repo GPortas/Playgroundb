@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ExerciseCreationFormComponent from './master/ExerciseCreationFormComponent.js'
 import ConfigurationComponent from "./master/ConfigurationComponent";
 import MainComponent from './general/MainComponent'
+import ExerciseResolutionComponent from './student/ExerciseResolutionComponent'
 
 import '../styles/App.css';
 
@@ -32,6 +33,11 @@ class App extends Component {
 
     onDashboardOptionClicked() {
         //todo: dashboard component
+
+        //todo: for test purpose, remove from here:
+        this.setState(state => ({
+            nestedComponent: <ExerciseResolutionComponent/>
+        }));
     }
 
     onAccountOptionClicked() {

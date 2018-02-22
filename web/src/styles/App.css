@@ -20,16 +20,11 @@
     font-size: 2.2em;
 }
 
-/* Exercise creation panel */
-
-.input-text{
-    font-size: medium;
-}
-
 .query-text-area{
     background-color:#2b2727 !important;
     color: #ffa54c !important;
     font-size: medium;
+    resize: none;
 }
 
 div.common-div {
@@ -38,7 +33,7 @@ div.common-div {
     z-index: 15;
     top: 50%;
     left: 50%;
-    margin: -300px 0 0 -500px;
+    margin: -200px 0 0 -500px;
 }
 
 label.common-label {
@@ -52,9 +47,39 @@ label.common-label {
     font-size: large;
     margin: 10px 10px 40px;
 }
+/* Exercise creation panel */
 
-/**/
+.input-text{
+font-size: medium;
+}
 
+/* Exercise resolution panel */
+
+.exercise-resolution-divider {
+    height: 1px;
+    width:98%;
+    display:block; /* for use on default inline elements like span */
+    margin: 9px 0;
+    overflow: hidden;
+    background-color: #2b2727;
+}
+
+div.exercise-resolution-left-div {
+    float: left;
+    width: 75%;
+}
+
+div.exercise-resolution-left-bottom-div {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 74%;
+}
+
+div.exercise-resolution-right-div {
+    float: left;
+    width: 25%;
+}
 
 @keyframes App-logo-spin {
     from {

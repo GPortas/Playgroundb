@@ -62,7 +62,7 @@ const ExerciseCreationFormComponent = createReactClass({
                     </div>
                     <div align="center" className="form-group">
                         <button type="submit" className="btn btn-danger common-button"
-                                id="cancelButton">Cancell Exercise
+                                id="cancelButton">Cancel Exercise
                         </button>
                         <button type="submit" className="btn btn-success common-button" id="submitButton">Submit Exercise</button>
                     </div>
