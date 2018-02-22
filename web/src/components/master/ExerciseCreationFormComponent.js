@@ -35,10 +35,10 @@ const ExerciseCreationFormComponent = createReactClass({
     },
     render() {
         return (
-            <div className="exercise-creation-forms-div">
+            <div className="common-div App">
                 <form>
                     <div className="form-group">
-                        <label htmlFor="inputStatement" className="exercise-creation-label">Write the statement of the
+                        <label htmlFor="inputStatement" className="common-label">Write the statement of the
                             exercise:</label>
                         <textarea type="statement" className="form-control input-text" id="inputStatement"
                                   aria-describedby="statement" rows="6"/>
@@ -47,7 +47,7 @@ const ExerciseCreationFormComponent = createReactClass({
                         </label>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="inputSolution" className="exercise-creation-label">Write the expected result
+                        <label htmlFor="inputSolution" className="common-label">Write the expected result
                             after executing the necessary query:</label>
                         <textarea type="solution" className="form-control input-text" id="inputSolution" rows="6"
                                   placeholder={"{\"data\": {}}"}/>
@@ -56,15 +56,15 @@ const ExerciseCreationFormComponent = createReactClass({
                         </label>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="inputQuery" className="exercise-creation-label">If you wish, you can also obtain
+                        <label htmlFor="inputQuery" className="common-label">If you wish, you can also obtain
                             the solution to this exercise by consulting the database:</label>
-                        <CommandLineComponent func={this.changeHandler}/>
+                        <CommandLineComponent func={this.changeHandler} rows={6}/>
                     </div>
                     <div align="center" className="form-group">
-                        <button type="submit" className="btn btn-danger exercise-creation-button"
+                        <button type="submit" className="btn btn-danger common-button"
                                 id="cancelButton">Cancell Exercise
                         </button>
-                        <button type="submit" className="btn btn-success exercise-creation-button" id="submitButton">Submit Exercise</button>
+                        <button type="submit" className="btn btn-success common-button" id="submitButton">Submit Exercise</button>
                     </div>
                 </form>
             </div>

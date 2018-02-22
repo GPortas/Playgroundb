@@ -32,7 +32,7 @@
     font-size: medium;
 }
 
-div.exercise-creation-forms-div {
+div.common-div {
     position: absolute;
     width: 1000px;
     z-index: 15;
@@ -41,14 +41,14 @@ div.exercise-creation-forms-div {
     margin: -300px 0 0 -500px;
 }
 
-label.exercise-creation-label {
+label.common-label {
     font-size: large;
     color: white;
     text-align: left;
     float: left;
 }
 
-.exercise-creation-button {
+.common-button {
     font-size: large;
     margin: 10px 10px 40px;
 }

@@ -1,10 +1,47 @@
 import React, {Component} from 'react';
-import ExerciseCreationFormComponent from './exercise/ExerciseCreationComponent.js'
+import ExerciseCreationFormComponent from './master/ExerciseCreationFormComponent.js'
+import ConfigurationComponent from "./master/ConfigurationComponent";
+import MainComponent from './general/MainComponent'
+
 import '../styles/App.css';
 
 import {Navbar, Nav, NavItem} from "react-bootstrap"
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {nestedComponent: <ConfigurationComponent/>};
+        this.onCommandLineOptionClicked = this.onCommandLineOptionClicked.bind(this);
+        this.onExerciseCreationOptionClicked = this.onExerciseCreationOptionClicked.bind(this);
+        this.onDashboardOptionClicked = this.onDashboardOptionClicked.bind(this);
+        this.onAccountOptionClicked = this.onAccountOptionClicked.bind(this);
+        this.onQuitOptionClicked = this.onQuitOptionClicked.bind(this);
+    }
+
+    onCommandLineOptionClicked() {
+        this.setState(state => ({
+            nestedComponent: <ConfigurationComponent/>
+        }));
+    }
+
+    onExerciseCreationOptionClicked() {
+        this.setState(state => ({
+            nestedComponent: <ExerciseCreationFormComponent/>
+        }));
+    }
+
+    onDashboardOptionClicked() {
+        //todo: dashboard component
+    }
+
+    onAccountOptionClicked() {
+        //todo: account component
+    }
+
+    onQuitOptionClicked() {
+        //todo: logout user
+    }
+
     render() {
         return (
             <div>
@@ -17,34 +54,32 @@ class App extends Component {
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav>
-                        <NavItem className="navbar-element" eventKey={1} href="#">
+                        <NavItem className="navbar-element" onClick={this.onCommandLineOptionClicked}>
                             Command Line
                         </NavItem>
                     </Nav>
                     <Nav>
-                        <NavItem className="navbar-element" eventKey={1} href="#">
+                        <NavItem className="navbar-element" onClick={this.onExerciseCreationOptionClicked}>
                             Exercise Creation
                         </NavItem>
                     </Nav>
                     <Nav>
-                        <NavItem className="navbar-element" eventKey={1} href="#">
+                        <NavItem className="navbar-element" onClick={this.onDashboardOptionClicked}>
                             Dashboard
                         </NavItem>
                     </Nav>
                     <Nav>
-                        <NavItem className="navbar-element" eventKey={1} href="#">
+                        <NavItem className="navbar-element" onClick={this.onAccountOptionClicked}>
                             Account
                         </NavItem>
                     </Nav>
                     <Nav>
-                        <NavItem className="navbar-element" eventKey={1} href="#">
+                        <NavItem className="navbar-element" onClick={this.onQuitOptionClicked}>
                             Quit
                         </NavItem>
                     </Nav>
                 </Navbar>
-                <div className="App">
-                    <ExerciseCreationFormComponent/>
-                </div>
+                <MainComponent nestedComponent={this.state.nestedComponent} />
             </div>
         );
     }
