@@ -1,7 +1,7 @@
 from app.api.models.QueryExecution import QueryExecution
 from app.api.services.errors.ServiceError import ServiceError
-from app.api.services.wrappers.MongoWrapper import MongoWrapper
-from app.api.services.wrappers.exceptions.MongoWrapperException import MongoWrapperException
+from app.api.services.wrappers.mongo.MongoWrapper import MongoWrapper
+from app.api.services.wrappers.mongo.exceptions.MongoWrapperException import MongoWrapperException
 
 
 class QueryExecutionService:

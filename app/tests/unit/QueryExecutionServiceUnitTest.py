@@ -3,8 +3,8 @@ from unittest import mock
 
 from app.api.services.QueryExecutionService import QueryExecutionService
 from app.api.services.errors.ServiceError import ServiceError
-from app.api.services.wrappers.MongoWrapper import MongoWrapper
-from app.api.services.wrappers.exceptions.MongoWrapperException import MongoWrapperException
+from app.api.services.wrappers.mongo.MongoWrapper import MongoWrapper
+from app.api.services.wrappers.mongo.exceptions.MongoWrapperException import MongoWrapperException
 
 
 class QueryExecutionServiceUnitTest(unittest.TestCase):
