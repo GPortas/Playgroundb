@@ -4,4 +4,7 @@ from app.api.services.wrappers.mongo.mappers.resultmappers.IResultMapper import 
 class InsertOneResultMapper(IResultMapper):
 
     def format(self, operation_result):
-        return 'fake'
+        result = '{\n\t"acknowledged" : ' + str(
+            operation_result.acknowledged).lower() + ',\n\t"insertedId" : ObjectId("' + str(
+            operation_result.inserted_id) + '")\n}'
+        return result

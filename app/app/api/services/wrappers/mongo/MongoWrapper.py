@@ -1,5 +1,7 @@
+from bson import ObjectId
 from pymongo import MongoClient
 
+from app.api.services.wrappers.mongo.PymongoExecutor import PymongoExecutor
 from app.api.services.wrappers.mongo.exceptions.MongoWrapperException import MongoWrapperException
 from app.api.services.wrappers.mongo.mappers.operationmappers.OperationMapperFactory import OperationMapperFactory
 from app.api.services.wrappers.mongo.mappers.errors.InvalidOperationError import InvalidOperationError
@@ -22,22 +24,27 @@ class MongoWrapper:
                              readPreference=settings.PDB_MONGO_CONNECTION_PROPS['READ_PREFERENCE'])
         self.db = client[self.db_name]
 
-    def execute_query(self, query):
+    def execute_query(self, query, operation_mapper=None, result_mapper=None, pymongo_executor=None):
         query_components = query.split(".")
         if query_components[0] != 'db':
             raise MongoWrapperException('Please, insert a valid operation')
         else:
             try:
-                mongo_op_name = query_components[2].split('(')[0]
-                mongo_op_params = '(' + query_components[2].split('(')[1]
+                splitted_op = query_components[2].split('(', 1)
+                mongo_op_name = splitted_op[0]
+                mongo_op_params = '(' + splitted_op[1]
 
-                operation_mapper = OperationMapperFactory().create_operation_mapper(mongo_op=mongo_op_name)
+                if operation_mapper is None:
+                    operation_mapper = OperationMapperFactory().create_operation_mapper(mongo_op=mongo_op_name)
                 full_operation = operation_mapper.format(operation_params=mongo_op_params)
                 pymongo_query = 'self.' + query_components[0] + '.' + query_components[1] + '.' + full_operation
 
-                pymongo_operation_result = eval(pymongo_query)
+                if pymongo_executor is None:
+                    pymongo_executor = PymongoExecutor(self.db)
+                pymongo_operation_result = pymongo_executor.execute(pymongo_query)
 
-                result_mapper = ResultMapperFactory().create_result_mapper(mongo_op=mongo_op_name)
+                if result_mapper is None:
+                    result_mapper = ResultMapperFactory().create_result_mapper(mongo_op=mongo_op_name)
                 result = result_mapper.format(operation_result=pymongo_operation_result)
 
                 return result
