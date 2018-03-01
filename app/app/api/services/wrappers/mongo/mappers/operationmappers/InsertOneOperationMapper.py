@@ -1,11 +1,11 @@
-from app.api.services.wrappers.mongo.mappers.operationmappers.IOperationMapper import IOperationMapper
+from app.api.services.wrappers.mongo.mappers.operationmappers.OperationMapperBase import OperationMapperBase
 
 
-class InsertOneOperationMapper(IOperationMapper):
+class InsertOneOperationMapper(OperationMapperBase):
 
     def __init__(self):
         self.PYMONGO_OPERATION = 'insert_one'
 
     def format(self, operation_params):
+        operation_params = self._insert_marks(operation_params)
         return self.PYMONGO_OPERATION + operation_params
-
