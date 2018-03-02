@@ -9,3 +9,4 @@ django-multiupload==0.5
 django-tastypie==0.13.1
 djangorestframework==3.3.2
 ddt==1.1.1
+demjson==2.2.3

@@ -12,13 +12,15 @@ class InsertOneOperationMapperUnitTest(unittest.TestCase):
         self.sut = InsertOneOperationMapper()
 
     @data(
-        {'input': "({data: 1, apples: '23',type: 'fuji'})",
-         'expected': "insert_one({'data':1,'apples':'23','type':'fuji'})"},
-        {'input': "({ data:    1, apples  : '23'  ,  type:     'fuji'})",
-         'expected': "insert_one({'data':1,'apples':'23','type':'fuji'})"}
-
-    )
+        {'input': "({_id: ObjectId(\"56fc40f9d735c28df206d078\")})",
+         'expected': "insert_one({'_id': ObjectId(\"56fc40f9d735c28df206d078\")})"},
+        {'input': "({  apples  : 67   , type :   'fuji'})",
+         'expected': "insert_one({'apples': 67, 'type': 'fuji'})"})
     def test_format_calledWithValidOperationParams_returnCorrectResult(self, data):
         actual = self.sut.format(data['input'])
         expected = data['expected']
+
+        print('###############')
+        print("act:" + actual)
+        print("exp:" + data['expected'])
         self.assertEqual(actual, expected)

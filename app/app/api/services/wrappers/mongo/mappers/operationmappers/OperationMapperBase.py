@@ -1,19 +1,26 @@
 import re
 
+from demjson import decode
+
 
 class OperationMapperBase:
     PYMONGO_OPERATION = ''
-
-    REGEX_UNMARKED_VARIABLES = '[^\s,{]+[:]'
 
     def format(self, operation_params):
         pass
 
     def _insert_marks(self, operation_params):
-        operation_params = operation_params.replace(" ", "")
-        pattern = re.compile(self.REGEX_UNMARKED_VARIABLES)
-        filtered_text = re.findall(pattern, operation_params)
+        object_id_re = re.compile('ObjectId\\(["\\\'][0-9a-f]+["\\\']\\)')
+        filtered_text = re.findall(object_id_re, operation_params)
         for element in filtered_text:
-            operation_params = operation_params.replace(element, "\'" + element[:-1] + "\':")
+            operation_params = operation_params.replace(element, "'" + element + "'")
+        operation_params = '(' + str(decode(operation_params[1:-1])) + ')'
+        for element in filtered_text:
+            operation_params = operation_params.replace("'" + element + "'", element)
         return operation_params
 
+    def __order_dict(self, input):
+        if isinstance(input, dict):
+            return sorted((k, self.__order_dict(v)) for k, v in input.items())
+        else:
+            return input
