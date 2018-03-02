@@ -14,13 +14,7 @@ class OperationMapperBase:
         filtered_text = re.findall(object_id_re, operation_params)
         for element in filtered_text:
             operation_params = operation_params.replace(element, "'" + element + "'")
-        operation_params = '(' + str(decode(operation_params[1:-1])) + ')'
+        operation_params = str(decode(operation_params))
         for element in filtered_text:
             operation_params = operation_params.replace("'" + element + "'", element)
         return operation_params
-
-    def __order_dict(self, input):
-        if isinstance(input, dict):
-            return sorted((k, self.__order_dict(v)) for k, v in input.items())
-        else:
-            return input
