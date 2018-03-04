@@ -20,8 +20,8 @@
     font-size: 2.2em;
 }
 
-.query-text-area{
-    background-color:#2b2727 !important;
+.query-text-area {
+    background-color: #2b2727 !important;
     color: #ffa54c !important;
     font-size: medium;
     resize: none;
@@ -47,18 +47,33 @@ label.common-label {
     font-size: large;
     margin: 10px 10px 40px;
 }
+
+/* Login panel */
+
+.login-div {
+    width: 300px;
+    margin: 100px auto 0;
+    text-align: center;
+}
+
+.login-input {
+    resize: none;
+    font-size: medium;
+    margin-bottom: 20px;
+}
+
 /* Exercise creation panel */
 
-.input-text{
-font-size: medium;
+.input-text {
+    font-size: medium;
 }
 
 /* Exercise resolution panel */
 
 .exercise-resolution-divider {
     height: 1px;
-    width:98%;
-    display:block; /* for use on default inline elements like span */
+    width: 98%;
+    display: block; /* for use on default inline elements like span */
     margin: 9px 0;
     overflow: hidden;
     background-color: #2b2727;
