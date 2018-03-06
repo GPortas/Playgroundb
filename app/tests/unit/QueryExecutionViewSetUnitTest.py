@@ -1,8 +1,8 @@
 from unittest import mock
 
-from app.api.models.QueryExecution import QueryExecution
-from app.api.services.QueryExecutionService import QueryExecutionService
-from app.api.services.errors.ServiceError import ServiceError
+from app.api.domain.models.QueryExecution import QueryExecution
+from app.api.domain.services.QueryExecutionService import QueryExecutionService
+from app.api.domain.services.errors.ServiceError import ServiceError
 from app.api.views import QueryExecutionViewSet
 from tests.unit.BaseViewSetUnitTest import BaseViewSetUnitTest
 

@@ -1,7 +1,7 @@
 from unittest import mock
 
-from app.api.services.ExerciseService import ExerciseService
-from app.api.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
+from app.api.domain.services.ExerciseService import ExerciseService
+from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
 from app.api.views import ExerciseViewSet
 from tests.unit.BaseViewSetUnitTest import BaseViewSetUnitTest
 
@@ -33,6 +33,14 @@ class ExerciseViewSetUnitTest(BaseViewSetUnitTest):
 
     def test_create_calledWithUserWithNoPermission_returnCorrectJSONResponse(self):
         # todo: no permissions yet
+        pass
+    
+    def test_list_calledWithUserWithNoPermission_returnCorrectJSONResponse(self):
+        # todo: no permissions yet
+        pass
+
+    def test_list_called_returnCorrectJSONResponse(self):
+        # todo
         pass
 
     def __exercise_create_exercise(self, expected, request):

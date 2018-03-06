@@ -1,6 +1,6 @@
-from app.api.dal.command.ExerciseMongoCommandRepository import ExerciseMongoCommandRepository
-from app.api.dal.command.errors.CommandError import CommandError
-from app.api.models.Exercise import Exercise
+from app.api.data.command.ExerciseMongoCommandRepository import ExerciseMongoCommandRepository
+from app.api.domain.services.data.command.errors.CommandError import CommandError
+from app.api.domain.models.Exercise import Exercise
 from tests.integration.PdbMongoIntegrationTestBase import PdbMongoIntegrationTestBase
 
 

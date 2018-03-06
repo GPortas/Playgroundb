@@ -1,11 +1,11 @@
 import unittest
 from unittest import mock
 
-from app.api.services.wrappers.mongo.MongoWrapper import MongoWrapper
-from app.api.services.wrappers.mongo.PymongoExecutor import PymongoExecutor
-from app.api.services.wrappers.mongo.exceptions.MongoWrapperException import MongoWrapperException
-from app.api.services.wrappers.mongo.mappers.operationmappers.OperationMapperBase import OperationMapperBase
-from app.api.services.wrappers.mongo.mappers.resultmappers.IResultMapper import IResultMapper
+from app.api.domain.services.wrappers.mongo.MongoWrapper import MongoWrapper
+from app.api.domain.services.wrappers.mongo.PymongoExecutor import PymongoExecutor
+from app.api.domain.services.wrappers.mongo.exceptions.MongoWrapperException import MongoWrapperException
+from app.api.domain.services.wrappers.mongo.mappers.operationmappers.OperationMapperBase import OperationMapperBase
+from app.api.domain.services.wrappers.mongo.mappers.resultmappers.IResultMapper import IResultMapper
 
 
 class MongoWrapperUnitTest(unittest.TestCase):

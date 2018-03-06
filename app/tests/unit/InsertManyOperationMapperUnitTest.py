@@ -1,6 +1,6 @@
 import unittest
 
-from app.api.services.wrappers.mongo.mappers.operationmappers.InsertManyOperationMapper import InsertManyOperationMapper
+from app.api.domain.services.wrappers.mongo.mappers.operationmappers.InsertManyOperationMapper import InsertManyOperationMapper
 
 
 class InsertManyOperationMapperUnitTest(unittest.TestCase):

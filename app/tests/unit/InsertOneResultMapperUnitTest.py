@@ -3,7 +3,7 @@ import unittest
 from bson import ObjectId
 from pymongo.results import InsertOneResult
 
-from app.api.services.wrappers.mongo.mappers.resultmappers.InsertOneResultMapper import InsertOneResultMapper
+from app.api.domain.services.wrappers.mongo.mappers.resultmappers.InsertOneResultMapper import InsertOneResultMapper
 
 
 class InsertOneResultMapperUnitTest(unittest.TestCase):

@@ -3,7 +3,7 @@ import unittest
 from bson import ObjectId
 from pymongo.cursor import Cursor
 
-from app.api.services.wrappers.mongo.mappers.resultmappers.FindResultMapper import FindResultMapper
+from app.api.domain.services.wrappers.mongo.mappers.resultmappers.FindResultMapper import FindResultMapper
 
 #TODO: Cover test case
 class FindResultMapperUnitTest(unittest.TestCase):

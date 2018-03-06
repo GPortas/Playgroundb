@@ -1,6 +1,6 @@
 import unittest
 
-from app.api.services.wrappers.mongo.mappers.operationmappers.FindOperationMapper import FindOperationMapper
+from app.api.domain.services.wrappers.mongo.mappers.operationmappers.FindOperationMapper import FindOperationMapper
 
 
 class FindOperationMapperUnitTest(unittest.TestCase):

@@ -1,6 +1,6 @@
 import json
 
-from app.api.models.Exercise import Exercise
+from app.api.domain.models.Exercise import Exercise
 
 
 class ExerciseFixture:

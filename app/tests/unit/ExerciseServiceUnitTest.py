@@ -4,15 +4,15 @@ from unittest import mock
 from ddt import data, ddt
 from django.core.serializers.json import json
 
-from app.api.dal.command.errors.CommandError import CommandError
-from app.api.dal.query.errors.QueryError import QueryError
-from app.api.dal.query.errors.ResourceNotFoundQueryError import ResourceNotFoundQueryError
-from app.api.models.Exercise import Exercise
-from app.api.services.ExerciseService import ExerciseService
-from app.api.services.dalinterfaces.command.IExerciseCommandRepository import IExerciseCommandRepository
-from app.api.services.dalinterfaces.query.IExerciseQueryRepository import IExerciseQueryRepository
-from app.api.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
-from app.api.services.errors.ServiceError import ServiceError
+from app.api.domain.services.data.command.errors.CommandError import CommandError
+from app.api.domain.services.data.query.errors.QueryError import QueryError
+from app.api.domain.services.data.query.errors.ResourceNotFoundQueryError import ResourceNotFoundQueryError
+from app.api.domain.models.Exercise import Exercise
+from app.api.domain.services.ExerciseService import ExerciseService
+from app.api.domain.services.data.command.IExerciseCommandRepository import IExerciseCommandRepository
+from app.api.domain.services.data.query.IExerciseQueryRepository import IExerciseQueryRepository
+from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
+from app.api.domain.services.errors.ServiceError import ServiceError
 
 
 @ddt
@@ -83,3 +83,12 @@ class ExerciseServiceUnitTest(unittest.TestCase):
     def test_createExercise_calledWithCommandRepositoryWhichThrowsCommandError_throwServiceError(self):
         self.stub_exercise_command_repository.create_exercise.side_effect = CommandError()
         self.assertRaises(ServiceError, self.sut.create_exercise, exercise=Exercise(author='fakeauthor'))
+
+    def test_getAllExercises_called_correctCallToInnerQueryRepository(self):
+        self.sut.get_all_exercises()
+        self.stub_exercise_query_repository.get_all_exercises.assert_called_once_with()
+
+    def test_getAllExercises_calledWithQueryRepositoryWhichThrowsResourceNotFoundQueryError_throwResourceNotFoundServiceError(
+            self):
+        self.stub_exercise_query_repository.get_all_exercises.side_effect = ResourceNotFoundQueryError()
+        self.assertRaises(ResourceNotFoundServiceError, self.sut.get_all_exercises)

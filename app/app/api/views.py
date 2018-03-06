@@ -1,16 +1,13 @@
-import json
-
-from django.http import HttpResponse
 from rest_framework import permissions, viewsets
 from rest_framework import status
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
 
-from app.api.models.BaseModel import BaseModel
-from app.api.models.Exercise import Exercise
-from app.api.services.ExerciseService import ExerciseService
-from app.api.services.QueryExecutionService import QueryExecutionService
-from app.api.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
+from app.api.domain.models.BaseModel import BaseModel
+from app.api.domain.models.Exercise import Exercise
+from app.api.domain.services.ExerciseService import ExerciseService
+from app.api.domain.services.QueryExecutionService import QueryExecutionService
+from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
 from app.api.utils.enums import ResponseType
 
 
@@ -25,7 +22,7 @@ class BaseViewSet(viewsets.ViewSet):
             data = '{}'
             if result is not None:
                 if isinstance(result, list):
-                    data = list(map(lambda x: x.to_json_dict_raw(), result))
+                    data = list(map(lambda x: x.to_json_dict(), result))
                 if isinstance(result, BaseModel):
                     data = result.to_json_dict()
             return self._create_api_response(code=0, message=message, data=data)
@@ -87,6 +84,10 @@ class ExerciseViewSet(BaseViewSet):
         return self._create_response_by_inner_service_call(self.__exercise_service.create_exercise,
                                                            exercise,
                                                            message='exercise created')
+
+    def list(self, request):
+        return self._create_response_by_inner_service_call(self.__exercise_service.get_all_exercises,
+                                                           message='exercises retrieved')
 
 
 class QueryExecutionViewSet(BaseViewSet):
