@@ -2,7 +2,7 @@ from unittest import mock
 
 from app.api.domain.services.ExerciseService import ExerciseService
 from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
-from app.api.views import ExerciseViewSet
+from app.api.ui.views import ExerciseViewSet
 from tests.unit.BaseViewSetUnitTest import BaseViewSetUnitTest
 
 

@@ -1,4 +1,4 @@
-from rest_framework import permissions, viewsets
+from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
@@ -8,12 +8,15 @@ from app.api.domain.models.Exercise import Exercise
 from app.api.domain.services.ExerciseService import ExerciseService
 from app.api.domain.services.QueryExecutionService import QueryExecutionService
 from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
-from app.api.utils.enums import ResponseType
+from app.api.ui.utils.enums import ResponseType
+from app.api.ui.utils.serializers.ExerciseJsonSerializer import ExerciseJsonSerializer
+from app.api.ui.utils.serializers.QueryExecutionJsonSerializer import QueryExecutionJsonSerializer
 
 
 class BaseViewSet(viewsets.ViewSet):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, json_serializer, *args, **kwargs):
+        self.__json_serializer = json_serializer
         super(BaseViewSet, self).__init__(*args, **kwargs)
 
     def _create_response_by_inner_service_call(self, function, *args, message=None, **kwargs):
@@ -22,9 +25,9 @@ class BaseViewSet(viewsets.ViewSet):
             data = '{}'
             if result is not None:
                 if isinstance(result, list):
-                    data = list(map(lambda x: x.to_json_dict(), result))
+                    data = list(map(lambda x: self.__json_serializer.to_json_dict(x), result))
                 if isinstance(result, BaseModel):
-                    data = result.to_json_dict()
+                    data = self.__json_serializer.to_json_dict(result)
             return self._create_api_response(code=0, message=message, data=data)
         except ResourceNotFoundServiceError:
             return self._create_generic_response(response_type=ResponseType.resource_not_found)
@@ -73,7 +76,7 @@ class ExerciseViewSet(BaseViewSet):
             self.__exercise_service = ExerciseService()
         else:
             self.__exercise_service = exercise_service
-        super(ExerciseViewSet, self).__init__(*args, **kwargs)
+        super(ExerciseViewSet, self).__init__(ExerciseJsonSerializer(), *args, **kwargs)
 
     def create(self, request):
         try:
@@ -97,7 +100,7 @@ class QueryExecutionViewSet(BaseViewSet):
             self.__query_execution_service = QueryExecutionService()
         else:
             self.__query_execution_service = query_execution_service
-        super(QueryExecutionViewSet, self).__init__(*args, **kwargs)
+        super(QueryExecutionViewSet, self).__init__(QueryExecutionJsonSerializer(), *args, **kwargs)
 
     @list_route(methods=['POST'], url_path='execute-query')
     def execute_query(self, request, pk=None):
