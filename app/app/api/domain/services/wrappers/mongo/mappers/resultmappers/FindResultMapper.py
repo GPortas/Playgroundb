@@ -8,4 +8,5 @@ class FindResultMapper(IResultMapper):
         result = ''
         for document in operation_result:
             result += str(document) + '\n'
+        result = result.replace("'", '"')
         return result

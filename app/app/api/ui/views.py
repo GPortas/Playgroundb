@@ -92,9 +92,9 @@ class ExerciseViewSet(BaseViewSet):
         return self._create_response_by_inner_service_call(self.__exercise_service.get_all_exercises,
                                                            message='exercises retrieved')
 
-    @list_route(methods=['POST'], url_path='correct-exercise')
+    #TODO: Move to another endpoint for solutions
+    @list_route(methods=['POST'], url_path='correct')
     def correct_exercise(self, request, pk=None):
-        print("hello")
         answer = request.data["answer"]
         exercise_id = request.data["id"]
         return self._create_response_by_inner_service_call(self.__exercise_service.validate_answer,

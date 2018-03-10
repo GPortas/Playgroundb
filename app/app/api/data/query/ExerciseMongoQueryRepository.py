@@ -41,6 +41,4 @@ class ExerciseMongoQueryRepository(IExerciseQueryRepository, PdbMongoBaseReposit
         return_result = []
         for doc in result:
             return_result.append(Exercise.from_json(doc))
-        if len(return_result) == 0:
-            raise ResourceNotFoundQueryError("Exercises not found")
         return return_result

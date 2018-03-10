@@ -1,3 +1,6 @@
+import re
+from demjson import decode
+
 from app.api.domain.models.ExerciseValidation import ExerciseValidation
 from app.api.domain.services.data.command.errors.CommandError import CommandError
 from app.api.domain.services.data.query.errors.QueryError import QueryError
@@ -41,6 +44,7 @@ class ExerciseService:
         except QueryError as qe:
             raise ServiceError(str(qe))
 
+    #TODO: move to SolutionService
     def validate_answer(self, exercise_id, answer):
         if exercise_id is None:
             raise ValueError('id cannot be None')
@@ -48,14 +52,30 @@ class ExerciseService:
             raise ValueError('answer cannot be None')
         try:
             exercise = self.__exercise_query_repository.get_exercise_by_id(exercise_id=exercise_id)
-            return ExerciseValidation(exercise.validate_answer(answer=answer))
+            return ExerciseValidation(
+                self.__compare_solution_and_answer(answer=answer, solution=exercise.get_solution()))
         except ResourceNotFoundQueryError as rnfqe:
             raise ResourceNotFoundServiceError(str(rnfqe))
         except QueryError as qe:
             raise ServiceError(str(qe))
 
     def get_all_exercises(self):
-        try:
-            return self.__exercise_query_repository.get_all_exercises()
-        except ResourceNotFoundQueryError as rnfqe:
-            raise ResourceNotFoundServiceError(str(rnfqe))
+        return self.__exercise_query_repository.get_all_exercises()
+
+    def __compare_solution_and_answer(self, answer, solution):
+        answer = self._get_dict_list_by_str_representation(answer)
+        solution = self._get_dict_list_by_str_representation(solution)
+        return answer == solution
+
+    def _get_dict_list_by_str_representation(self, input):
+        str_dicts_list = input.split('\n')
+        dicts_list = []
+        for str_dict in str_dicts_list:
+            #TODO: Remove last elem to avoid this assertion
+            if str_dict != str_dicts_list[-1]:
+                object_id_re = re.compile('ObjectId\\(["\\\'][0-9a-f]+["\\\']\\)')
+                filtered_text = re.findall(object_id_re, str_dict)
+                for element in filtered_text:
+                    str_dict = str_dict.replace(element, '"' + element[10:-2] + '"')
+                dicts_list.append(decode(str_dict))
+        return dicts_list

@@ -22,9 +22,6 @@ class Exercise(BaseModel):
     def get_author(self):
         return self.author
 
-    def validate_answer(self, answer):
-        return self.solution == answer
-
     @staticmethod
     def from_json(json_source):
         exercise = Exercise(author=json_source["author"], _id=json_source.get("_id"),

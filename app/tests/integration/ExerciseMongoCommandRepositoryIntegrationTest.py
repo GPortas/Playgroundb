@@ -13,6 +13,7 @@ class ExerciseMongoCommandRepositoryIntegrationTest(PdbMongoIntegrationTestBase)
     def tearDown(self):
         self.db.exercises.delete_many({})
 
+    #TODO: Find the correct way to do this
     # def test_createExercise_calledWithExercise_correctInsertion(self):
     #   exercise = self.__exercise_get_exercise_instance()
     #  self.sut.create_exercise(self.__exercise_get_exercise_instance())
