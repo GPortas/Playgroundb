@@ -36,7 +36,7 @@ const CommandLineComponent = createReactClass({
         }
         return (
             <div>
-                <textarea type="query" className="form-control query-text-area" id="inputQuery" rows={this.props.rows}/>
+                <textarea className="form-control query-text-area" id="inputQuery" rows={this.props.rows}/>
                 <button type="submit" className="btn btn-warning common-button"
                         id="executeQueryButton">Execute Query
                 </button>

@@ -24,9 +24,30 @@ const ExerciseResolutionComponent = createReactClass({
         });
     },
 
-    componentDidMount() {
+    componentDidUpdate() {
+        const self = this;
         $("#submitButton").click(function(){
-            // todo: ajax Call to exercise correction
+            const queryOutput = $('#queryOutput').val();
+            var formData = {
+                "id": self.state.exercises[0]["_id"],
+                "answer": queryOutput,
+            }
+            $.ajax({
+                url: "http://127.0.0.1:8000/exercises/correct-exercise/",
+                dataType: 'json',
+                type: 'post',
+                data: formData,
+                crossDomain: true,
+                success: function (output, status, xhr) {
+                    const data = xhr.responseText;
+                    const jsonResponse = $.parseJSON(data);
+                    window.alert(jsonResponse["data"]["is_correct"])
+                },
+                complete: function () {
+                    $('#submitButton').attr('disabled', false);
+                }
+                //todo: Errors treatment!
+            });
         });
     },
 

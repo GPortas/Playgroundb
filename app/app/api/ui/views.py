@@ -92,6 +92,15 @@ class ExerciseViewSet(BaseViewSet):
         return self._create_response_by_inner_service_call(self.__exercise_service.get_all_exercises,
                                                            message='exercises retrieved')
 
+    @list_route(methods=['POST'], url_path='correct-exercise')
+    def correct_exercise(self, request, pk=None):
+        print("hello")
+        answer = request.data["answer"]
+        exercise_id = request.data["id"]
+        return self._create_response_by_inner_service_call(self.__exercise_service.validate_answer,
+                                                           exercise_id=exercise_id,
+                                                           answer=answer,
+                                                           message='exercise answer validated')
 
 class QueryExecutionViewSet(BaseViewSet):
     # todo: permissions

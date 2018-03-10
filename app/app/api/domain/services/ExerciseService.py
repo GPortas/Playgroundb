@@ -1,3 +1,4 @@
+from app.api.domain.models.ExerciseValidation import ExerciseValidation
 from app.api.domain.services.data.command.errors.CommandError import CommandError
 from app.api.domain.services.data.query.errors.QueryError import QueryError
 from app.api.domain.services.data.query.errors.ResourceNotFoundQueryError import ResourceNotFoundQueryError
@@ -40,14 +41,14 @@ class ExerciseService:
         except QueryError as qe:
             raise ServiceError(str(qe))
 
-    def check_if_answer_is_correct(self, exercise_id, answer):
+    def validate_answer(self, exercise_id, answer):
         if exercise_id is None:
             raise ValueError('id cannot be None')
         if answer is None:
             raise ValueError('answer cannot be None')
         try:
             exercise = self.__exercise_query_repository.get_exercise_by_id(exercise_id=exercise_id)
-            return exercise.validate_answer(answer=answer)
+            return ExerciseValidation(exercise.validate_answer(answer=answer))
         except ResourceNotFoundQueryError as rnfqe:
             raise ResourceNotFoundServiceError(str(rnfqe))
         except QueryError as qe:

@@ -28,32 +28,32 @@ class ExerciseServiceUnitTest(unittest.TestCase):
         {'exercise_id': 'testid', 'answer': None},
         {'exercise_id': None, 'answer': None}
     )
-    def test_checkIfAnswerIsCorrect_calledWithNoneParams_raiseValueError(self, input):
-        self.assertRaises(ValueError, self.sut.check_if_answer_is_correct,
+    def test_validateAnswer_calledWithNoneParams_raiseValueError(self, input):
+        self.assertRaises(ValueError, self.sut.validate_answer,
                           exercise_id=input['exercise_id'], answer=input['answer'])
 
     @data(
         {'solution': {"a": 0, "b": 0, "c": 0}, 'answer': {"a": 0, "b": 0, "c": 0}, 'expected': True},
         {'solution': {"a": 0, "b": 0, "c": 0}, 'answer': {"a": 2, "v": 0}, 'expected': False}
     )
-    def test_checkIfAnswerIsCorrect_calledWithValidParams_returnCorrectResult(self, input):
+    def test_validateAnswer_calledWithValidParams_returnCorrectResult(self, input):
         self.stub_exercise_query_repository.get_exercise_by_id.return_value = Exercise(_id='fakeid',
                                                                                        question='fakequestion',
                                                                                        solution=json.dumps(
                                                                                            input['solution']),
                                                                                        author='fakeauthor')
-        self.assertEqual(self.sut.check_if_answer_is_correct(exercise_id='fakeid', answer=json.dumps(input['answer'])),
+        self.assertEqual(self.sut.validate_answer(exercise_id='fakeid', answer=json.dumps(input['answer'])),
                          input['expected'])
 
-    def test_checkIfAnswerIsCorrect_calledWithQueryRepositoryWhichThrowsQueryError_throwServiceError(self):
+    def test_validateAnswer_calledWithQueryRepositoryWhichThrowsQueryError_throwServiceError(self):
         self.stub_exercise_query_repository.get_exercise_by_id.side_effect = QueryError()
-        self.assertRaises(ServiceError, self.sut.check_if_answer_is_correct, exercise_id='fakeid',
+        self.assertRaises(ServiceError, self.sut.validate_answer, exercise_id='fakeid',
                           answer='fakeanswer')
 
-    def test_checkIfAnswerIsCorrect_calledWithQueryRepositoryWhichThrowsResourceNotFoundQueryError_throwResourceNotFoundServiceError(
+    def test_validateAnswer_calledWithQueryRepositoryWhichThrowsResourceNotFoundQueryError_throwResourceNotFoundServiceError(
             self):
         self.stub_exercise_query_repository.get_exercise_by_id.side_effect = ResourceNotFoundQueryError()
-        self.assertRaises(ResourceNotFoundServiceError, self.sut.check_if_answer_is_correct, exercise_id='fakeid',
+        self.assertRaises(ResourceNotFoundServiceError, self.sut.validate_answer, exercise_id='fakeid',
                           answer='fakeanswer')
 
     def test_getExerciseById_calledWithNoneId_raiseValueError(self):
