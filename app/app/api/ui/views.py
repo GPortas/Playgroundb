@@ -64,9 +64,7 @@ class BaseViewSet(viewsets.ViewSet):
         if exception_message is not None:
             response_body['exception_message'] = exception_message
 
-        cors_header = {'Access-Control-Allow-Origin': '*'}
-
-        return Response(response_body, status=response_status, headers=cors_header)
+        return Response(response_body, status=response_status)
 
 
 class ExerciseViewSet(BaseViewSet):
@@ -89,6 +87,8 @@ class ExerciseViewSet(BaseViewSet):
                                                            message='exercise created')
 
     def list(self, request):
+        #if request.pdbuser is None:
+         #   return self._create_generic_response(response_type=ResponseType.authentication_error)
         return self._create_response_by_inner_service_call(self.__exercise_service.get_all_exercises,
                                                            message='exercises retrieved')
 

@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
+    'app.api.ui.middlewares.PdbAuthenticationMiddleware.PdbAuthenticationMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
