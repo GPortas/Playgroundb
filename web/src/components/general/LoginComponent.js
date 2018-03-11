@@ -1,6 +1,7 @@
 import '../../styles/App.css';
 import $ from 'jquery';
 import {Navbar} from "react-bootstrap"
+import githubmark from '../../images/githubmark.png';
 
 var React = require('react');
 var createReactClass = require('create-react-class');
@@ -26,7 +27,7 @@ const LoginComponent = createReactClass({
             this.props.func(this.state.userType)
         }
         return (
-            <div>
+            <div className="login-background">
                 <Navbar inverse>
                     <Navbar.Header>
                         <Navbar.Brand>
@@ -46,8 +47,16 @@ const LoginComponent = createReactClass({
                             <input type="password" className="form-control login-input" id="userPassword"
                                    placeholder="Password"/>
                         </div>
-                        <button type="submit" className="btn btn-success common-button" id="loginButton">Log In</button>
+                        <button type="submit" className="btn btn-success common-button" id="loginButton">Sign In</button>
+                        <button type="submit" className="btn btn-info common-button" id="loginButton">Sign Up</button>
                     </form>
+                    <h1 className="login-introduction-text">Playgroundb is the learning platform that offers teachers and students a cloud environment with all the necessary utilities to manage databases in real time.</h1>
+                </div>
+                <div className="login-caption-div">
+                    <a href="https://github.com/GPortas/Playgroundb" target="_blank">
+                        <img  src={githubmark}/>
+                    </a>
+                    <label className="login-caption-text">GitHub Project</label>
                 </div>
             </div>
         );
