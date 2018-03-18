@@ -20,6 +20,7 @@ from app.api.ui import views
 
 # Django REST router
 router = DefaultRouter()
+router.register(r'login', views.LoginViewSet, base_name='login')
 router.register(r'exercises', views.ExerciseViewSet, base_name='exercises')
 router.register(r'query-execution', views.QueryExecutionViewSet, base_name='query-executor')
 

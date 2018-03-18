@@ -5,11 +5,14 @@ from rest_framework.response import Response
 
 from app.api.domain.models.BaseModel import BaseModel
 from app.api.domain.models.Exercise import Exercise
+from app.api.domain.services.AuthService import AuthService
 from app.api.domain.services.ExerciseService import ExerciseService
 from app.api.domain.services.QueryExecutionService import QueryExecutionService
+from app.api.domain.services.UserService import UserService
 from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
 from app.api.ui.utils.enums import ResponseType
 from app.api.ui.utils.serializers.ExerciseJsonSerializer import ExerciseJsonSerializer
+from app.api.ui.utils.serializers.LoginJsonSerializer import LoginJsonSerializer
 from app.api.ui.utils.serializers.QueryExecutionJsonSerializer import QueryExecutionJsonSerializer
 
 
@@ -67,6 +70,32 @@ class BaseViewSet(viewsets.ViewSet):
         return Response(response_body, status=response_status)
 
 
+class LoginViewSet(BaseViewSet):
+    def __init__(self, auth_service=None, user_service=None, *args, **kwargs):
+        if auth_service is None:
+            self.__auth_service = AuthService()
+        else:
+            self.__auth_service = auth_service
+        if user_service is None:
+            self.__user_service = UserService()
+        else:
+            self.__user_service = user_service
+        super(LoginViewSet, self).__init__(LoginJsonSerializer(), *args, **kwargs)
+
+    def create(self, request):
+        email = request.data.get('email', None)
+        password = request.data.get('password', None)
+        if email is None or password is None:
+            return self._create_generic_response(response_type=ResponseType.missing_request_field)
+        user = self.__user_service.get_user_by_credentials(email=email, password=password)
+        if user is None:
+            return self._create_generic_response(response_type=ResponseType.authentication_error)
+        else:
+            return self._create_response_by_inner_service_call(self.__auth_service.authenticate,
+                                                               user.get_id(),
+                                                               message='user authenticated')
+
+
 class ExerciseViewSet(BaseViewSet):
     # todo: permissions
     def __init__(self, exercise_service=None, *args, **kwargs):
@@ -87,12 +116,12 @@ class ExerciseViewSet(BaseViewSet):
                                                            message='exercise created')
 
     def list(self, request):
-        #if request.pdbuser is None:
-         #   return self._create_generic_response(response_type=ResponseType.authentication_error)
+        # if request.pdbuser is None:
+        #   return self._create_generic_response(response_type=ResponseType.authentication_error)
         return self._create_response_by_inner_service_call(self.__exercise_service.get_all_exercises,
                                                            message='exercises retrieved')
 
-    #TODO: Move to another endpoint for solutions
+    # TODO: Move to another endpoint for solutions
     @list_route(methods=['POST'], url_path='correct')
     def correct_exercise(self, request, pk=None):
         answer = request.data["answer"]
@@ -101,6 +130,7 @@ class ExerciseViewSet(BaseViewSet):
                                                            exercise_id=exercise_id,
                                                            answer=answer,
                                                            message='exercise answer validated')
+
 
 class QueryExecutionViewSet(BaseViewSet):
     # todo: permissions
