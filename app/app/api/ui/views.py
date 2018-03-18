@@ -12,8 +12,8 @@ from app.api.domain.services.UserService import UserService
 from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
 from app.api.ui.utils.enums import ResponseType
 from app.api.ui.utils.serializers.ExerciseJsonSerializer import ExerciseJsonSerializer
-from app.api.ui.utils.serializers.LoginJsonSerializer import LoginJsonSerializer
 from app.api.ui.utils.serializers.QueryExecutionJsonSerializer import QueryExecutionJsonSerializer
+from app.api.ui.utils.serializers.UserJsonSerializer import UserJsonSerializer
 
 
 class BaseViewSet(viewsets.ViewSet):
@@ -80,7 +80,7 @@ class LoginViewSet(BaseViewSet):
             self.__user_service = UserService()
         else:
             self.__user_service = user_service
-        super(LoginViewSet, self).__init__(LoginJsonSerializer(), *args, **kwargs)
+        super(LoginViewSet, self).__init__(UserJsonSerializer(), *args, **kwargs)
 
     def create(self, request):
         email = request.data.get('email', None)
@@ -94,6 +94,15 @@ class LoginViewSet(BaseViewSet):
             return self._create_response_by_inner_service_call(self.__auth_service.authenticate,
                                                                user.get_id(),
                                                                message='user authenticated')
+
+
+class UserViewSet(BaseViewSet):
+    def __init__(self, user_service=None, *args, **kwargs):
+        if user_service is None:
+            self.__user_service = UserService()
+        else:
+            self.__user_service = user_service
+        super(UserViewSet, self).__init__(UserJsonSerializer(), *args, **kwargs)
 
 
 class ExerciseViewSet(BaseViewSet):

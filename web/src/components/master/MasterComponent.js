@@ -2,7 +2,7 @@ import '../../styles/App.css';
 import React, {Component} from 'react';
 import ExerciseCreationFormComponent from './ExerciseCreationFormComponent.js'
 import ConfigurationComponent from "./ConfigurationComponent";
-import MainComponent from '../general/MainComponent'
+import MainComponent from '../general/ContainerComponent'
 
 import {Navbar, Nav, NavItem} from "react-bootstrap"
 

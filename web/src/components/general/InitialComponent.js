@@ -1,7 +1,7 @@
 import '../../styles/App.css';
 import LoginComponent from "./LoginComponent";
 import React, {Component} from 'react';
-import MainComponent from "./MainComponent";
+import ContainerComponent from "./ContainerComponent";
 import MasterComponent from "../master/MasterComponent";
 import StudentComponent from "../student/StudentComponent";
 
@@ -11,12 +11,12 @@ class InitialComponent extends Component {
         this.state = {nestedComponent: <LoginComponent func={this.changeHandler.bind(this)}/>};
     }
 
-    changeHandler(userType) {
-        if(userType === "master"){
+    changeHandler(user) {
+        if(user === "master"){
             this.setState(state => ({
                 nestedComponent: <MasterComponent/>
             }));
-        } else if(userType === "student"){
+        } else if(user === "student"){
             this.setState(state => ({
                 nestedComponent: <StudentComponent/>
             }));
@@ -27,7 +27,7 @@ class InitialComponent extends Component {
 
     render() {
         return (
-            <MainComponent nestedComponent={this.state.nestedComponent}/>
+            <ContainerComponent nestedComponent={this.state.nestedComponent}/>
         );
     }
 }

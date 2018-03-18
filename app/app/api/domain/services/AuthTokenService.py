@@ -1,7 +1,6 @@
 import hashlib
 from datetime import datetime
 
-from app.api.domain.models.AuthToken import AuthToken
 from app.api.domain.services.errors.ServiceError import ServiceError
 
 
@@ -19,4 +18,4 @@ class AuthTokenService:
         source_str = user_id + self.seed
         md5lib = hashlib.md5()
         md5lib.update(source_str.encode("utf-8"))
-        return AuthToken(md5lib.hexdigest())
+        return md5lib.hexdigest()

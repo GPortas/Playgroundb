@@ -1,6 +1,6 @@
 import '../../styles/App.css';
 import React, {Component} from 'react';
-import MainComponent from '../general/MainComponent'
+import MainComponent from '../general/ContainerComponent'
 import ExerciseResolutionComponent from './ExerciseResolutionComponent'
 
 

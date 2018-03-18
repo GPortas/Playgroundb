@@ -3,12 +3,17 @@ from app.api.domain.models.BaseModel import BaseModel
 
 class User(BaseModel):
 
-    def __init__(self, email, password, nickname=None, _id=None):
+    ROLE_MASTER = "master"
+    ROLE_STUDENT = "student"
+
+    def __init__(self, email, password, role, nickname=None, _id=None, authtoken=None):
         if _id is not None:
             self._id = _id
         self.email = email
         self.password = password
         self.nickname = nickname
+        self.role = role
+        self.authtoken = authtoken
 
     def get_id(self):
         return self._id
@@ -26,5 +31,7 @@ class User(BaseModel):
     def from_json(json_source):
         user = User(email=json_source["email"], _id=json_source.get("_id"),
                     password=json_source["password"],
-                    nickname=json_source.get("nickname"))
+                    role=json_source["role"],
+                    nickname=json_source.get("nickname"),
+                    authtoken=json_source.get("authtoken"))
         return user

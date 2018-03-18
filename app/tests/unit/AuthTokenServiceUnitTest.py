@@ -15,4 +15,4 @@ class AuthTokenServiceUnitTest(unittest.TestCase):
     def test_generateAuthToken_calledWithValidUser_returnCorrectResult(self):
         actual = self.sut.generate_auth_token("666f6f2d6261722d71757578")
         expected = "4dc757b637455caf880d775192d6040d"
-        self.assertEqual(actual.get_hash(), expected)
+        self.assertEqual(actual, expected)

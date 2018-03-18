@@ -12,7 +12,11 @@ class UserMongoQueryRepository(IUserQueryRepository, PdbMongoBaseRepository):
             db_name=settings.PDB_MONGO_CONNECTION_PROPS['DBNAME'])
 
     def get_user_by_credentials(self, email, password):
-        result = self.db.users.find_one({"email": email, "password": password}, {'_id': 1, 'email': 1, 'password': 1, 'nickname': 1})
+        result = self.db.users.find_one({"email": email, "password": password},
+                                        {'_id': 1, 'email': 1, 'password': 1, 'nickname': 1, 'authtoken': 1, 'role': 1})
         if result is not None:
             result = User.from_json(result)
         return result
+
+    def get_user_by_id(self, user_id):
+        pass

@@ -3,7 +3,7 @@ import '../../styles/App.css';
 var React = require('react');
 var createReactClass = require('create-react-class');
 
-const MainComponent = createReactClass({
+const ContainerComponent = createReactClass({
     render() {
         return (
             <div className="App">
@@ -13,4 +13,4 @@ const MainComponent = createReactClass({
     }
 });
 
-export default MainComponent;
+export default ContainerComponent;
