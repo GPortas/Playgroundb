@@ -12,11 +12,11 @@ class InitialComponent extends Component {
     }
 
     changeHandler(user) {
-        if(user === "master"){
+        if(user["role"] === "master"){
             this.setState(state => ({
                 nestedComponent: <MasterComponent/>
             }));
-        } else if(user === "student"){
+        } else if(user["role"] === "student"){
             this.setState(state => ({
                 nestedComponent: <StudentComponent/>
             }));

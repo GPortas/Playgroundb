@@ -1,10 +1,14 @@
 import '../../styles/App.css';
 import $ from 'jquery';
+import {Component} from "react";
 
 var React = require('react');
-var createReactClass = require('create-react-class');
 
-const InnerLoginComponent = createReactClass({
+class InnerLoginComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {showInvalidCredentials: false};
+    }
     componentDidMount() {
         const self = this;
         $("#logInButton").click(function () {
@@ -20,29 +24,26 @@ const InnerLoginComponent = createReactClass({
                 type: 'post',
                 dataType: 'json',
                 data: formData,
-                success: function(output, status, xhr) {
-                    const data=xhr.responseText;
-                    window.alert("success");
+                success: function (output, status, xhr) {
+                    const data = xhr.responseText;
+                    const jsonResponse = $.parseJSON(data);
+                    window.alert(data);
+                    self.setState({user: jsonResponse["data"]});
+                },
+                error: function (jqXHR, exception) {
+                    if (jqXHR.status === 401) {
+                        self.setState({showInvalidCredentials: true})
+                    }
                 },
                 complete: function () {
                     $('#logInButton').attr('disabled', false);
-                    window.alert("complete");
                 }
-                //todo: Errors treatment!
             });
-            //TODO: AJAX CALL TO AUTHENTICATION
-            //user types: unknown, student, master
-            //Just for test purpose:
-            //if(userEmail === 'a@a.com') {
-            //    self.setState({userType: "master"});
-            //} else {
-            //    self.setState({userType: "student"});
-            //}
+            $("#signUpButton").click(function () {
+                self.setState({user: "newUser"});
+            });
         });
-        $("#signUpButton").click(function () {
-            self.setState({user: "newUser"});
-        });
-    },
+    }
     render() {
         if (this.state && this.state.user) {
             this.props.func(this.state.user)
@@ -59,6 +60,9 @@ const InnerLoginComponent = createReactClass({
                     <div className="form-group">
                         <input type="password" className="form-control login-input" id="userPassword"
                                placeholder="Password"/>
+                        <label id="invalidCredentialsLabel" className="login-invalid-credentials"
+                               style={{visibility: this.state.showInvalidCredentials ? 'visible' : 'hidden'}}>Invalid credentials,
+                            please try again.</label>
                     </div>
                     <button type="submit" className="btn btn-success common-button" id="logInButton">Log In</button>
                     <button type="submit" className="btn btn-info common-button" id="signUpButton">Sign Up</button>
@@ -66,6 +70,6 @@ const InnerLoginComponent = createReactClass({
             </div>
         );
     }
-});
+}
 
 export default InnerLoginComponent;

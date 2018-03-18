@@ -136,6 +136,12 @@ label.common-label {
     margin-left: 7px;
 }
 
+.login-invalid-credentials {
+    color: red;
+    font-family: 'Open Sans';
+    font-size: small;
+}
+
 /* Exercise creation panel */
 
 .input-text {

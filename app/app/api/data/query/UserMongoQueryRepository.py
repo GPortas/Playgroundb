@@ -5,6 +5,7 @@ from app.configuration import settings
 
 
 class UserMongoQueryRepository(IUserQueryRepository, PdbMongoBaseRepository):
+    ITEM_REQUIRED_FIELDS = {'_id': 1, 'email': 1, 'password': 1, 'nickname': 1, 'authtoken': 1, 'role': 1}
 
     def __init__(self):
         super(UserMongoQueryRepository, self).__init__(
@@ -13,10 +14,17 @@ class UserMongoQueryRepository(IUserQueryRepository, PdbMongoBaseRepository):
 
     def get_user_by_credentials(self, email, password):
         result = self.db.users.find_one({"email": email, "password": password},
-                                        {'_id': 1, 'email': 1, 'password': 1, 'nickname': 1, 'authtoken': 1, 'role': 1})
-        if result is not None:
-            result = User.from_json(result)
+                                        self.ITEM_REQUIRED_FIELDS)
+        result = self.__from_cursor_to_domain_model(result)
         return result
 
     def get_user_by_id(self, user_id):
-        pass
+        result = self.db.users.find_one({"_id": user_id},
+                                        self.ITEM_REQUIRED_FIELDS)
+        result = self.__from_cursor_to_domain_model(result)
+        return result
+
+    def __from_cursor_to_domain_model(self, result):
+        if result is not None:
+            result = User.from_json(result)
+        return result
