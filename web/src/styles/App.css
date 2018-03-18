@@ -1,5 +1,4 @@
 .App {
-    text-align: center;
 }
 
 .App-title {
@@ -15,10 +14,9 @@
 
 /* General */
 
-
 .navbar-element {
     color: white !important;
-    font-size: 2.2em;
+    font-size: large;
 }
 
 .query-text-area {
@@ -29,12 +27,10 @@
 }
 
 div.common-div {
-    position: absolute;
-    width: 1000px;
-    z-index: 15;
-    top: 50%;
-    left: 50%;
-    margin: -200px 0 0 -500px;
+    margin-left: 5%;
+    margin-top: 5%;
+    width: 55%;
+    left: 37%;
 }
 
 label.common-label {
@@ -150,30 +146,22 @@ label.common-label {
 
 /* Exercise resolution panel */
 
+div.exercise-resolution-div {
+    overflow: hidden;
+}
+
 .exercise-resolution-divider {
     height: 1px;
-    width: 98%;
+    width: 100%;
     display: block; /* for use on default inline elements like span */
     margin: 9px 0;
     overflow: hidden;
     background-color: #2b2727;
 }
 
-div.exercise-resolution-left-div {
+div.exercise-resolution-inner-div {
     float: left;
-    width: 75%;
-}
-
-div.exercise-resolution-left-bottom-div {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 74%;
-}
-
-div.exercise-resolution-right-div {
-    float: left;
-    width: 25%;
+    width: 50%;
 }
 
 @keyframes App-logo-spin {

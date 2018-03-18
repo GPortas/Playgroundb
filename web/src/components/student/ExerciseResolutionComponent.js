@@ -60,23 +60,28 @@ const ExerciseResolutionComponent = createReactClass({
             return (
                 <div>
                     <div className="common-div">
-                        <div className="exercise-resolution-left-div">
-                            <label className="common-label">Statement:</label>
-                            <hr className="exercise-resolution-divider"/>
-                            <label className="common-label">
-                                {this.state.exercises[0]["question"]}
-                            </label>
-                            <div className="exercise-resolution-left-bottom-div">
-                                <CommandLineComponent func={this.changeHandler} rows={6}/>
+                        <label className="common-label">Statement:</label>
+                        <hr className="exercise-resolution-divider"/>
+                        <label className="common-label">
+                            {this.state.exercises[0]["question"]}
+                        </label>
+                    </div>
+                    <div className="common-div">
+                        <div className="exercise-resolution-div">
+                            <div className="exercise-resolution-inner-div">
+                                <label className="common-label">Query:</label>
+                                <div className="exercise-resolution-left-bottom-div">
+                                    <CommandLineComponent func={this.changeHandler} rows={18}/>
+                                </div>
                             </div>
-                        </div>
-                        <div className="exercise-resolution-right-div">
-                            <label className="common-label">Solution:</label>
-                            <textarea readOnly={true} className="form-control query-text-area" id="queryOutput"
-                                      rows={18}/>
-                            <button type="submit" className="btn btn-success common-button" id="submitButton">Submit
-                                Solution
-                            </button>
+                            <div className="exercise-resolution-inner-div">
+                                <label className="common-label">Solution:</label>
+                                <textarea readOnly={true} className="form-control query-text-area" id="queryOutput"
+                                          rows={18}/>
+                                <button type="submit" className="btn btn-success common-button" id="submitButton">Submit
+                                    Solution
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

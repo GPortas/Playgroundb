@@ -2,7 +2,7 @@ import '../../styles/App.css';
 import React, {Component} from 'react';
 import ExerciseCreationFormComponent from './ExerciseCreationFormComponent.js'
 import ConfigurationComponent from "./ConfigurationComponent";
-import MainComponent from '../general/ContainerComponent'
+import ContainerComponent from '../general/ContainerComponent'
 
 import {Navbar, Nav, NavItem} from "react-bootstrap"
 
@@ -44,7 +44,7 @@ class MasterComponent extends Component {
     render() {
         return (
             <div>
-                <Navbar inverse>
+                <Navbar inverse fluid>
                     <Navbar.Header>
                         <Navbar.Brand>
                             <h1 className="App-title" align="left">Playgroun
@@ -78,7 +78,7 @@ class MasterComponent extends Component {
                         </NavItem>
                     </Nav>
                 </Navbar>
-                <MainComponent nestedComponent={this.state.nestedComponent} />
+                <ContainerComponent nestedComponent={this.state.nestedComponent} />
             </div>
         );
     }

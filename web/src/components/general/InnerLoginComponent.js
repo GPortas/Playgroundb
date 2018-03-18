@@ -27,7 +27,6 @@ class InnerLoginComponent extends Component {
                 success: function (output, status, xhr) {
                     const data = xhr.responseText;
                     const jsonResponse = $.parseJSON(data);
-                    window.alert(data);
                     self.setState({user: jsonResponse["data"]});
                 },
                 error: function (jqXHR, exception) {

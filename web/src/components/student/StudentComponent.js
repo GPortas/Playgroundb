@@ -37,7 +37,7 @@ class StudentComponent extends Component {
     render() {
         return (
             <div>
-                <Navbar inverse>
+                <Navbar inverse fluid>
                     <Navbar.Header>
                         <Navbar.Brand>
                             <h1 className="App-title" align="left">Playgroun
