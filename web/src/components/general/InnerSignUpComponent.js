@@ -6,11 +6,13 @@ var createReactClass = require('create-react-class');
 
 const InnerSignUpComponent = createReactClass({
     componentDidMount() {
+        $("#signUpButton").click(function () {
+            $('#signUpButton').attr('disabled', true);
+            //todo: ajax call to signup user
+            $('#signUpButton').attr('disabled', false);
+        });
     },
     render() {
-        if (this.state && this.state.userType) {
-            this.props.func(this.state.userType)
-        }
         return (
             <div className="login-div">
                 <form>

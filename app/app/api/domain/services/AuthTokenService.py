@@ -15,7 +15,7 @@ class AuthTokenService:
     def generate_auth_token(self, user_id):
         if user_id is None:
             raise ServiceError('user_id cannot be None')
-        source_str = user_id + self.seed
+        source_str = str(user_id) + self.seed
         md5lib = hashlib.md5()
         md5lib.update(source_str.encode("utf-8"))
         return md5lib.hexdigest()

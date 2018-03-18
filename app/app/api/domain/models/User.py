@@ -2,7 +2,6 @@ from app.api.domain.models.BaseModel import BaseModel
 
 
 class User(BaseModel):
-
     ROLE_MASTER = "master"
     ROLE_STUDENT = "student"
 
@@ -26,6 +25,9 @@ class User(BaseModel):
 
     def get_email(self):
         return self.email
+
+    def get_authtoken(self):
+        return self.authtoken
 
     @staticmethod
     def from_json(json_source):

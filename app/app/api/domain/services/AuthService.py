@@ -28,7 +28,7 @@ class AuthService:
     def authenticate(self, user_id):
         try:
             auth_token = self.auth_token_service.generate_auth_token(user_id)
-            self.user_command_repository.update_user_auth_token(auth_token)
+            self.user_command_repository.update_user_auth_token(user_id, auth_token)
             user = self.user_query_repository.get_user_by_id(user_id)
         except CommandError as ce:
             raise ServiceError(str(ce))
