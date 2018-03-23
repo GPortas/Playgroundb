@@ -19,26 +19,33 @@ class InitialComponent extends Component {
         const userTypeCookie = cookies.get(encryptCookieName('role'))
         if (typeof authCookie == 'undefined') {
             this.state = {nestedComponent: <LoginComponent func={this.onLoginUserInfo.bind(this)}/>};
-        } else if (userTypeCookie === "student") {
-            this.state = {nestedComponent: <StudentComponent/>};
-        } else if (userTypeCookie === "master") {
-            this.state = {nestedComponent: <MasterComponent/>};
         } else {
-            this.state = {nestedComponent: <LoginComponent func={this.onLoginUserInfo.bind(this)}/>};
+            if (userTypeCookie === "student") {
+                this.state = {nestedComponent: <StudentComponent func={this.onUserLogout.bind(this)}/>};
+            } else if (userTypeCookie === "master") {
+                this.state = {nestedComponent: <MasterComponent func={this.onUserLogout.bind(this)}/>};
+            } else {
+                this.state = {nestedComponent: <LoginComponent func={this.onLoginUserInfo.bind(this)}/>};
+            }
         }
+    }
+
+    onUserLogout() {
+        const cookies = new Cookies();
+        cookies.remove(encryptCookieName('authtoken'));
+        cookies.remove(encryptCookieName('role'));
+        this.setState({nestedComponent: <LoginComponent func={this.onLoginUserInfo.bind(this)}/>})
     }
 
     onLoginUserInfo(user) {
         if (user["role"] === "master") {
             this.setState(state => ({
-                nestedComponent: <MasterComponent/>
+                nestedComponent: <MasterComponent func={this.onUserLogout.bind(this)}/>
             }));
         } else if (user["role"] === "student") {
             this.setState(state => ({
-                nestedComponent: <StudentComponent/>
+                nestedComponent: <StudentComponent func={this.onUserLogout.bind(this)}/>
             }));
-        } else {
-            //TODO: show login error
         }
     }
 

@@ -14,7 +14,6 @@ class MasterComponent extends Component {
         this.onExerciseCreationOptionClicked = this.onExerciseCreationOptionClicked.bind(this);
         this.onDashboardOptionClicked = this.onDashboardOptionClicked.bind(this);
         this.onAccountOptionClicked = this.onAccountOptionClicked.bind(this);
-        this.onQuitOptionClicked = this.onQuitOptionClicked.bind(this);
     }
 
     onCommandLineOptionClicked() {
@@ -35,10 +34,6 @@ class MasterComponent extends Component {
 
     onAccountOptionClicked() {
         //todo: account component
-    }
-
-    onQuitOptionClicked() {
-        //todo: logout user
     }
 
     render() {
@@ -73,7 +68,7 @@ class MasterComponent extends Component {
                         </NavItem>
                     </Nav>
                     <Nav>
-                        <NavItem className="navbar-element" onClick={this.onQuitOptionClicked}>
+                        <NavItem className="navbar-element" onClick={this.props.func}>
                             Quit
                         </NavItem>
                     </Nav>

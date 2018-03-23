@@ -11,7 +11,6 @@ class StudentComponent extends Component {
         super(props);
         this.state = {nestedComponent: <ExerciseResolutionComponent/>};
         this.onExercisesOptionClicked = this.onExercisesOptionClicked.bind(this);
-        this.onQuitOptionClicked = this.onQuitOptionClicked.bind(this);
         this.onDashboardOptionClicked = this.onDashboardOptionClicked.bind(this);
         this.onAccountOptionClicked = this.onAccountOptionClicked.bind(this);
     }
@@ -28,10 +27,6 @@ class StudentComponent extends Component {
 
     onAccountOptionClicked() {
         //todo: account component
-    }
-
-    onQuitOptionClicked() {
-        //todo: logout user
     }
 
     render() {
@@ -61,7 +56,7 @@ class StudentComponent extends Component {
                         </NavItem>
                     </Nav>
                     <Nav>
-                        <NavItem className="navbar-element" onClick={this.onQuitOptionClicked}>
+                        <NavItem className="navbar-element" onClick={this.props.func}>
                             Quit
                         </NavItem>
                     </Nav>

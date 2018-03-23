@@ -45,6 +45,8 @@ class InnerLoginComponent extends Component {
                 error: function (jqXHR, exception) {
                     if (jqXHR.status === 401) {
                         self.setState({showInvalidCredentials: true})
+                    } else {
+                        window.alert("Server error")
                     }
                 },
                 complete: function () {
