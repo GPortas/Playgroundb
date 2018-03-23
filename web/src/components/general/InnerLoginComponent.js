@@ -1,16 +1,22 @@
 import '../../styles/App.css';
 import $ from 'jquery';
 import {Component} from "react";
+import Cookies from 'universal-cookie';
+import {encryptCookieName} from "../../utils/utils";
 
 var React = require('react');
+
+const maximumAuthCookieAge = 3600;
 
 class InnerLoginComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {showInvalidCredentials: false};
     }
+
     componentDidMount() {
         const self = this;
+        const cookies = new Cookies();
         $("#logInButton").click(function () {
             $('#logInButton').attr('disabled', true);
             const userEmail = $('#userEmail').val();
@@ -28,6 +34,13 @@ class InnerLoginComponent extends Component {
                     const data = xhr.responseText;
                     const jsonResponse = $.parseJSON(data);
                     self.setState({user: jsonResponse["data"]});
+                    cookies.set(encryptCookieName('authtoken'), jsonResponse["data"]["authtoken"], {
+                        path: '/',
+                        maxAge: maximumAuthCookieAge
+                    });
+                    cookies.set(encryptCookieName('role'), jsonResponse["data"]["role"], {
+                        path: '/',
+                    });
                 },
                 error: function (jqXHR, exception) {
                     if (jqXHR.status === 401) {
@@ -43,6 +56,7 @@ class InnerLoginComponent extends Component {
             });
         });
     }
+
     render() {
         if (this.state && this.state.user) {
             this.props.func(this.state.user)
@@ -60,7 +74,8 @@ class InnerLoginComponent extends Component {
                         <input type="password" className="form-control login-input" id="userPassword"
                                placeholder="Password"/>
                         <label id="invalidCredentialsLabel" className="login-invalid-credentials"
-                               style={{visibility: this.state.showInvalidCredentials ? 'visible' : 'hidden'}}>Invalid credentials,
+                               style={{visibility: this.state.showInvalidCredentials ? 'visible' : 'hidden'}}>Invalid
+                            credentials,
                             please try again.</label>
                     </div>
                     <button type="submit" className="btn btn-success common-button" id="logInButton">Log In</button>
