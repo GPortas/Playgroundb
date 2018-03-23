@@ -20,7 +20,7 @@ class InnerLoginComponent extends Component {
                 "password": userPassword
             }
             $.ajax({
-                url: "http://127.0.0.1:8000/login/",
+                url: "http://127.0.0.1:8000/users/login/",
                 type: 'post',
                 dataType: 'json',
                 data: formData,

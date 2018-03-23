@@ -70,7 +70,7 @@ class BaseViewSet(viewsets.ViewSet):
         return Response(response_body, status=response_status)
 
 
-class LoginViewSet(BaseViewSet):
+class UserViewSet(BaseViewSet):
     def __init__(self, auth_service=None, user_service=None, *args, **kwargs):
         if auth_service is None:
             self.__auth_service = AuthService()
@@ -80,9 +80,10 @@ class LoginViewSet(BaseViewSet):
             self.__user_service = UserService()
         else:
             self.__user_service = user_service
-        super(LoginViewSet, self).__init__(UserJsonSerializer(), *args, **kwargs)
+        super(UserViewSet, self).__init__(UserJsonSerializer(), *args, **kwargs)
 
-    def create(self, request):
+    @list_route(methods=['POST'], url_path='login')
+    def login(self, request, pk=None):
         email = request.data.get('email', None)
         password = request.data.get('password', None)
         if email is None or password is None:
@@ -94,15 +95,6 @@ class LoginViewSet(BaseViewSet):
             return self._create_response_by_inner_service_call(self.__auth_service.authenticate,
                                                                user.get_id(),
                                                                message='user authenticated')
-
-
-class UserViewSet(BaseViewSet):
-    def __init__(self, user_service=None, *args, **kwargs):
-        if user_service is None:
-            self.__user_service = UserService()
-        else:
-            self.__user_service = user_service
-        super(UserViewSet, self).__init__(UserJsonSerializer(), *args, **kwargs)
 
 
 class ExerciseViewSet(BaseViewSet):
