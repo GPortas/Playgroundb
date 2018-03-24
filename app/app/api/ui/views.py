@@ -107,6 +107,8 @@ class ExerciseViewSet(BaseViewSet):
         super(ExerciseViewSet, self).__init__(ExerciseJsonSerializer(), *args, **kwargs)
 
     def create(self, request):
+        if request.pdbuser is None:
+            return self._create_generic_response(response_type=ResponseType.authentication_error)
         try:
             exercise = Exercise.from_json(request.data)
         except Exception as e:
@@ -117,14 +119,16 @@ class ExerciseViewSet(BaseViewSet):
                                                            message='exercise created')
 
     def list(self, request):
-        # if request.pdbuser is None:
-        #   return self._create_generic_response(response_type=ResponseType.authentication_error)
+        if request.pdbuser is None:
+            return self._create_generic_response(response_type=ResponseType.authentication_error)
         return self._create_response_by_inner_service_call(self.__exercise_service.get_all_exercises,
                                                            message='exercises retrieved')
 
     # TODO: Move to another endpoint for solutions
     @list_route(methods=['POST'], url_path='correct')
     def correct_exercise(self, request, pk=None):
+        if request.pdbuser is None:
+            return self._create_generic_response(response_type=ResponseType.authentication_error)
         answer = request.data["answer"]
         exercise_id = request.data["id"]
         return self._create_response_by_inner_service_call(self.__exercise_service.validate_answer,
@@ -144,6 +148,8 @@ class QueryExecutionViewSet(BaseViewSet):
 
     @list_route(methods=['POST'], url_path='execute-query')
     def execute_query(self, request, pk=None):
+        if request.pdbuser is None:
+            return self._create_generic_response(response_type=ResponseType.authentication_error)
         try:
             raw_query = request.data["query"]
         except Exception as e:

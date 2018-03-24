@@ -6,7 +6,7 @@ import {encryptCookieName} from "../../utils/utils";
 
 var React = require('react');
 
-const maximumAuthCookieAge = 3600;
+const maximumAuthTokenCookieAge = 3600;
 
 class InnerLoginComponent extends Component {
     constructor(props) {
@@ -33,14 +33,14 @@ class InnerLoginComponent extends Component {
                 success: function (output, status, xhr) {
                     const data = xhr.responseText;
                     const jsonResponse = $.parseJSON(data);
-                    self.setState({user: jsonResponse["data"]});
                     cookies.set(encryptCookieName('authtoken'), jsonResponse["data"]["authtoken"], {
                         path: '/',
-                        maxAge: maximumAuthCookieAge
+                        maxAge: maximumAuthTokenCookieAge
                     });
                     cookies.set(encryptCookieName('role'), jsonResponse["data"]["role"], {
                         path: '/',
                     });
+                    self.setState({user: jsonResponse["data"]});
                 },
                 error: function (jqXHR, exception) {
                     if (jqXHR.status === 401) {
@@ -53,9 +53,9 @@ class InnerLoginComponent extends Component {
                     $('#logInButton').attr('disabled', false);
                 }
             });
-            $("#signUpButton").click(function () {
-                self.setState({user: "newUser"});
-            });
+        });
+        $("#signUpButton").click(function () {
+            self.setState({user: "newUser"});
         });
     }
 

@@ -27,3 +27,11 @@ class UserService:
             return self.__user_query_repository.get_user_by_credentials(email, password)
         except QueryError as qe:
             raise ServiceError(str(qe))
+
+    def get_user_by_auth_token(self, token):
+        if token is None:
+            raise ValueError('auth token cannot be None')
+        try:
+            return self.__user_query_repository.get_user_by_auth_token(token)
+        except QueryError as qe:
+            raise ServiceError(str(qe))

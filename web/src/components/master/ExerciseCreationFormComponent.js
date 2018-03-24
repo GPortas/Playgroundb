@@ -1,6 +1,7 @@
 import '../../styles/App.css';
 import $ from 'jquery';
 import CommandLineComponent from '../general/CommandLineComponent'
+import {generateAuthHeader} from "../../utils/utils";
 
 var React = require('react');
 var createReactClass = require('create-react-class');
@@ -24,6 +25,7 @@ const ExerciseCreationFormComponent = createReactClass({
                 url: "http://127.0.0.1:8000/exercises/",
                 dataType: 'json',
                 type: 'post',
+                headers: generateAuthHeader(),
                 data: formData,
                 crossDomain: true,
                 complete: function () {

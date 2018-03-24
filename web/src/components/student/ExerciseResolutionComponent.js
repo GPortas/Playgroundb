@@ -1,6 +1,7 @@
 import '../../styles/App.css';
 import $ from 'jquery';
 import CommandLineComponent from '../general/CommandLineComponent'
+import {generateAuthHeader} from "../../utils/utils";
 
 var React = require('react');
 var createReactClass = require('create-react-class');
@@ -12,6 +13,7 @@ const ExerciseResolutionComponent = createReactClass({
             url: "http://127.0.0.1:8000/exercises/",
             dataType: 'json',
             type: 'get',
+            headers: generateAuthHeader(),
             crossDomain: true,
             success: function (output, status, xhr) {
                 const data = xhr.responseText;
@@ -36,6 +38,7 @@ const ExerciseResolutionComponent = createReactClass({
                 url: "http://127.0.0.1:8000/exercises/correct/",
                 dataType: 'json',
                 type: 'post',
+                headers: generateAuthHeader(),
                 data: formData,
                 crossDomain: true,
                 success: function (output, status, xhr) {

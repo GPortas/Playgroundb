@@ -12,7 +12,7 @@ class UserFixture:
             User(_id="4d128b6ea794fc13a8000002", email="user3@test.com", password="testpwd3", nickname="nickname3",
                  role=User.ROLE_STUDENT),
             User(_id="4d128b6ea794fc13a8000003", email="user4@test.com", password="testpwd4", nickname="nickname4",
-                 role=User.ROLE_STUDENT),
+                 role=User.ROLE_STUDENT, authtoken='authtoken4'),
         ]
 
     @staticmethod

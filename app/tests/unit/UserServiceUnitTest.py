@@ -35,3 +35,15 @@ class UserServiceUnitTest(unittest.TestCase):
         self.sut.get_user_by_credentials('test@test.com', 'testpwd')
         self.stub_user_query_repository.get_user_by_credentials.assert_called_once_with('test@test.com',
                                                                                         'testpwd')
+
+    def test_getUserByAuthToken_calledWithNoneParams_raiseValueError(self):
+        self.assertRaises(ValueError, self.sut.get_user_by_auth_token,
+                          token=None)
+
+    def test_getUserByAuthToken_calledWithQueryRepositoryWhichRaisesQueryError_raiseServiceError(self):
+        self.stub_user_query_repository.get_user_by_auth_token.side_effect = QueryError()
+        self.assertRaises(ServiceError, self.sut.get_user_by_auth_token, token='faketoken')
+
+    def test_getUserByAuthToken_calledWithValidParams_innerQueryRepositoryCalledWithValidParams(self):
+        self.sut.get_user_by_auth_token('faketoken')
+        self.stub_user_query_repository.get_user_by_auth_token.assert_called_once_with('faketoken')

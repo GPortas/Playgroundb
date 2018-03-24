@@ -24,3 +24,11 @@ class UserMongoQueryRepositoryIntegrationTest(PdbMongoIntegrationTestBase):
     def test_getUserById_calledWithExistentUserId_returnCorrectUser(self):
         actual = self.sut.get_user_by_id(user_id=ObjectId("666f6f2d6261722d71757578"))
         self.assertEqual(actual.get_email(), "user1@test.com")
+
+    def test_getUserByAuthToken_calledWithValidAuthToken_returnCorrectUser(self):
+        actual = self.sut.get_user_by_auth_token(token='authtoken4')
+        self.assertEqual(actual.get_email(), "user4@test.com")
+
+    def test_getUserByAuthToken_calledWithInvalidAuthToken_returnNone(self):
+        actual = self.sut.get_user_by_auth_token(token="invalidtoken")
+        self.assertEqual(actual, None)

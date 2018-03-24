@@ -1,5 +1,6 @@
 import '../../styles/App.css';
 import $ from 'jquery';
+import {encryptCookieName, generateAuthHeader} from "../../utils/utils";
 
 var React = require('react');
 var createReactClass = require('create-react-class');
@@ -18,6 +19,7 @@ const CommandLineComponent = createReactClass({
                 type: 'post',
                 dataType: 'json',
                 data: formData,
+                headers: generateAuthHeader(),
                 success: function(output, status, xhr) {
                     const data=xhr.responseText;
                     const jsonResponse = $.parseJSON(data);
