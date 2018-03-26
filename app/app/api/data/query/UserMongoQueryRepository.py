@@ -30,6 +30,18 @@ class UserMongoQueryRepository(IUserQueryRepository, PdbMongoBaseRepository):
         result = self.__from_cursor_to_domain_model(result)
         return result
 
+    def get_user_by_email(self, email):
+        result = self.db.users.find_one({"email": email},
+                                        self.ITEM_REQUIRED_FIELDS)
+        result = self.__from_cursor_to_domain_model(result)
+        return result
+
+    def get_user_by_nickname(self, nickname):
+        result = self.db.users.find_one({"nickname": nickname},
+                                        self.ITEM_REQUIRED_FIELDS)
+        result = self.__from_cursor_to_domain_model(result)
+        return result
+
     def __from_cursor_to_domain_model(self, result):
         if result is not None:
             result = User.from_json(result)

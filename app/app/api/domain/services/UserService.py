@@ -1,3 +1,4 @@
+from app.api.domain.services.data.command.errors.CommandError import CommandError
 from app.api.domain.services.data.query.errors.QueryError import QueryError
 from app.api.domain.services.errors.ServiceError import ServiceError
 from app.api.domain.services.factories.UserCommandRepositoryFactory import UserCommandRepositoryFactory
@@ -35,3 +36,19 @@ class UserService:
             return self.__user_query_repository.get_user_by_auth_token(token)
         except QueryError as qe:
             raise ServiceError(str(qe))
+
+    def create_user(self, user):
+        if user is None:
+            raise ValueError('User cannot be none')
+        else:
+            try:
+                if self.__user_query_repository.get_user_by_email(user.get_email()) is not None:
+                    raise ServiceError('Email already used')
+                elif self.__user_query_repository.get_user_by_nickname(user.get_nickname()) is not None:
+                    raise ServiceError('Nickname already used')
+                else:
+                    self.__user_command_repository.create_user(user)
+            except CommandError as ce:
+                raise ServiceError(str(ce))
+            except QueryError as qe:
+                raise ServiceError(str(qe))

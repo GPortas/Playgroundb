@@ -11,6 +11,7 @@ class BaseViewSetUnitTest(unittest.TestCase):
     def _configure_sut_request(self, json_raw):
         request = mock.Mock(spec=Request)
         request.data = json.loads(json_raw)
+        request.pdbuser = 'fake'
         return request
 
     def _parse_and_test_response(self, actual, expected):

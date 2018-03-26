@@ -5,6 +5,7 @@ from rest_framework.response import Response
 
 from app.api.domain.models.BaseModel import BaseModel
 from app.api.domain.models.Exercise import Exercise
+from app.api.domain.models.User import User
 from app.api.domain.services.AuthService import AuthService
 from app.api.domain.services.ExerciseService import ExerciseService
 from app.api.domain.services.QueryExecutionService import QueryExecutionService
@@ -81,6 +82,21 @@ class UserViewSet(BaseViewSet):
         else:
             self.__user_service = user_service
         super(UserViewSet, self).__init__(UserJsonSerializer(), *args, **kwargs)
+
+    def create(self, request):
+        nickname = request.data.get('nickname', None)
+        email = request.data.get('email', None)
+        password = request.data.get('password', None)
+        role = request.data.get('role', None)
+        if email is None or password is None or nickname is None or role is None:
+            return self._create_generic_response(response_type=ResponseType.missing_request_field)
+        try:
+            user = User.from_json(request.data)
+        except Exception as e:
+            return self._create_generic_response(response_type=ResponseType.server_error, exception=e)
+        return self._create_response_by_inner_service_call(self.__user_service.create_user,
+                                                           user,
+                                                           message='user created')
 
     @list_route(methods=['POST'], url_path='login')
     def login(self, request, pk=None):

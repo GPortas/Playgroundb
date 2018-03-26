@@ -8,3 +8,9 @@ class IUserQueryRepository:
 
     def get_user_by_auth_token(self, token):
         pass
+
+    def get_user_by_email(self, email):
+        pass
+
+    def get_user_by_nickname(self, nickname):
+        pass

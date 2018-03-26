@@ -108,6 +108,12 @@ label.common-label {
     margin-bottom: 20px;
 }
 
+.sign-up-input {
+    resize: none;
+    font-size: small;
+    margin-bottom: 10px;
+}
+
 .login-introduction-text {
     color: black;
     margin-bottom: 25px;

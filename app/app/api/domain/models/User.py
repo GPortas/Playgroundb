@@ -5,7 +5,7 @@ class User(BaseModel):
     ROLE_MASTER = "master"
     ROLE_STUDENT = "student"
 
-    def __init__(self, email, password, role, nickname=None, _id=None, authtoken=None):
+    def __init__(self, email, password, role, nickname, _id=None, authtoken=None):
         if _id is not None:
             self._id = _id
         self.email = email
@@ -34,6 +34,6 @@ class User(BaseModel):
         user = User(email=json_source["email"], _id=json_source.get("_id"),
                     password=json_source["password"],
                     role=json_source["role"],
-                    nickname=json_source.get("nickname"),
+                    nickname=json_source["nickname"],
                     authtoken=json_source.get("authtoken"))
         return user

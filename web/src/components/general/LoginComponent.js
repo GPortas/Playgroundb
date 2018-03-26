@@ -17,7 +17,7 @@ class LoginComponent extends Component {
     onUserIdentified(user) {
         if (user === "newUser"){
             this.setState(state => ({
-                nestedComponent: <InnerSignUpComponent/>
+                nestedComponent: <InnerSignUpComponent func={this.onSignUpAction.bind(this)}/>
             }));
         }
         else {
@@ -25,6 +25,12 @@ class LoginComponent extends Component {
                 user: user
             }));
         }
+    }
+
+    onSignUpAction() {
+        this.setState(state => ({
+            nestedComponent: <InnerLoginComponent func={this.onUserIdentified.bind(this)}/>
+        }));
     }
 
     render() {
