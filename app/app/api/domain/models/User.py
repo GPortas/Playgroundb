@@ -8,7 +8,7 @@ class User(BaseModel):
     def __init__(self, email, password, role, nickname, _id=None, authtoken=None):
         if _id is not None:
             self._id = _id
-        self.email = email
+        self.email = email.lower()
         self.password = password
         self.nickname = nickname
         self.role = role

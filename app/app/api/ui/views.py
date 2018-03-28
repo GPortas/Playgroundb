@@ -9,6 +9,7 @@ from app.api.domain.models.User import User
 from app.api.domain.services.AuthService import AuthService
 from app.api.domain.services.ExerciseService import ExerciseService
 from app.api.domain.services.QueryExecutionService import QueryExecutionService
+from app.api.domain.services.UserFormatService import UserFormatService
 from app.api.domain.services.UserService import UserService
 from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
 from app.api.ui.utils.enums import ResponseType
@@ -94,9 +95,12 @@ class UserViewSet(BaseViewSet):
             user = User.from_json(request.data)
         except Exception as e:
             return self._create_generic_response(response_type=ResponseType.server_error, exception=e)
-        return self._create_response_by_inner_service_call(self.__user_service.create_user,
-                                                           user,
-                                                           message='user created')
+        if UserFormatService().has_valid_fields(user):
+            return self._create_response_by_inner_service_call(self.__user_service.create_user,
+                                                               user,
+                                                               message='user created')
+        else:
+            return self._create_generic_response(response_type=ResponseType.invalid_field_format)
 
     @list_route(methods=['POST'], url_path='login')
     def login(self, request, pk=None):
