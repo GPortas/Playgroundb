@@ -15,7 +15,7 @@ const CommandLineComponent = createReactClass({
                 "query": inputQuery,
             }
             $.ajax({
-                url: "http://127.0.0.1:8000/query-execution/execute-query/",
+                url: "http://127.0.0.1:8000/query-execution/",
                 type: 'post',
                 dataType: 'json',
                 data: formData,

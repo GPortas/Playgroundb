@@ -18,14 +18,14 @@ class QueryExecutionViewSetUnitTest(BaseViewSetUnitTest):
         request = self._configure_sut_request(json_raw)
         self.stub_query_execution_service.execute_query.return_value = QueryExecution("{'_id': ObjectId('56a942bfec926681f17f09b6'), 'name': 'foo'}")
         expected = '{"code": 0, "data": {"execution_result": "{\'_id\': ObjectId(\'56a942bfec926681f17f09b6\'), \'name\': \'foo\'}"}, "message": "query executed", "field": ""}'
-        actual = self.sut.execute_query(request)
+        actual = self.sut.create(request)
         self._parse_and_test_response(actual, expected)
 
     def test_executeQuery_calledWithInvalidArgument_returnServerError(self):
         json_raw = '{"fake":"db.collection.find({})"}'
         request = self._configure_sut_request(json_raw)
         expected = '{"code": 0, "data": "", "exception_message": "\'query\'", "message": "server error", "field": ""}'
-        actual = self.sut.execute_query(request)
+        actual = self.sut.create(request)
         self._parse_and_test_response(actual, expected)
 
     def test_executeQuery_calledWithInnerServiceWhichRaisesServiceError_returnCorrectJSONResponse(self):
@@ -33,5 +33,5 @@ class QueryExecutionViewSetUnitTest(BaseViewSetUnitTest):
         self.stub_query_execution_service.execute_query.side_effect = ServiceError('error')
         expected = '{"code":0,"data":"","message":"server error","field": "", "exception_message": "error"}'
         request = self._configure_sut_request(json_raw)
-        actual = self.sut.execute_query(request)
+        actual = self.sut.create(request)
         self._parse_and_test_response(actual, expected)

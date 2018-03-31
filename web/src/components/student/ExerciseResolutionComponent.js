@@ -35,7 +35,7 @@ const ExerciseResolutionComponent = createReactClass({
                 "answer": queryOutput,
             }
             $.ajax({
-                url: "http://127.0.0.1:8000/exercises/correct/",
+                url: "http://127.0.0.1:8000/validations/",
                 dataType: 'json',
                 type: 'post',
                 headers: generateAuthHeader(),

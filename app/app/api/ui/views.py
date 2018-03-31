@@ -9,11 +9,13 @@ from app.api.domain.models.User import User
 from app.api.domain.services.AuthService import AuthService
 from app.api.domain.services.ExerciseService import ExerciseService
 from app.api.domain.services.QueryExecutionService import QueryExecutionService
+from app.api.domain.services.SolutionService import SolutionService
 from app.api.domain.services.UserFormatService import UserFormatService
 from app.api.domain.services.UserService import UserService
 from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
 from app.api.ui.utils.enums import ResponseType
 from app.api.ui.utils.serializers.ExerciseJsonSerializer import ExerciseJsonSerializer
+from app.api.ui.utils.serializers.ExerciseValidationJsonSerializer import ExerciseValidationJsonSerializer
 from app.api.ui.utils.serializers.QueryExecutionJsonSerializer import QueryExecutionJsonSerializer
 from app.api.ui.utils.serializers.UserJsonSerializer import UserJsonSerializer
 
@@ -144,14 +146,22 @@ class ExerciseViewSet(BaseViewSet):
         return self._create_response_by_inner_service_call(self.__exercise_service.get_all_exercises,
                                                            message='exercises retrieved')
 
-    # TODO: Move to another endpoint for solutions
-    @list_route(methods=['POST'], url_path='correct')
-    def correct_exercise(self, request, pk=None):
+
+class ExerciseValidationViewSet(BaseViewSet):
+    # todo: permissions
+    def __init__(self, solution_service=None, *args, **kwargs):
+        if solution_service is None:
+            self.__solution_service = SolutionService()
+        else:
+            self.__solution_service = solution_service
+        super(ExerciseValidationViewSet, self).__init__(ExerciseValidationJsonSerializer(), *args, **kwargs)
+
+    def create(self, request):
         if request.pdbuser is None:
             return self._create_generic_response(response_type=ResponseType.authentication_error)
         answer = request.data["answer"]
         exercise_id = request.data["id"]
-        return self._create_response_by_inner_service_call(self.__exercise_service.validate_answer,
+        return self._create_response_by_inner_service_call(self.__solution_service.validate_answer,
                                                            exercise_id=exercise_id,
                                                            answer=answer,
                                                            message='exercise answer validated')
@@ -166,8 +176,7 @@ class QueryExecutionViewSet(BaseViewSet):
             self.__query_execution_service = query_execution_service
         super(QueryExecutionViewSet, self).__init__(QueryExecutionJsonSerializer(), *args, **kwargs)
 
-    @list_route(methods=['POST'], url_path='execute-query')
-    def execute_query(self, request, pk=None):
+    def create(self, request):
         if request.pdbuser is None:
             return self._create_generic_response(response_type=ResponseType.authentication_error)
         try:

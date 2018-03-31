@@ -22,6 +22,7 @@ from app.api.ui import views
 router = DefaultRouter()
 router.register(r'users', views.UserViewSet, base_name='users')
 router.register(r'exercises', views.ExerciseViewSet, base_name='exercises')
+router.register(r'validations', views.ExerciseValidationViewSet, base_name='validations')
 router.register(r'query-execution', views.QueryExecutionViewSet, base_name='query-executor')
 
 urlpatterns = [
