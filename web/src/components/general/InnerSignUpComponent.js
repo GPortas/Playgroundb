@@ -21,7 +21,7 @@ class InnerSignUpComponent extends Component {
             const userEmail = $('#userEmail').val();
             const userPassword = $('#userPassword').val();
             self.setState({showUsedCredentials: false});
-            var isValidData = true;
+            let isValidData = true;
             if (validateEmail(userEmail)) {
                 self.setState({showInvalidEmail: false});
             } else {

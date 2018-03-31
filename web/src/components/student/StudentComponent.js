@@ -11,7 +11,7 @@ class StudentComponent extends Component {
         super(props);
         this.state = {nestedComponent: <ExerciseResolutionComponent/>};
         this.onExercisesOptionClicked = this.onExercisesOptionClicked.bind(this);
-        this.onDashboardOptionClicked = this.onDashboardOptionClicked.bind(this);
+        this.onLeaderboardOptionClicked = this.onLeaderboardOptionClicked.bind(this);
         this.onAccountOptionClicked = this.onAccountOptionClicked.bind(this);
     }
 
@@ -21,8 +21,8 @@ class StudentComponent extends Component {
         }));
     }
 
-    onDashboardOptionClicked() {
-        //todo: dashboard component
+    onLeaderboardOptionClicked() {
+        //todo: leaderboard component
     }
 
     onAccountOptionClicked() {
@@ -46,8 +46,8 @@ class StudentComponent extends Component {
                         </NavItem>
                     </Nav>
                     <Nav>
-                        <NavItem className="navbar-element" onClick={this.onDashboardOptionClicked}>
-                            Dashboard
+                        <NavItem className="navbar-element" onClick={this.onLeaderboardOptionClicked}>
+                            Leaderboard
                         </NavItem>
                     </Nav>
                     <Nav>

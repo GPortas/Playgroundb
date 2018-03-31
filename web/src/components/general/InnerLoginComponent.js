@@ -2,7 +2,7 @@ import '../../styles/App.css';
 import $ from 'jquery';
 import {Component} from "react";
 import Cookies from 'universal-cookie';
-import {encryptCookieName} from "../../utils/utils";
+import {encryptCookieName, validateEmail, validatePassword} from "../../utils/utils";
 
 var React = require('react');
 
@@ -18,41 +18,51 @@ class InnerLoginComponent extends Component {
         const self = this;
         const cookies = new Cookies();
         $("#logInButton").click(function () {
-            $('#logInButton').attr('disabled', true);
             const userEmail = $('#userEmail').val();
             const userPassword = $('#userPassword').val();
-            var formData = {
-                "email": userEmail,
-                "password": userPassword
+            var isValidData = true;
+
+            if (!validateEmail(userEmail) || !validatePassword(userPassword)) {
+                isValidData = false;
             }
-            $.ajax({
-                url: "http://127.0.0.1:8000/users/login/",
-                type: 'post',
-                dataType: 'json',
-                data: formData,
-                success: function (output, status, xhr) {
-                    const data = xhr.responseText;
-                    const jsonResponse = $.parseJSON(data);
-                    cookies.set(encryptCookieName('authtoken'), jsonResponse["data"]["authtoken"], {
-                        path: '/',
-                        maxAge: maximumAuthTokenCookieAge
-                    });
-                    cookies.set(encryptCookieName('role'), jsonResponse["data"]["role"], {
-                        path: '/',
-                    });
-                    self.setState({user: jsonResponse["data"]});
-                },
-                error: function (jqXHR, exception) {
-                    if (jqXHR.status === 401) {
-                        self.setState({showInvalidCredentials: true})
-                    } else {
-                        window.alert("Server error")
-                    }
-                },
-                complete: function () {
-                    $('#logInButton').attr('disabled', false);
+
+            if(isValidData) {
+                $('#logInButton').attr('disabled', true);
+                var formData = {
+                    "email": userEmail,
+                    "password": userPassword
                 }
-            });
+                $.ajax({
+                    url: "http://127.0.0.1:8000/users/login/",
+                    type: 'post',
+                    dataType: 'json',
+                    data: formData,
+                    success: function (output, status, xhr) {
+                        const data = xhr.responseText;
+                        const jsonResponse = $.parseJSON(data);
+                        cookies.set(encryptCookieName('authtoken'), jsonResponse["data"]["authtoken"], {
+                            path: '/',
+                            maxAge: maximumAuthTokenCookieAge
+                        });
+                        cookies.set(encryptCookieName('role'), jsonResponse["data"]["role"], {
+                            path: '/',
+                        });
+                        self.setState({user: jsonResponse["data"]});
+                    },
+                    error: function (jqXHR, exception) {
+                        if (jqXHR.status === 401) {
+                            self.setState({showInvalidCredentials: true})
+                        } else {
+                            window.alert("Server error")
+                        }
+                    },
+                    complete: function () {
+                        $('#logInButton').attr('disabled', false);
+                    }
+                });
+            } else {
+                self.setState({showInvalidCredentials: true})
+            }
         });
         $("#signUpButton").click(function () {
             self.setState({user: "newUser"});
@@ -80,8 +90,8 @@ class InnerLoginComponent extends Component {
                             credentials,
                             please try again.</label>
                     </div>
-                    <button type="submit" className="btn btn-success common-button" id="logInButton">Log In</button>
-                    <button type="submit" className="btn btn-info common-button" id="signUpButton">Sign Up</button>
+                    <button type="button" className="btn btn-success common-button" id="logInButton">Log In</button>
+                    <button type="button" className="btn btn-info common-button" id="signUpButton">Sign Up</button>
                 </form>
             </div>
         );

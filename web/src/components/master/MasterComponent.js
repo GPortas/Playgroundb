@@ -12,7 +12,7 @@ class MasterComponent extends Component {
         this.state = {nestedComponent: <ConfigurationComponent/>};
         this.onCommandLineOptionClicked = this.onCommandLineOptionClicked.bind(this);
         this.onExerciseCreationOptionClicked = this.onExerciseCreationOptionClicked.bind(this);
-        this.onDashboardOptionClicked = this.onDashboardOptionClicked.bind(this);
+        this.onLeaderboardOptionClicked = this.onLeaderboardOptionClicked.bind(this);
         this.onAccountOptionClicked = this.onAccountOptionClicked.bind(this);
     }
 
@@ -28,7 +28,7 @@ class MasterComponent extends Component {
         }));
     }
 
-    onDashboardOptionClicked() {
+    onLeaderboardOptionClicked() {
         //todo: dashboard component
     }
 
@@ -58,8 +58,8 @@ class MasterComponent extends Component {
                         </NavItem>
                     </Nav>
                     <Nav>
-                        <NavItem className="navbar-element" onClick={this.onDashboardOptionClicked}>
-                            Dashboard
+                        <NavItem className="navbar-element" onClick={this.onLeaderboardOptionClicked}>
+                            Leaderboard
                         </NavItem>
                     </Nav>
                     <Nav>
