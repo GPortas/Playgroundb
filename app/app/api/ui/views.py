@@ -13,6 +13,7 @@ from app.api.domain.services.SolutionService import SolutionService
 from app.api.domain.services.UserFormatService import UserFormatService
 from app.api.domain.services.UserService import UserService
 from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
+from app.api.domain.services.wrappers.mongo.MongoWrapper import MongoWrapper
 from app.api.ui.utils.enums import ResponseType
 from app.api.ui.utils.serializers.ExerciseJsonSerializer import ExerciseJsonSerializer
 from app.api.ui.utils.serializers.ExerciseValidationJsonSerializer import ExerciseValidationJsonSerializer
@@ -133,6 +134,7 @@ class ExerciseViewSet(BaseViewSet):
             return self._create_generic_response(response_type=ResponseType.authentication_error)
         try:
             exercise = Exercise.from_json(request.data)
+            exercise.set_collection_data(MongoWrapper().get_collection_data(request.data["collection_name"]))
         except Exception as e:
             return self._create_generic_response(response_type=ResponseType.server_error, exception=e)
 

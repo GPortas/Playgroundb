@@ -16,10 +16,12 @@ const ExerciseCreationFormComponent = createReactClass({
             $('#submitButton').attr('disabled', true);
             const exerciseStatement = $('#inputStatement').val();
             const exerciseSolution = $('#inputSolution').val();
+            const exerciseCollectionName = $('#inputCollectionName').val();
             var formData = {
                     "author": "testauthor",
                     "question": exerciseStatement,
-                    "solution": exerciseSolution
+                    "solution": exerciseSolution,
+                    "collection_name": exerciseCollectionName,
             }
             $.ajax({
                 url: "http://127.0.0.1:8000/exercises/",
@@ -42,16 +44,24 @@ const ExerciseCreationFormComponent = createReactClass({
                     <div className="form-group">
                         <label htmlFor="inputStatement" className="common-label">Write the statement of the
                             exercise:</label>
-                        <textarea type="statement" className="form-control input-text" id="inputStatement"
+                        <textarea className="form-control input-text" id="inputStatement"
                                   aria-describedby="statement" rows="6"/>
                         <label id="statementHelp" className="form-text text-muted">Try to be as concise as possible
                             because this will be the statement that your students will receive.
                         </label>
                     </div>
                     <div className="form-group">
+                        <label htmlFor="inputCollectionName" className="common-label">Type the name of the collection that contains the data source:</label>
+                        <textarea className="form-control input-text" id="inputCollectionName"
+                                  aria-describedby="statement" rows="1" style={{resize: 'none'}}/>
+                        <label id="inputCollectionHelp" className="form-text text-muted">
+                            Check that the name is correct to prevent errors.
+                        </label>
+                    </div>
+                    <div className="form-group">
                         <label htmlFor="inputSolution" className="common-label">Write the expected result
                             after executing the necessary query:</label>
-                        <textarea type="solution" className="form-control input-text" id="inputSolution" rows="6"
+                        <textarea className="form-control input-text" id="inputSolution" rows="6"
                                   placeholder={"{\"data\": {}}"}/>
                         <label id="solutionHelp" className="form-text text-muted">Remember to verify that the format
                             is correct.

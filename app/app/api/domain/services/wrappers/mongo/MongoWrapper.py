@@ -56,7 +56,10 @@ class MongoWrapper:
             except InvalidOperationError as ioe:
                 raise MongoWrapperException(str(ioe))
 
-    def initialize_collection(self, collection_name, collection_data):
+    def get_collection_data(self, collection_name):
         collection = eval("self.db." + collection_name)
-        collection.delete_many({})
-        collection.insert_many(collection_data)
+        cursor = collection.find({})
+        data = []
+        for elem in cursor:
+            data.append(elem)
+        return data
