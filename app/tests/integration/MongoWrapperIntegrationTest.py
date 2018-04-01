@@ -4,6 +4,7 @@ from bson import ObjectId
 from pymongo import MongoClient
 
 from app.api.domain.services.wrappers.mongo.MongoWrapper import MongoWrapper
+from app.api.domain.services.wrappers.mongo.exceptions.MongoWrapperException import MongoWrapperException
 from app.configuration import settings
 
 
@@ -38,6 +39,30 @@ class MongoWrapperIntegrationTest(unittest.TestCase):
         expected = []
         self.assertEqual(actual, expected)
 
+    def test_setCollectionData_calledWithValidNameAndData_dataCorreclyInsertedInCollection(self):
+        data = self.__get_test_data()
+        self.sut.set_collection_data(collection_name='testcollection', data=data)
+        actual = self.__from_cursor_to_doc_list(self.db.testcollection.find({}))
+        expected = data
+        self.assertEqual(actual, expected)
+
+    def test_setCollectionData_calledWithInvalidDataSingleDocument_raiseMongoWrapperException(self):
+        self.assertRaises(MongoWrapperException, self.sut.set_collection_data, collection_name='testcollection',
+                          data={"foo": 1})
+
+    def test_setCollectionData_calledWithInvalidDataNumber_raiseMongoWrapperException(self):
+        self.assertRaises(MongoWrapperException, self.sut.set_collection_data, collection_name='testcollection', data=1)
+
+    def test_setCollectionData_calledWithInvalidDataString_raiseMongoWrapperException(self):
+        self.assertRaises(MongoWrapperException, self.sut.set_collection_data, collection_name='testcollection',
+                          data='test')
+
     def __get_test_data(self):
         return [{"foo": 1, "buu": "test1", "_id": ObjectId("4d128b6ea794fc13a8000001")},
                 {"foo": 3, "buu": "test2", "_id": ObjectId("4d128b6ea794fc13a8000002")}]
+
+    def __from_cursor_to_doc_list(self, cursor):
+        result = []
+        for elem in cursor:
+            result.append(elem)
+        return result

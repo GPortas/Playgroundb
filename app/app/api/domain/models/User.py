@@ -29,6 +29,9 @@ class User(BaseModel):
     def get_authtoken(self):
         return self.authtoken
 
+    def get_role(self):
+        return self.role
+
     @staticmethod
     def from_json(json_source):
         user = User(email=json_source["email"], _id=json_source.get("_id"),

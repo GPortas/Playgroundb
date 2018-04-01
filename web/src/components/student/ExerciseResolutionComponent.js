@@ -54,8 +54,30 @@ const ExerciseResolutionComponent = createReactClass({
         });
     },
 
-    changeHandler(solutionText) {
-        $("#queryOutput").val(solutionText);
+    onExecute(inputQuery) {
+        const self = this;
+        $('#executeQueryButton').attr('disabled', true);
+        var formData = {
+            "query": inputQuery,
+            "exercise_id": self.state.exercises[0]["_id"]
+        }
+        $.ajax({
+            url: "http://127.0.0.1:8000/query-execution/execute-exercise-query/",
+            type: 'post',
+            dataType: 'json',
+            data: formData,
+            headers: generateAuthHeader(),
+            success: function(output, status, xhr) {
+                const data=xhr.responseText;
+                const jsonResponse = $.parseJSON(data);
+                const executionResult = jsonResponse["data"]["execution_result"]
+                $("#queryOutput").val(executionResult);
+            },
+            complete: function () {
+                $('#executeQueryButton').attr('disabled', false);
+            }
+            //todo: Errors treatment!
+        });
     },
 
     render() {
@@ -74,7 +96,7 @@ const ExerciseResolutionComponent = createReactClass({
                             <div className="exercise-resolution-inner-div">
                                 <label className="common-label">Query:</label>
                                 <div className="exercise-resolution-left-bottom-div">
-                                    <CommandLineComponent func={this.changeHandler} rows={18}/>
+                                    <CommandLineComponent func={this.onExecute} rows={18}/>
                                 </div>
                             </div>
                             <div className="exercise-resolution-inner-div">

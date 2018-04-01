@@ -172,19 +172,40 @@ class ExerciseValidationViewSet(BaseViewSet):
 class QueryExecutionViewSet(BaseViewSet):
     # todo: permissions
     def __init__(self, query_execution_service=None, *args, **kwargs):
-        if query_execution_service is None:
-            self.__query_execution_service = QueryExecutionService()
-        else:
+        if query_execution_service is not None:
             self.__query_execution_service = query_execution_service
+        else:
+            self.__query_execution_service = None
         super(QueryExecutionViewSet, self).__init__(QueryExecutionJsonSerializer(), *args, **kwargs)
 
     def create(self, request):
-        if request.pdbuser is None:
+        user = request.pdbuser
+        if user is None or user.get_role() != 'master':
             return self._create_generic_response(response_type=ResponseType.authentication_error)
         try:
             raw_query = request.data["query"]
         except Exception as e:
             return self._create_generic_response(response_type=ResponseType.server_error, exception=e)
+        if self.__query_execution_service is None:
+            self.__query_execution_service = QueryExecutionService()
         return self._create_response_by_inner_service_call(self.__query_execution_service.execute_query,
                                                            raw_query,
+                                                           message='query executed')
+
+    @list_route(methods=['POST'], url_path='execute-exercise-query')
+    def execute_exercise_query(self, request):
+        user = request.pdbuser
+        if user is None:
+            return self._create_generic_response(response_type=ResponseType.authentication_error)
+        try:
+            raw_query = request.data["query"]
+            exercise_id = request.data["exercise_id"]
+
+        except Exception as e:
+            return self._create_generic_response(response_type=ResponseType.server_error, exception=e)
+        if self.__query_execution_service is None:
+            self.__query_execution_service = QueryExecutionService(user_id=user.get_id())
+        return self._create_response_by_inner_service_call(self.__query_execution_service.execute_exercise_query,
+                                                           raw_query,
+                                                           exercise_id,
                                                            message='query executed')

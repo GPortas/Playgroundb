@@ -63,3 +63,11 @@ class MongoWrapper:
         for elem in cursor:
             data.append(elem)
         return data
+
+    def set_collection_data(self, collection_name, data):
+        try:
+            collection = eval("self.db." + collection_name)
+            collection.delete_many({})
+            collection.insert_many(data)
+        except TypeError as te:
+            raise MongoWrapperException(str(te))

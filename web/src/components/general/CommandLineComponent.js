@@ -9,32 +9,12 @@ const CommandLineComponent = createReactClass({
     componentDidMount() {
         const self = this;
         $("#executeQueryButton").click(function(){
-            $('#executeQueryButton').attr('disabled', true);
-            const inputQuery = $('#inputQuery').val();
-            var formData = {
-                "query": inputQuery,
-            }
-            $.ajax({
-                url: "http://127.0.0.1:8000/query-execution/",
-                type: 'post',
-                dataType: 'json',
-                data: formData,
-                headers: generateAuthHeader(),
-                success: function(output, status, xhr) {
-                    const data=xhr.responseText;
-                    const jsonResponse = $.parseJSON(data);
-                    self.setState({ data: jsonResponse["data"]["execution_result"] });
-                },
-                complete: function () {
-                    $('#executeQueryButton').attr('disabled', false);
-                }
-                //todo: Errors treatment!
-            });
+            self.setState({ inputQuery: $('#inputQuery').val() });
         });
     },
     render() {
-        if (this.state && this.state.data) {
-            this.props.func(this.state.data)
+        if (this.state && this.state.inputQuery) {
+            this.props.func(this.state.inputQuery)
         }
         return (
             <div>

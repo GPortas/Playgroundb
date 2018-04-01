@@ -5,13 +5,15 @@ from unittest import mock
 from rest_framework.renderers import JSONRenderer
 from rest_framework.request import Request
 
+from app.api.domain.models.User import User
+
 
 class BaseViewSetUnitTest(unittest.TestCase):
 
     def _configure_sut_request(self, json_raw):
         request = mock.Mock(spec=Request)
         request.data = json.loads(json_raw)
-        request.pdbuser = 'fake'
+        request.pdbuser = User("test@test.com", "testpwd", "master", "testnickname")
         return request
 
     def _parse_and_test_response(self, actual, expected):

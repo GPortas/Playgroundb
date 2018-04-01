@@ -28,9 +28,15 @@ class Exercise(BaseModel):
     def set_collection_data(self, data):
         self.collection_data = data
 
+    def get_collection_data(self):
+        return self.collection_data
+
+    def get_collection_name(self):
+        return self.collection_name
+
     @staticmethod
     def from_json(json_source):
         exercise = Exercise(author=json_source["author"], collection_name=json_source["collection_name"]
                             , _id=json_source.get("_id"), question=json_source["question"],
-                            solution=json_source["solution"])
+                            solution=json_source["solution"], collection_data=json_source.get("collection_data", None))
         return exercise
