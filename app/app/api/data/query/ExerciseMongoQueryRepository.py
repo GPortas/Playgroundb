@@ -13,6 +13,8 @@ class ExerciseMongoQueryRepository(IExerciseQueryRepository, PdbMongoBaseReposit
         'question': 1,
         'solution': 1,
         'author': 1,
+        'collection_name': 1,
+        'collection_data': 1
     }}
 
     def __init__(self):

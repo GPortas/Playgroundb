@@ -39,14 +39,18 @@ class ExerciseServiceUnitTest(unittest.TestCase):
         self.assertRaises(ValueError, self.sut.create_exercise, exercise=None)
 
     def test_createExercise_calledWithValidExercise_innerCommandRepositoryCalledOnce(self):
-        self.sut.create_exercise(exercise=Exercise(author='fakeauthor'))
+        self.sut.create_exercise(exercise=self.__get_exercise_test_instance())
         actual = self.stub_exercise_command_repository.create_exercise.call_count
         self.assertEqual(actual, 1)
 
     def test_createExercise_calledWithCommandRepositoryWhichThrowsCommandError_throwServiceError(self):
         self.stub_exercise_command_repository.create_exercise.side_effect = CommandError()
-        self.assertRaises(ServiceError, self.sut.create_exercise, exercise=Exercise(author='fakeauthor'))
+        self.assertRaises(ServiceError, self.sut.create_exercise, exercise=self.__get_exercise_test_instance())
 
     def test_getAllExercises_called_correctCallToInnerQueryRepository(self):
         self.sut.get_all_exercises()
         self.stub_exercise_query_repository.get_all_exercises.assert_called_once_with()
+
+    def __get_exercise_test_instance(self):
+        return Exercise(author='fakeauthor', collection_name='testcollection', collection_data='testdata',
+                        question='testquestion', solution='testsolution')

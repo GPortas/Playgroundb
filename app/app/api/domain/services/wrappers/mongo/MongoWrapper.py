@@ -3,7 +3,8 @@ from pymongo import MongoClient
 
 from app.api.domain.services.wrappers.mongo.PymongoExecutor import PymongoExecutor
 from app.api.domain.services.wrappers.mongo.exceptions.MongoWrapperException import MongoWrapperException
-from app.api.domain.services.wrappers.mongo.mappers.operationmappers.OperationMapperFactory import OperationMapperFactory
+from app.api.domain.services.wrappers.mongo.mappers.operationmappers.OperationMapperFactory import \
+    OperationMapperFactory
 from app.api.domain.services.wrappers.mongo.mappers.errors.InvalidOperationError import InvalidOperationError
 from app.api.domain.services.wrappers.mongo.mappers.resultmappers.ResultMapperFactory import ResultMapperFactory
 from app.configuration import settings
@@ -11,9 +12,13 @@ from app.configuration import settings
 
 class MongoWrapper:
 
-    def __init__(self):
+    def __init__(self, db_name=None):
         self.connection_uri = settings.PDB_PLAYGROUND_MONGO_CONNECTION_PROPS['CONNECTION_URI']
-        self.db_name = settings.PDB_PLAYGROUND_MONGO_CONNECTION_PROPS['DBNAME']
+
+        if db_name is None:
+            self.db_name = settings.PDB_PLAYGROUND_MONGO_CONNECTION_PROPS['DBNAME']
+        else:
+            self.db_name = db_name
 
         if self.connection_uri is None:
             raise ValueError("Connection URI cannot be None")
@@ -50,3 +55,8 @@ class MongoWrapper:
                 return result
             except InvalidOperationError as ioe:
                 raise MongoWrapperException(str(ioe))
+
+    def initialize_collection(self, collection_name, collection_data):
+        collection = eval("self.db." + collection_name)
+        collection.delete_many({})
+        collection.insert_many(collection_data)

@@ -3,12 +3,14 @@ from app.api.domain.models.BaseModel import BaseModel
 
 class Exercise(BaseModel):
 
-    def __init__(self, author, _id=None, question=None, solution=None):
+    def __init__(self, author, collection_name, collection_data, question, solution, _id=None):
+        self.author = author
+        self.collection_name = collection_name
+        self.collection_data = collection_data
         if _id is not None:
             self._id = _id
         self.question = question
         self.solution = solution
-        self.author = author
 
     def get_id(self):
         return self._id
@@ -24,7 +26,7 @@ class Exercise(BaseModel):
 
     @staticmethod
     def from_json(json_source):
-        exercise = Exercise(author=json_source["author"], _id=json_source.get("_id"),
-                            question=json_source.get("question"),
-                            solution=json_source.get("solution"))
+        exercise = Exercise(author=json_source["author"], collection_name=json_source["collection_name"],
+                            collection_data=json_source["collection_data"], _id=json_source.get("_id"),
+                            question=json_source["question"], solution=json_source["solution"])
         return exercise
