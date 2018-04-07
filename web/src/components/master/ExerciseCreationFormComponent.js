@@ -7,8 +7,28 @@ var React = require('react');
 var createReactClass = require('create-react-class');
 
 const ExerciseCreationFormComponent = createReactClass({
-    changeHandler(solutionText) {
-        $("#inputSolution").val(solutionText);
+    onExecute(inputText) {
+        $('#executeQueryButton').attr('disabled', true);
+        var formData = {
+            "query": inputText,
+        }
+        $.ajax({
+            url: "http://127.0.0.1:8000/query-execution/",
+            type: 'post',
+            dataType: 'json',
+            data: formData,
+            headers: generateAuthHeader(),
+            success: function(output, status, xhr) {
+                const data=xhr.responseText;
+                const jsonResponse = $.parseJSON(data);
+                const executionResult = jsonResponse["data"]["execution_result"]
+                $("#inputSolution").val(executionResult);
+            },
+            complete: function () {
+                $('#executeQueryButton').attr('disabled', false);
+            }
+            //todo: Errors treatment!
+        });
     },
 
     componentDidMount() {
@@ -70,7 +90,7 @@ const ExerciseCreationFormComponent = createReactClass({
                     <div className="form-group">
                         <label htmlFor="inputQuery" className="common-label">If you wish, you can also obtain
                             the solution to this exercise by consulting the database:</label>
-                        <CommandLineComponent func={this.changeHandler} rows={6}/>
+                        <CommandLineComponent func={this.onExecute} rows={6}/>
                     </div>
                     <div align="center" className="form-group">
                         <button type="submit" className="btn btn-danger common-button"

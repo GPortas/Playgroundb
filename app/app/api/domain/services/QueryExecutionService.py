@@ -7,9 +7,9 @@ from app.api.domain.services.wrappers.mongo.exceptions.MongoWrapperException imp
 
 class QueryExecutionService:
 
-    def __init__(self, mongo_wrapper=None, exercise_service=None, user_id=None):
+    def __init__(self, mongo_wrapper=None, exercise_service=None):
         if mongo_wrapper is None:
-            self.__mongo_wrapper = MongoWrapper(db_name=str(user_id))
+            self.__mongo_wrapper = MongoWrapper()
         else:
             self.__mongo_wrapper = mongo_wrapper
 

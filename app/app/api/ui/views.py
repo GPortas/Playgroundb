@@ -204,7 +204,8 @@ class QueryExecutionViewSet(BaseViewSet):
         except Exception as e:
             return self._create_generic_response(response_type=ResponseType.server_error, exception=e)
         if self.__query_execution_service is None:
-            self.__query_execution_service = QueryExecutionService(user_id=user.get_id())
+            self.__query_execution_service = QueryExecutionService(
+                mongo_wrapper=MongoWrapper(db_name=str(user.get_id())))
         return self._create_response_by_inner_service_call(self.__query_execution_service.execute_exercise_query,
                                                            raw_query,
                                                            exercise_id,
