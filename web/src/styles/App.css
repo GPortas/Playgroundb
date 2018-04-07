@@ -152,6 +152,11 @@ label.common-label {
 
 /* Exercise resolution panel */
 
+label.exercise-section-title-label {
+    font-family: 'Open Sans';
+    font-size: x-large;
+}
+
 div.exercise-resolution-div {
     overflow: hidden;
 }
@@ -162,7 +167,22 @@ div.exercise-resolution-div {
     display: block; /* for use on default inline elements like span */
     margin: 9px 0;
     overflow: hidden;
-    background-color: #2b2727;
+    background-color: rgba(0, 0, 0, 0.51);
+}
+
+button.exercise-surrender-button {
+    margin-top: 10%;
+    font-size: 1.4em;
+}
+
+div.exercise-resolution-stats-inner-div-left {
+    float: left;
+    width: 30%;
+}
+
+div.exercise-resolution-stats-inner-div-right {
+    float: left;
+    width: 70%;
 }
 
 div.exercise-resolution-inner-div {

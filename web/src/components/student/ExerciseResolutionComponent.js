@@ -2,11 +2,16 @@ import '../../styles/App.css';
 import $ from 'jquery';
 import CommandLineComponent from '../general/CommandLineComponent'
 import {generateAuthHeader} from "../../utils/utils";
+import ReactCountdownClock from 'react-countdown-clock'
 
 var React = require('react');
-var createReactClass = require('create-react-class');
 
-const ExerciseResolutionComponent = createReactClass({
+class ExerciseResolutionComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.onExerciseNotOvercomed = this.onExerciseNotOvercomed.bind(this);
+    }
+
     componentWillMount() {
         const self = this;
         $.ajax({
@@ -24,11 +29,11 @@ const ExerciseResolutionComponent = createReactClass({
             }
             //todo: Errors treatment!
         });
-    },
+    }
 
     componentDidUpdate() {
         const self = this;
-        $("#submitButton").click(function(){
+        $("#submitButton").click(function () {
             const queryOutput = $('#queryOutput').val();
             var formData = {
                 "id": self.state.exercises[0]["_id"],
@@ -52,7 +57,7 @@ const ExerciseResolutionComponent = createReactClass({
                 //todo: Errors treatment!
             });
         });
-    },
+    }
 
     onExecute(inputQuery) {
         const self = this;
@@ -67,8 +72,8 @@ const ExerciseResolutionComponent = createReactClass({
             dataType: 'json',
             data: formData,
             headers: generateAuthHeader(),
-            success: function(output, status, xhr) {
-                const data=xhr.responseText;
+            success: function (output, status, xhr) {
+                const data = xhr.responseText;
                 const jsonResponse = $.parseJSON(data);
                 const executionResult = jsonResponse["data"]["execution_result"]
                 $("#queryOutput").val(executionResult);
@@ -78,29 +83,57 @@ const ExerciseResolutionComponent = createReactClass({
             }
             //todo: Errors treatment!
         });
-    },
+    }
+
+    onExerciseNotOvercomed() {
+        //todo
+        window.alert("exercise not overcomed");
+    }
 
     render() {
         if (this.state && this.state.exercises) {
             return (
                 <div>
                     <div className="common-div">
-                        <label className="common-label">Statement:</label>
-                        <hr className="exercise-resolution-divider"/>
-                        <label className="common-label">
-                            {this.state.exercises[0]["question"]}
-                        </label>
-                    </div>
-                    <div className="common-div">
                         <div className="exercise-resolution-div">
                             <div className="exercise-resolution-inner-div">
-                                <label className="common-label">Query:</label>
-                                <div className="exercise-resolution-left-bottom-div">
-                                    <CommandLineComponent func={this.onExecute} rows={18}/>
-                                </div>
+                                <label className="exercise-section-title-label">Statement:</label>
+                                <hr className="exercise-resolution-divider"/>
+                                <label className="common-label">
+                                    {this.state.exercises[0]["question"]}
+                                </label>
+                                <br/><br/><br/>
+                                <label className="common-label">Collection
+                                    name: {this.state.exercises[0]["collection_name"]}</label>
                             </div>
                             <div className="exercise-resolution-inner-div">
-                                <label className="common-label">Solution:</label>
+                                <label className="exercise-section-title-label">Status:</label>
+                                <hr className="exercise-resolution-divider"/>
+                                <div className="exercise-resolution-stats-inner-div-left">
+                                    <ReactCountdownClock seconds={180}
+                                                         color="#ffa54c"
+                                                         alpha={0.9}
+                                                         size={80}
+                                                         onComplete={this.onExerciseNotOvercomed}/>
+                                    <button className="btn btn-danger exercise-surrender-button"
+                                            id="surrenderButton" onClick={this.onExerciseNotOvercomed}>Surrender
+                                    </button>
+                                </div>
+                                <div className="exercise-resolution-stats-inner-div-right">
+                                    <label className="common-label">Attempt: 1/3</label>
+                                    <br/><br/><br/>
+                                    <label className="common-label">Total time: 3 minutes</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr className="exercise-resolution-divider"/>
+                        <div className="exercise-resolution-div">
+                            <div className="exercise-resolution-inner-div">
+                                <label className="exercise-section-title-label">Query:</label>
+                                <CommandLineComponent func={this.onExecute} rows={18}/>
+                            </div>
+                            <div className="exercise-resolution-inner-div">
+                                <label className="exercise-section-title-label">Solution:</label>
                                 <textarea readOnly={true} className="form-control query-text-area" id="queryOutput"
                                           rows={18}/>
                                 <button type="submit" className="btn btn-success common-button" id="submitButton">Submit
@@ -119,6 +152,6 @@ const ExerciseResolutionComponent = createReactClass({
             )
         }
     }
-});
+}
 
 export default ExerciseResolutionComponent;
