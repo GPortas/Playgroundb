@@ -25,7 +25,7 @@ class ExerciseResolutionComponent extends React.Component {
             success: function (output, status, xhr) {
                 const data = xhr.responseText;
                 const jsonResponse = $.parseJSON(data);
-                self.setState({exercises: jsonResponse["data"], seconds: 180});
+                self.setState({exercises: jsonResponse["data"]});
             },
             complete: function () {
             }
@@ -90,7 +90,7 @@ class ExerciseResolutionComponent extends React.Component {
     onExerciseNotOvercomed() {
         let exercises = this.state.exercises;
         exercises.shift();
-        this.setState({exercises: exercises, seconds: this.state.seconds + 0.0000001});
+        this.setState({exercises: exercises});
     }
 
     onExerciseOvercomed() {
@@ -98,7 +98,7 @@ class ExerciseResolutionComponent extends React.Component {
         //notify success
         let exercises = this.state.exercises;
         exercises.shift();
-        this.setState({exercises: exercises, seconds: this.state.seconds + 0.0000001});
+        this.setState({exercises: exercises});
     }
 
     render() {
@@ -122,7 +122,7 @@ class ExerciseResolutionComponent extends React.Component {
                                 <hr className="exercise-resolution-divider"/>
                                 <div className="exercise-resolution-stats-inner-div-left">
                                     <ReactCountdownClock ref="timer"
-                                                         seconds={this.state.seconds}
+                                                         seconds={this.state.exercises[0]["time"] + 0.0000001}
                                                          color="#ffa54c"
                                                          alpha={0.9}
                                                          size={80}

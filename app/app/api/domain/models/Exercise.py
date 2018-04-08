@@ -2,8 +2,9 @@ from app.api.domain.models.BaseModel import BaseModel
 
 
 class Exercise(BaseModel):
+    TIME_DEFAULT_VALUE = 180
 
-    def __init__(self, author, collection_name, question, solution, collection_data=None, _id=None):
+    def __init__(self, author, collection_name, question, solution, collection_data=None, _id=None, time=None):
         self.author = author
         self.collection_name = collection_name
         if collection_data is not None:
@@ -12,6 +13,10 @@ class Exercise(BaseModel):
             self._id = _id
         self.question = question
         self.solution = solution
+        if time is not None:
+            self.time = time
+        else:
+            self.time = self.TIME_DEFAULT_VALUE
 
     def get_id(self):
         return self._id
@@ -38,5 +43,6 @@ class Exercise(BaseModel):
     def from_json(json_source):
         exercise = Exercise(author=json_source["author"], collection_name=json_source["collection_name"]
                             , _id=json_source.get("_id"), question=json_source["question"],
-                            solution=json_source["solution"], collection_data=json_source.get("collection_data", None))
+                            solution=json_source["solution"], collection_data=json_source.get("collection_data", None),
+                            time=int(json_source.get("time")))
         return exercise

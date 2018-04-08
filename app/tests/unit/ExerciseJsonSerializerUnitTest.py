@@ -14,9 +14,9 @@ class ExerciseJsonSerializerUnitTest(unittest.TestCase):
     def test_toJsonDict_calledWithExercise_returnCorrectResult(self):
         source_exercise = Exercise(author="testauthor", _id=ObjectId("666f6f2d6261722d71757578"),
                                    collection_name='testcollection', collection_data='testdata',
-                                   question='testquestion', solution='testsolution')
+                                   question='testquestion', solution='testsolution', time=10)
         actual = self.sut.to_json_dict(source_exercise)
         expected = {"author": "testauthor", "_id": "666f6f2d6261722d71757578",
                     "collection_name": "testcollection",
-                    "question": "testquestion", "solution": "testsolution"}
+                    "question": "testquestion", "solution": "testsolution", "time": 10}
         self.assertEqual(actual, expected)
