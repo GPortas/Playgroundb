@@ -171,18 +171,18 @@ div.exercise-resolution-div {
 }
 
 button.exercise-surrender-button {
-    margin-top: 10%;
+    margin-top: 7%;
     font-size: 1.4em;
 }
 
 div.exercise-resolution-stats-inner-div-left {
     float: left;
-    width: 30%;
+    width: 20%;
 }
 
 div.exercise-resolution-stats-inner-div-right {
     float: left;
-    width: 70%;
+    width: 80%;
 }
 
 div.exercise-resolution-inner-div {
