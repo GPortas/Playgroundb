@@ -9,7 +9,7 @@ from app.api.domain.models.User import User
 from app.api.domain.services.AuthService import AuthService
 from app.api.domain.services.ExerciseService import ExerciseService
 from app.api.domain.services.QueryExecutionService import QueryExecutionService
-from app.api.domain.services.SolutionService import SolutionService
+from app.api.domain.services.ValidationService import ValidationService
 from app.api.domain.services.UserFormatService import UserFormatService
 from app.api.domain.services.UserService import UserService
 from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
@@ -153,7 +153,7 @@ class ExerciseValidationViewSet(BaseViewSet):
     # todo: permissions
     def __init__(self, solution_service=None, *args, **kwargs):
         if solution_service is None:
-            self.__solution_service = SolutionService()
+            self.__solution_service = ValidationService()
         else:
             self.__solution_service = solution_service
         super(ExerciseValidationViewSet, self).__init__(ExerciseValidationJsonSerializer(), *args, **kwargs)
@@ -210,3 +210,6 @@ class QueryExecutionViewSet(BaseViewSet):
                                                            raw_query,
                                                            exercise_id,
                                                            message='query executed')
+
+class ExerciseResultViewSet(BaseViewSet):
+    pass

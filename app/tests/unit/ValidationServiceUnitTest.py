@@ -1,11 +1,9 @@
-import json
 import unittest
 from unittest import mock
 
 from ddt import data, ddt
 
-from app.api.domain.models.Exercise import Exercise
-from app.api.domain.services.SolutionService import SolutionService
+from app.api.domain.services.ValidationService import ValidationService
 from app.api.domain.services.data.query.IExerciseQueryRepository import IExerciseQueryRepository
 from app.api.domain.services.data.query.errors.QueryError import QueryError
 from app.api.domain.services.data.query.errors.ResourceNotFoundQueryError import ResourceNotFoundQueryError
@@ -14,11 +12,11 @@ from app.api.domain.services.errors.ServiceError import ServiceError
 
 
 @ddt
-class SolutionServiceUnitTest(unittest.TestCase):
+class ValidationServiceUnitTest(unittest.TestCase):
 
     def setUp(self):
         self.stub_exercise_query_repository = mock.Mock(spec=IExerciseQueryRepository)
-        self.sut = SolutionService(self.stub_exercise_query_repository)
+        self.sut = ValidationService(self.stub_exercise_query_repository)
 
     @data(
         {'exercise_id': None, 'answer': 'testanswer'},

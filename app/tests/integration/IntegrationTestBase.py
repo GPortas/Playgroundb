@@ -2,6 +2,7 @@ import unittest
 
 from tests.integration.fixtures.ExerciseFixture import *
 from tests.integration.fixtures.UserFixture import *
+from tests.integration.fixtures.ExerciseEvaluationFixture import *
 
 
 class IntegrationTestBase(unittest.TestCase):

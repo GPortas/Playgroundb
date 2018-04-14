@@ -10,7 +10,7 @@ from app.api.domain.services.errors.ServiceError import ServiceError
 from app.api.domain.services.factories.ExerciseQueryRepositoryFactory import ExerciseQueryRepositoryFactory
 
 
-class SolutionService:
+class ValidationService:
 
     def __init__(self, exercise_query_repository=None):
         if exercise_query_repository is not None:

@@ -14,7 +14,7 @@ class Exercise(BaseModel):
         self.question = question
         self.solution = solution
         if time is not None:
-            self.time = time
+            self.time = int(time)
         else:
             self.time = self.TIME_DEFAULT_VALUE
 
@@ -42,7 +42,7 @@ class Exercise(BaseModel):
     @staticmethod
     def from_json(json_source):
         exercise = Exercise(author=json_source["author"], collection_name=json_source["collection_name"]
-                            , _id=json_source.get("_id"), question=json_source["question"],
+                            ,_id=json_source.get("_id"), question=json_source["question"],
                             solution=json_source["solution"], collection_data=json_source.get("collection_data", None),
-                            time=int(json_source.get("time")))
+                            time=(json_source.get("time")))
         return exercise

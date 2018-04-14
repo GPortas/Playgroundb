@@ -5,6 +5,7 @@ from tests.integration.IntegrationTestBase import IntegrationTestBase
 
 from tests.integration.fixtures.ExerciseFixture import *
 from tests.integration.fixtures.UserFixture import *
+from tests.integration.fixtures.ExerciseEvaluationFixture import *
 
 
 class PdbMongoIntegrationTestBase(IntegrationTestBase):
