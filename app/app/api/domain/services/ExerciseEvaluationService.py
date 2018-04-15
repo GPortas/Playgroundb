@@ -1,5 +1,7 @@
 from app.api.domain.services.data.command.errors.CommandError import CommandError
 from app.api.domain.services.data.query.errors.QueryError import QueryError
+from app.api.domain.services.data.query.errors.ResourceNotFoundQueryError import ResourceNotFoundQueryError
+from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
 from app.api.domain.services.errors.ServiceError import ServiceError
 from app.api.domain.services.factories.ExerciseEvaluationCommandRepositoryFactory import \
     ExerciseEvaluationCommandRepositoryFactory
@@ -40,12 +42,9 @@ class ExerciseEvaluationService:
         except CommandError as ce:
             raise ServiceError(str(ce))
 
-    def increment_exercise_evaluation_attempts(self, user_id, exercise_id):
-        if user_id is None:
-            raise ValueError('user_id cannot be None')
-        if exercise_id is None:
-            raise ValueError('exercise_id cannot be None')
-        exercise_evaluation = self.get_exercise_evaluation(user_id, exercise_id)
+    def increment_exercise_evaluation_attempts(self, exercise_evaluation):
+        if exercise_evaluation is None:
+            raise ValueError('Exercise evaluation cannot be None')
         try:
             self.__exercise_evaluation_command_repository.increment_exercise_evaluation_attempts(
                 exercise_evaluation=exercise_evaluation)

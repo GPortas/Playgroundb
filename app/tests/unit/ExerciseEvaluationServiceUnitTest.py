@@ -49,14 +49,11 @@ class ExerciseEvaluationServiceUnitTest(unittest.TestCase):
         self.assertRaises(ServiceError, self.sut.create_exercise_evaluation,
                           exercise_evaluation=self.__get_exercise_evaluation_test_instance())
 
-    def test_incrementExerciseEvaluationAttempts_calledWithNoneUserId_raiseValueError(self):
-        self.assertRaises(ValueError, self.sut.increment_exercise_evaluation_attempts, None, 'exercise_id')
-
-    def test_incrementExerciseEvaluationAttempts_calledWithNoneExerciseId_raiseValueError(self):
-        self.assertRaises(ValueError, self.sut.increment_exercise_evaluation_attempts, 'user_id', None)
+    def test_incrementExerciseEvaluationAttempts_calledWithNoneExerciseEvaluation_raiseValueError(self):
+        self.assertRaises(ValueError, self.sut.increment_exercise_evaluation_attempts, None)
 
     def test_incrementExerciseEvaluationAttempts_calledWithParams_innerCommandRepositoryCalledOnce(self):
-        self.sut.increment_exercise_evaluation_attempts('user_id', 'exercise_id')
+        self.sut.increment_exercise_evaluation_attempts(self.__get_exercise_evaluation_test_instance())
         actual = self.stub_exercise_evaluation_command_repository.increment_exercise_evaluation_attempts.call_count
         self.assertEqual(actual, 1)
 
@@ -64,7 +61,7 @@ class ExerciseEvaluationServiceUnitTest(unittest.TestCase):
             self):
         self.stub_exercise_evaluation_command_repository.increment_exercise_evaluation_attempts.side_effect = CommandError()
         self.assertRaises(ServiceError, self.sut.increment_exercise_evaluation_attempts,
-                          'user_id', 'exercise_id')
+                          self.__get_exercise_evaluation_test_instance())
 
     def test_updateExerciseEvaluationAsSolved_calledWithNoneUserId_raiseValueError(self):
         self.assertRaises(ValueError, self.sut.update_exercise_evaluation_as_solved, None, 'exercise_id', 200)

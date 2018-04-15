@@ -12,9 +12,10 @@ class ExerciseResolutionComponent extends React.Component {
         this.onExerciseNotOvercomed = this.onExerciseNotOvercomed.bind(this);
         this.onExerciseOvercomed = this.onExerciseOvercomed.bind(this);
         this.onExecute = this.onExecute.bind(this);
+        this.loadExercises = this.loadExercises.bind(this);
     }
 
-    componentWillMount() {
+    loadExercises() {
         const self = this;
         $.ajax({
             url: "http://127.0.0.1:8000/exercises/",
@@ -31,6 +32,10 @@ class ExerciseResolutionComponent extends React.Component {
             }
             //todo: Errors treatment!
         });
+    }
+
+    componentWillMount() {
+        this.loadExercises()
     }
 
     componentDidUpdate() {
@@ -114,7 +119,11 @@ class ExerciseResolutionComponent extends React.Component {
             success: function () {
                 let exercises = self.state.exercises;
                 exercises.shift();
-                self.setState({exercises: exercises});
+                if (exercises.length > 0) {
+                    self.setState({exercises: exercises});
+                } else {
+                    self.loadExercises();
+                }
             },
             complete: function () {
                 $('#executeQueryButton').attr('disabled', false);
@@ -179,7 +188,8 @@ class ExerciseResolutionComponent extends React.Component {
         } else {
             // todo: Show loading
             return (
-                <div>
+                <div className="common-div">
+                    <label className="exercise-section-title-label">We do not have new exercises for you :(<br/><br/>But you can come back later to check if new ones have been uploaded :)</label>
                 </div>
             )
         }

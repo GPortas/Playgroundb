@@ -3,6 +3,7 @@ from bson import ObjectId
 from app.api.data.PdbMongoBaseRepository import PdbMongoBaseRepository
 from app.api.domain.models.ExerciseEvaluation import ExerciseEvaluation
 from app.api.domain.services.data.query.IExerciseEvaluationQueryRepository import IExerciseEvaluationQueryRepository
+from app.api.domain.services.data.query.errors.ResourceNotFoundQueryError import ResourceNotFoundQueryError
 from app.configuration import settings
 
 

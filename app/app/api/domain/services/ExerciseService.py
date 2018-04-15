@@ -52,16 +52,16 @@ class ExerciseService:
         if user_id is None:
             raise ValueError('user id cannot be None')
         exercises_list = self.__exercise_query_repository.get_exercises_list()
+        unsolved_exercises_list = []
         for exercise in exercises_list:
             exercise_evaluation = self.__exercise_evaluation_service.get_exercise_evaluation(user_id=user_id,
                                                                                              exercise_id=exercise.get_id())
             if exercise_evaluation is not None:
-                if exercise_evaluation.get_status() == ExerciseEvaluation.STATUS_SOLVED:
-                    exercises_list.remove(exercise)
-                elif exercise_evaluation.get_status() == ExerciseEvaluation.STATUS_UNSOLVED:
-                    self.__exercise_evaluation_service.increment_exercise_evaluation_attempts(user_id=user_id,
-                                                                                              exercise_id=exercise.get_id())
+                if exercise_evaluation.get_status() == ExerciseEvaluation.STATUS_UNSOLVED:
+                    self.__exercise_evaluation_service.increment_exercise_evaluation_attempts(exercise_evaluation)
+                    unsolved_exercises_list.append(exercise)
             else:
                 self.__exercise_evaluation_service.create_exercise_evaluation(
                     ExerciseEvaluation(user_id, exercise.get_id()))
-        return exercises_list
+                unsolved_exercises_list.append(exercise)
+        return unsolved_exercises_list
