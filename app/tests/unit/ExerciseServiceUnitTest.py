@@ -47,9 +47,12 @@ class ExerciseServiceUnitTest(unittest.TestCase):
         self.stub_exercise_command_repository.create_exercise.side_effect = CommandError()
         self.assertRaises(ServiceError, self.sut.create_exercise, exercise=self.__get_exercise_test_instance())
 
-    def test_getAllExercises_called_correctCallToInnerQueryRepository(self):
-        self.sut.get_all_exercises()
-        self.stub_exercise_query_repository.get_all_exercises.assert_called_once_with()
+    def test_getUnsolvedExercisesByUserId_called_correctCallToInnerQueryRepository(self):
+        self.stub_exercise_query_repository.get_exercises_list.return_value = []
+        self.sut.get_unsolved_exercises_by_user_id('fake')
+        self.stub_exercise_query_repository.get_exercises_list.assert_called_once_with()
+
+    #TODO: MORE TESTS FOR THIS METHOD
 
     def __get_exercise_test_instance(self):
         return Exercise(author='fakeauthor', collection_name='testcollection', collection_data='testdata',

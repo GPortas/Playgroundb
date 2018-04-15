@@ -51,7 +51,12 @@ class ExerciseResolutionComponent extends React.Component {
                 success: function (output, status, xhr) {
                     const data = xhr.responseText;
                     const jsonResponse = $.parseJSON(data);
-                    window.alert(jsonResponse["data"]["is_correct"]);
+                    if (jsonResponse["data"]["is_correct"]) {
+                        self.onExerciseOvercomed()
+                    }
+                    else {
+                        window.alert("bye")
+                    }
                 },
                 complete: function () {
                     $('#submitButton').attr('disabled', false);
@@ -94,11 +99,28 @@ class ExerciseResolutionComponent extends React.Component {
     }
 
     onExerciseOvercomed() {
-        const totalTime = this.refs.timer._seconds;
-        //notify success
-        let exercises = this.state.exercises;
-        exercises.shift();
-        this.setState({exercises: exercises});
+        const timeLeft = this.refs.timer._seconds;
+        var formData = {
+            "time_left": timeLeft,
+            "exercise_id": this.state.exercises[0]["_id"]
+        };
+        const self = this;
+        $.ajax({
+            url: "http://127.0.0.1:8000/evaluations/update-as-solved/",
+            type: 'post',
+            dataType: 'json',
+            data: formData,
+            headers: generateAuthHeader(),
+            success: function () {
+                let exercises = self.state.exercises;
+                exercises.shift();
+                self.setState({exercises: exercises});
+            },
+            complete: function () {
+                $('#executeQueryButton').attr('disabled', false);
+            }
+            //todo: Errors treatment!
+        });
     }
 
     render() {

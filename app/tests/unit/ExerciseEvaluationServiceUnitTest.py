@@ -36,11 +36,6 @@ class ExerciseEvaluationServiceUnitTest(unittest.TestCase):
         self.stub_exercise_evaluation_query_repository.get_exercise_evaluation.side_effect = QueryError()
         self.assertRaises(ServiceError, self.sut.get_exercise_evaluation, 'fake', 'fake')
 
-    def test_getExerciseEvaluation_calledWithQueryRepositoryWhichThrowsResourceNotFoundQueryError_throwResourceNotFoundServiceError(
-            self):
-        self.stub_exercise_evaluation_query_repository.get_exercise_evaluation.side_effect = ResourceNotFoundQueryError()
-        self.assertRaises(ResourceNotFoundServiceError, self.sut.get_exercise_evaluation, 'fake', 'fake')
-
     def test_createExerciseEvaluation_calledWithNoneExerciseEvaluation_raiseValueError(self):
         self.assertRaises(ValueError, self.sut.create_exercise_evaluation, None)
 
@@ -77,7 +72,7 @@ class ExerciseEvaluationServiceUnitTest(unittest.TestCase):
     def test_updateExerciseEvaluationAsSolved_calledWithNoneExerciseId_raiseValueError(self):
         self.assertRaises(ValueError, self.sut.update_exercise_evaluation_as_solved, 'user_id', None, 200)
 
-    def test_updateExerciseEvaluationAsSolved_calledWithNoneLeftoverTime_raiseValueError(self):
+    def test_updateExerciseEvaluationAsSolved_calledWithNoneTimeLeft_raiseValueError(self):
         self.assertRaises(ValueError, self.sut.update_exercise_evaluation_as_solved, 'user_id', 'exercise_id', None)
 
     def test_updateExerciseEvaluationAsSolved_calledWithCommandRepositoryWhichThrowsCommandError_throwServiceError(

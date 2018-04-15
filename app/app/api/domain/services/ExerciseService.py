@@ -1,3 +1,5 @@
+from app.api.domain.models.ExerciseEvaluation import ExerciseEvaluation
+from app.api.domain.services.ExerciseEvaluationService import ExerciseEvaluationService
 from app.api.domain.services.data.command.errors.CommandError import CommandError
 from app.api.domain.services.data.query.errors.QueryError import QueryError
 from app.api.domain.services.data.query.errors.ResourceNotFoundQueryError import ResourceNotFoundQueryError
@@ -9,7 +11,8 @@ from app.api.domain.services.factories.ExerciseQueryRepositoryFactory import Exe
 
 class ExerciseService:
 
-    def __init__(self, exercise_query_repository=None, exercise_command_repository=None):
+    def __init__(self, exercise_query_repository=None, exercise_command_repository=None,
+                 exercise_evaluation_service=None):
         if exercise_query_repository is not None:
             self.__exercise_query_repository = exercise_query_repository
         else:
@@ -21,6 +24,11 @@ class ExerciseService:
         else:
             exercise_command_repository_factory = ExerciseCommandRepositoryFactory()
             self.__exercise_command_repository = exercise_command_repository_factory.create_exercise_command_repository()
+
+        if exercise_evaluation_service is not None:
+            self.__exercise_evaluation_service = exercise_evaluation_service
+        else:
+            self.__exercise_evaluation_service = ExerciseEvaluationService()
 
     def create_exercise(self, exercise):
         if exercise is None:
@@ -40,5 +48,20 @@ class ExerciseService:
         except QueryError as qe:
             raise ServiceError(str(qe))
 
-    def get_all_exercises(self):
-        return self.__exercise_query_repository.get_all_exercises()
+    def get_unsolved_exercises_by_user_id(self, user_id):
+        if user_id is None:
+            raise ValueError('user id cannot be None')
+        exercises_list = self.__exercise_query_repository.get_exercises_list()
+        for exercise in exercises_list:
+            exercise_evaluation = self.__exercise_evaluation_service.get_exercise_evaluation(user_id=user_id,
+                                                                                             exercise_id=exercise.get_id())
+            if exercise_evaluation is not None:
+                if exercise_evaluation.get_status() == ExerciseEvaluation.STATUS_SOLVED:
+                    exercises_list.remove(exercise)
+                elif exercise_evaluation.get_status() == ExerciseEvaluation.STATUS_UNSOLVED:
+                    self.__exercise_evaluation_service.increment_exercise_evaluation_attempts(user_id=user_id,
+                                                                                              exercise_id=exercise.get_id())
+            else:
+                self.__exercise_evaluation_service.create_exercise_evaluation(
+                    ExerciseEvaluation(user_id, exercise.get_id()))
+        return exercises_list

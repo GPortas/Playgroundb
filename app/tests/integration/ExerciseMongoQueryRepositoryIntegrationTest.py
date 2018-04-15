@@ -20,8 +20,8 @@ class ExerciseMongoQueryRepositoryIntegrationTest(PdbMongoIntegrationTestBase):
         self.assertRaises(ResourceNotFoundQueryError, self.sut.get_exercise_by_id,
                           exercise_id='4d128b6ea794fc13a8000009')
 
-    def test_getAllExercises_called_returnCorrectResult(self):
-        actual = self.sut.get_all_exercises()
+    def test_getExercisesList_called_returnCorrectResult(self):
+        actual = self.sut.get_exercises_list(limit=3)
         actual_map = list(map(lambda x: x.get_question(), actual))
-        expected = ['fakequestion_1', 'fakequestion_2', 'fakequestion_3', 'fakequestion_4']
+        expected = ['fakequestion_1', 'fakequestion_2', 'fakequestion_3']
         self.assertEqual(actual_map, expected)

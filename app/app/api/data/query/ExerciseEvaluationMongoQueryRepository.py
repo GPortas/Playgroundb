@@ -3,7 +3,6 @@ from bson import ObjectId
 from app.api.data.PdbMongoBaseRepository import PdbMongoBaseRepository
 from app.api.domain.models.ExerciseEvaluation import ExerciseEvaluation
 from app.api.domain.services.data.query.IExerciseEvaluationQueryRepository import IExerciseEvaluationQueryRepository
-from app.api.domain.services.data.query.errors.ResourceNotFoundQueryError import ResourceNotFoundQueryError
 from app.configuration import settings
 
 
@@ -23,5 +22,4 @@ class ExerciseEvaluationMongoQueryRepository(IExerciseEvaluationQueryRepository,
             exercise = ExerciseEvaluation.from_json(query_result)
             return exercise
         else:
-            raise ResourceNotFoundQueryError(
-                "Exercise evaluation with user_id " + user_id + " and exercise_id " + exercise_id + " not found")
+            return None

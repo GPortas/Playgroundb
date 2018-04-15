@@ -16,6 +16,8 @@ class ExerciseMongoQueryRepository(IExerciseQueryRepository, PdbMongoBaseReposit
                             'collection_data': 1,
                             'time': 1}
 
+    ITEM_LIST_RETURNED_LIMIT = 20
+
     def __init__(self):
         super(ExerciseMongoQueryRepository, self).__init__(
             connection_uri=settings.PDB_MONGO_CONNECTION_PROPS['CONNECTION_URI'],
@@ -28,8 +30,8 @@ class ExerciseMongoQueryRepository(IExerciseQueryRepository, PdbMongoBaseReposit
         else:
             return Exercise.from_json(query_result)
 
-    def get_all_exercises(self):
-        result = self.db.exercises.find({})
+    def get_exercises_list(self, limit=ITEM_LIST_RETURNED_LIMIT):
+        result = self.db.exercises.find({}).limit(limit)
         return_result = []
         for doc in result:
             return_result.append(Exercise.from_json(doc))

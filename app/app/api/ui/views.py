@@ -7,6 +7,7 @@ from app.api.domain.models.BaseModel import BaseModel
 from app.api.domain.models.Exercise import Exercise
 from app.api.domain.models.User import User
 from app.api.domain.services.AuthService import AuthService
+from app.api.domain.services.ExerciseEvaluationService import ExerciseEvaluationService
 from app.api.domain.services.ExerciseService import ExerciseService
 from app.api.domain.services.QueryExecutionService import QueryExecutionService
 from app.api.domain.services.ValidationService import ValidationService
@@ -15,6 +16,7 @@ from app.api.domain.services.UserService import UserService
 from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
 from app.api.domain.services.wrappers.mongo.MongoWrapper import MongoWrapper
 from app.api.ui.utils.enums import ResponseType
+from app.api.ui.utils.serializers.BaseJsonSerializer import BaseJsonSerializer
 from app.api.ui.utils.serializers.ExerciseJsonSerializer import ExerciseJsonSerializer
 from app.api.ui.utils.serializers.ExerciseValidationJsonSerializer import ExerciseValidationJsonSerializer
 from app.api.ui.utils.serializers.QueryExecutionJsonSerializer import QueryExecutionJsonSerializer
@@ -145,7 +147,8 @@ class ExerciseViewSet(BaseViewSet):
     def list(self, request):
         if request.pdbuser is None:
             return self._create_generic_response(response_type=ResponseType.authentication_error)
-        return self._create_response_by_inner_service_call(self.__exercise_service.get_all_exercises,
+        return self._create_response_by_inner_service_call(self.__exercise_service.get_unsolved_exercises_by_user_id,
+                                                           request.pdbuser.get_id(),
                                                            message='exercises retrieved')
 
 
@@ -211,5 +214,28 @@ class QueryExecutionViewSet(BaseViewSet):
                                                            exercise_id,
                                                            message='query executed')
 
-class ExerciseResultViewSet(BaseViewSet):
-    pass
+
+class ExerciseEvaluationViewSet(BaseViewSet):
+    def __init__(self, exercise_evaluation_service=None, *args, **kwargs):
+        if exercise_evaluation_service is not None:
+            self.__exercise_evaluation_service = exercise_evaluation_service
+        else:
+            self.__exercise_evaluation_service = ExerciseEvaluationService()
+        super(ExerciseEvaluationViewSet, self).__init__(BaseJsonSerializer(), *args, **kwargs)
+
+    @list_route(methods=['POST'], url_path='update-as-solved')
+    def update_as_solved(self, request):
+        user = request.pdbuser
+        if user is None:
+            return self._create_generic_response(response_type=ResponseType.authentication_error)
+        try:
+            exercise_id = request.data["exercise_id"]
+            time_left = request.data["time_left"]
+        except Exception as e:
+            return self._create_generic_response(response_type=ResponseType.server_error, exception=e)
+        return self._create_response_by_inner_service_call(
+            self.__exercise_evaluation_service.update_exercise_evaluation_as_solved,
+            user.get_id(),
+            exercise_id,
+            time_left,
+            message='query executed')
