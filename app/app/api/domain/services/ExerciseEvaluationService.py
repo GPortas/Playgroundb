@@ -1,7 +1,6 @@
+from app.api.domain.services.UserService import UserService
 from app.api.domain.services.data.command.errors.CommandError import CommandError
 from app.api.domain.services.data.query.errors.QueryError import QueryError
-from app.api.domain.services.data.query.errors.ResourceNotFoundQueryError import ResourceNotFoundQueryError
-from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
 from app.api.domain.services.errors.ServiceError import ServiceError
 from app.api.domain.services.factories.ExerciseEvaluationCommandRepositoryFactory import \
     ExerciseEvaluationCommandRepositoryFactory
@@ -10,7 +9,8 @@ from app.api.domain.services.factories.ExerciseEvaluationQueryRepositoryFactory 
 
 
 class ExerciseEvaluationService:
-    def __init__(self, exercise_evaluation_query_repository=None, exercise_evaluation_command_repository=None):
+    def __init__(self, exercise_evaluation_query_repository=None, exercise_evaluation_command_repository=None,
+                 user_service=None):
         if exercise_evaluation_query_repository is not None:
             self.__exercise_evaluation_query_repository = exercise_evaluation_query_repository
         else:
@@ -22,6 +22,11 @@ class ExerciseEvaluationService:
         else:
             exercise_evaluation_command_repository_factory = ExerciseEvaluationCommandRepositoryFactory()
             self.__exercise_evaluation_command_repository = exercise_evaluation_command_repository_factory.create_exercise_evaluation_command_repository()
+
+        if user_service is not None:
+            self.__user_service = user_service
+        else:
+            self.__user_service = UserService()
 
     def get_exercise_evaluation(self, user_id, exercise_id):
         if user_id is None:
@@ -63,6 +68,7 @@ class ExerciseEvaluationService:
         try:
             self.__exercise_evaluation_command_repository.update_exercise_evaluation_as_solved(exercise_evaluation,
                                                                                                score)
+            self.__user_service.increment_user_score(user_id, score)
         except CommandError as ce:
             raise ServiceError(str(ce))
 

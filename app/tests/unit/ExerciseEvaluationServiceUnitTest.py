@@ -3,6 +3,7 @@ from unittest import mock
 
 from app.api.domain.models.ExerciseEvaluation import ExerciseEvaluation
 from app.api.domain.services.ExerciseEvaluationService import ExerciseEvaluationService
+from app.api.domain.services.UserService import UserService
 from app.api.domain.services.data.command.IExerciseEvaluationCommandRepository import \
     IExerciseEvaluationCommandRepository
 from app.api.domain.services.data.command.errors.CommandError import CommandError
@@ -18,8 +19,10 @@ class ExerciseEvaluationServiceUnitTest(unittest.TestCase):
     def setUp(self):
         self.stub_exercise_evaluation_query_repository = mock.Mock(spec=IExerciseEvaluationQueryRepository)
         self.stub_exercise_evaluation_command_repository = mock.Mock(spec=IExerciseEvaluationCommandRepository)
+        self.stub_user_service = mock.Mock(spec=UserService)
         self.sut = ExerciseEvaluationService(self.stub_exercise_evaluation_query_repository,
-                                             self.stub_exercise_evaluation_command_repository)
+                                             self.stub_exercise_evaluation_command_repository,
+                                             self.stub_user_service)
 
     def test_getExerciseEvaluation_calledWithNoneUserId_raiseValueError(self):
         self.assertRaises(ValueError, self.sut.get_exercise_evaluation, None, 'exercise_id')
@@ -83,6 +86,12 @@ class ExerciseEvaluationServiceUnitTest(unittest.TestCase):
         self.stub_exercise_evaluation_query_repository.get_exercise_evaluation.return_value = self.__get_exercise_evaluation_test_instance()
         self.sut.update_exercise_evaluation_as_solved('user_id', 'exercise_id', 200)
         actual = self.stub_exercise_evaluation_command_repository.update_exercise_evaluation_as_solved.call_count
+        self.assertEqual(actual, 1)
+
+    def test_updateExerciseEvaluationAsSolved_calledWithParams_innerUserServiceCalledOnce(self):
+        self.stub_exercise_evaluation_query_repository.get_exercise_evaluation.return_value = self.__get_exercise_evaluation_test_instance()
+        self.sut.update_exercise_evaluation_as_solved('user_id', 'exercise_id', 200)
+        actual = self.stub_user_service.increment_user_score.call_count
         self.assertEqual(actual, 1)
 
     def __get_exercise_evaluation_test_instance(self):

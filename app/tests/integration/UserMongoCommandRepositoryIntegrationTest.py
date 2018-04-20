@@ -35,6 +35,16 @@ class UserMongoCommandRepositoryIntegrationTest(PdbMongoIntegrationTestBase):
         self.sut.create_user(user)
         self.assertRaises(CommandError, self.sut.create_user, user)
 
+    def test_incrementUserScore_calledWithExistentUserId_userScoreCorrectlyIncremented(self):
+        test_id = ObjectId("5aae93045b488007cb4af590")
+        self.db.users.insert_one(
+            {"email": "student@test.com", "password": "testpwd", "nickname": "jimmy", "role": "student",
+             "_id": test_id, "score": 400})
+        self.sut.increment_user_score(test_id, 30)
+        expected = 430
+        actual = User.from_json(self.db.users.find_one({"_id": test_id})).get_score()
+        self.assertEqual(actual, expected)
+
     def __get_user_test_instance(self):
         return User(_id=ObjectId("666f6f2d6261722d71757578"), email="testuser@test.com", password="testpwd",
                     role="master", nickname="testnickname")

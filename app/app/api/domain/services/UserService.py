@@ -52,3 +52,13 @@ class UserService:
                 raise ServiceError(str(ce))
             except QueryError as qe:
                 raise ServiceError(str(qe))
+
+    def increment_user_score(self, user_id, score):
+        if user_id is None:
+            raise ValueError('user_id cannot be None')
+        if score is None:
+            raise ValueError('score cannot be None')
+        try:
+            self.__user_command_repository.increment_user_score(user_id, score)
+        except CommandError as ce:
+            raise ServiceError(str(ce))

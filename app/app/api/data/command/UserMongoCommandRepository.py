@@ -19,3 +19,9 @@ class UserMongoCommandRepository(PdbMongoBaseRepository, IUserCommandRepository)
             self.db.users.insert_one(user.to_json_dict())
         except Exception as e:
             raise CommandError(str(e))
+
+    def increment_user_score(self, user_id, score):
+        try:
+            self.db.users.update_one({"_id": user_id}, {"$inc": {"score": score}})
+        except Exception as e:
+            raise CommandError(str(e))

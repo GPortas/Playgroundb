@@ -165,9 +165,12 @@ class ExerciseValidationViewSet(BaseViewSet):
         if request.pdbuser is None:
             return self._create_generic_response(response_type=ResponseType.authentication_error)
         answer = request.data["answer"]
-        exercise_id = request.data["id"]
+        exercise_id = request.data["exercise_id"]
+        time_left = request.data["time_left"]
         return self._create_response_by_inner_service_call(self.__solution_service.validate_answer,
+                                                           user_id=request.pdbuser.get_id(),
                                                            exercise_id=exercise_id,
+                                                           time_left=time_left,
                                                            answer=answer,
                                                            message='exercise answer validated')
 
@@ -213,29 +216,3 @@ class QueryExecutionViewSet(BaseViewSet):
                                                            raw_query,
                                                            exercise_id,
                                                            message='query executed')
-
-
-class ExerciseEvaluationViewSet(BaseViewSet):
-    def __init__(self, exercise_evaluation_service=None, *args, **kwargs):
-        if exercise_evaluation_service is not None:
-            self.__exercise_evaluation_service = exercise_evaluation_service
-        else:
-            self.__exercise_evaluation_service = ExerciseEvaluationService()
-        super(ExerciseEvaluationViewSet, self).__init__(BaseJsonSerializer(), *args, **kwargs)
-
-    @list_route(methods=['POST'], url_path='update-as-solved')
-    def update_as_solved(self, request):
-        user = request.pdbuser
-        if user is None:
-            return self._create_generic_response(response_type=ResponseType.authentication_error)
-        try:
-            exercise_id = request.data["exercise_id"]
-            time_left = request.data["time_left"]
-        except Exception as e:
-            return self._create_generic_response(response_type=ResponseType.server_error, exception=e)
-        return self._create_response_by_inner_service_call(
-            self.__exercise_evaluation_service.update_exercise_evaluation_as_solved,
-            user.get_id(),
-            exercise_id,
-            time_left,
-            message='query executed')

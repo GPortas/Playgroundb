@@ -74,5 +74,22 @@ class UserServiceUnitTest(unittest.TestCase):
         self.stub_user_query_repository.get_user_by_email.return_value = None
         self.assertRaises(ServiceError, self.sut.create_user, self.__get_user_test_instance())
 
+    @data(
+        {'user_id': None, 'score': 10},
+        {'user_id': 'testid', 'score': None},
+    )
+    def test_incrementUserScore_calledWithNoneParams_raiseValueError(self, input):
+        self.assertRaises(ValueError, self.sut.increment_user_score,
+                          user_id=input['user_id'], score=input['score'])
+
+    def test_incrementUserScore_calledWithCommandRepositoryWhichRaisesCommandError_raiseServiceError(self):
+        self.stub_user_command_repository.increment_user_score.side_effect = CommandError()
+        self.assertRaises(ServiceError, self.sut.increment_user_score, user_id='test', score=10)
+
+    def test_incrementUserScore_calledWithValidParams_innerCommandRepositoryCalledWithValidParams(self):
+        self.sut.increment_user_score('test', 10)
+        self.stub_user_command_repository.increment_user_score.assert_called_once_with('test',
+                                                                                       10)
+
     def __get_user_test_instance(self):
         return User("fakeemail1@test.com", "pwdpwdpwd", "master", "testnickname")

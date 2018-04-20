@@ -40,11 +40,14 @@ class ExerciseResolutionComponent extends React.Component {
 
     componentDidUpdate() {
         const self = this;
-        $("#submitButton").click(function () {
+        $("#submitButton").unbind("click").click(function () {
+            $('#submitButton').attr('disabled', true);
+            const timeLeft = self.refs.timer._seconds;
             const queryOutput = $('#queryOutput').val();
             var formData = {
-                "id": self.state.exercises[0]["_id"],
+                "exercise_id": self.state.exercises[0]["_id"],
                 "answer": queryOutput,
+                "time_left": timeLeft,
             }
             $.ajax({
                 url: "http://127.0.0.1:8000/validations/",
@@ -60,7 +63,7 @@ class ExerciseResolutionComponent extends React.Component {
                         self.onExerciseOvercomed()
                     }
                     else {
-                        window.alert("bye")
+                        window.alert("failure")
                     }
                 },
                 complete: function () {
@@ -104,32 +107,13 @@ class ExerciseResolutionComponent extends React.Component {
     }
 
     onExerciseOvercomed() {
-        const timeLeft = this.refs.timer._seconds;
-        var formData = {
-            "time_left": timeLeft,
-            "exercise_id": this.state.exercises[0]["_id"]
-        };
-        const self = this;
-        $.ajax({
-            url: "http://127.0.0.1:8000/evaluations/update-as-solved/",
-            type: 'post',
-            dataType: 'json',
-            data: formData,
-            headers: generateAuthHeader(),
-            success: function () {
-                let exercises = self.state.exercises;
-                exercises.shift();
-                if (exercises.length > 0) {
-                    self.setState({exercises: exercises});
-                } else {
-                    self.loadExercises();
-                }
-            },
-            complete: function () {
-                $('#executeQueryButton').attr('disabled', false);
-            }
-            //todo: Errors treatment!
-        });
+        let exercises = this.state.exercises;
+        exercises.shift();
+        if (exercises.length > 0) {
+            this.setState({exercises: exercises});
+        } else {
+            this.loadExercises();
+        }
     }
 
     render() {

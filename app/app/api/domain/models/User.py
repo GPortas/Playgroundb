@@ -5,7 +5,7 @@ class User(BaseModel):
     ROLE_MASTER = "master"
     ROLE_STUDENT = "student"
 
-    def __init__(self, email, password, role, nickname, _id=None, authtoken=None):
+    def __init__(self, email, password, role, nickname, _id=None, authtoken=None, score=None):
         if _id is not None:
             self._id = _id
         self.email = email.lower()
@@ -13,6 +13,10 @@ class User(BaseModel):
         self.nickname = nickname
         self.role = role
         self.authtoken = authtoken
+        if score is not None:
+            self.score = score
+        else:
+            self.score = 0
 
     def get_id(self):
         return self._id
@@ -32,11 +36,15 @@ class User(BaseModel):
     def get_role(self):
         return self.role
 
+    def get_score(self):
+        return self.score
+
     @staticmethod
     def from_json(json_source):
         user = User(email=json_source["email"], _id=json_source.get("_id"),
                     password=json_source["password"],
                     role=json_source["role"],
                     nickname=json_source["nickname"],
-                    authtoken=json_source.get("authtoken"))
+                    authtoken=json_source.get("authtoken"),
+                    score=json_source.get("score"))
         return user
