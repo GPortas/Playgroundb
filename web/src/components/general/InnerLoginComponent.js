@@ -6,7 +6,7 @@ import {encryptCookieName, validateEmail, validatePassword} from "../../utils/ut
 
 var React = require('react');
 
-const maximumAuthTokenCookieAge = 3600;
+const maximumAuthTokenCookieAge = 10*3600;
 
 class InnerLoginComponent extends Component {
     constructor(props) {
