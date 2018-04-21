@@ -5,6 +5,7 @@ import ExerciseResolutionComponent from './ExerciseResolutionComponent'
 
 
 import {Navbar, Nav, NavItem} from "react-bootstrap"
+import LeaderboardComponent from "../general/LeaderboardComponent";
 
 class StudentComponent extends Component {
     constructor(props) {
@@ -22,7 +23,9 @@ class StudentComponent extends Component {
     }
 
     onLeaderboardOptionClicked() {
-        //todo: leaderboard component
+        this.setState(state => ({
+            nestedComponent: <LeaderboardComponent/>
+        }));
     }
 
     onAccountOptionClicked() {

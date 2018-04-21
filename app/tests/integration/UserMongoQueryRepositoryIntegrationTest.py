@@ -48,3 +48,9 @@ class UserMongoQueryRepositoryIntegrationTest(PdbMongoIntegrationTestBase):
     def test_getUserByNickname_calledUnexistentNickname_returnNone(self):
         actual = self.sut.get_user_by_nickname(nickname="unexistentnickname")
         self.assertEqual(actual, None)
+
+    def test_getRanking_called_returnCorrectResult(self):
+        actual = self.sut.get_ranking(length=3)
+        actual_map = list(map(lambda x: x.get_nickname(), actual))
+        expected = ['nickname2', 'nickname4', 'nickname3']
+        self.assertEqual(actual_map, expected)

@@ -173,7 +173,7 @@ class ExerciseResolutionComponent extends React.Component {
             // todo: Show loading
             return (
                 <div className="common-div">
-                    <label className="exercise-section-title-label">We do not have new exercises for you :(<br/><br/>But you can come back later to check if new ones have been uploaded :)</label>
+                    <label className="common-label">We do not have new exercises for you :(<br/><br/>But you can come back later to check if new ones have been uploaded :)</label>
                 </div>
             )
         }

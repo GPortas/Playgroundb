@@ -7,7 +7,6 @@ from app.api.domain.models.BaseModel import BaseModel
 from app.api.domain.models.Exercise import Exercise
 from app.api.domain.models.User import User
 from app.api.domain.services.AuthService import AuthService
-from app.api.domain.services.ExerciseEvaluationService import ExerciseEvaluationService
 from app.api.domain.services.ExerciseService import ExerciseService
 from app.api.domain.services.QueryExecutionService import QueryExecutionService
 from app.api.domain.services.ValidationService import ValidationService
@@ -16,7 +15,6 @@ from app.api.domain.services.UserService import UserService
 from app.api.domain.services.errors.ResourceNotFoundServiceError import ResourceNotFoundServiceError
 from app.api.domain.services.wrappers.mongo.MongoWrapper import MongoWrapper
 from app.api.ui.utils.enums import ResponseType
-from app.api.ui.utils.serializers.BaseJsonSerializer import BaseJsonSerializer
 from app.api.ui.utils.serializers.ExerciseJsonSerializer import ExerciseJsonSerializer
 from app.api.ui.utils.serializers.ExerciseValidationJsonSerializer import ExerciseValidationJsonSerializer
 from app.api.ui.utils.serializers.QueryExecutionJsonSerializer import QueryExecutionJsonSerializer
@@ -88,6 +86,12 @@ class UserViewSet(BaseViewSet):
         else:
             self.__user_service = user_service
         super(UserViewSet, self).__init__(UserJsonSerializer(), *args, **kwargs)
+
+    def list(self, request):
+        if request.pdbuser is None:
+            return self._create_generic_response(response_type=ResponseType.authentication_error)
+        return self._create_response_by_inner_service_call(self.__user_service.get_ranking,
+                                                           message='users retrieved')
 
     def create(self, request):
         nickname = request.data.get('nickname', None)

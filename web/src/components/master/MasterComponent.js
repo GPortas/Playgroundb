@@ -5,6 +5,7 @@ import ConfigurationComponent from "./ConfigurationComponent";
 import ContainerComponent from '../general/ContainerComponent'
 
 import {Navbar, Nav, NavItem} from "react-bootstrap"
+import LeaderboardComponent from "../general/LeaderboardComponent";
 
 class MasterComponent extends Component {
     constructor(props) {
@@ -29,7 +30,9 @@ class MasterComponent extends Component {
     }
 
     onLeaderboardOptionClicked() {
-        //todo: dashboard component
+        this.setState(state => ({
+            nestedComponent: <LeaderboardComponent/>
+        }));
     }
 
     onAccountOptionClicked() {

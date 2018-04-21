@@ -62,3 +62,9 @@ class UserService:
             self.__user_command_repository.increment_user_score(user_id, score)
         except CommandError as ce:
             raise ServiceError(str(ce))
+
+    def get_ranking(self):
+        try:
+            return self.__user_query_repository.get_ranking()
+        except QueryError as qe:
+            raise ServiceError(str(qe))

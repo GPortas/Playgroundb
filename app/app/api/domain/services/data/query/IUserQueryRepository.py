@@ -14,3 +14,6 @@ class IUserQueryRepository:
 
     def get_user_by_nickname(self, nickname):
         pass
+
+    def get_ranking(self):
+        pass

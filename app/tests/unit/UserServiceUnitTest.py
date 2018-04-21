@@ -91,5 +91,13 @@ class UserServiceUnitTest(unittest.TestCase):
         self.stub_user_command_repository.increment_user_score.assert_called_once_with('test',
                                                                                        10)
 
+    def test_getRanking_calledWithQueryRepositoryWhichRaisesQueryError_raiseServiceError(self):
+        self.stub_user_query_repository.get_ranking.side_effect = QueryError()
+        self.assertRaises(ServiceError, self.sut.get_ranking)
+
+    def test_getRanking_called_innerQueryRepositoryCalled(self):
+        self.sut.get_ranking()
+        self.stub_user_query_repository.get_ranking.assert_called_once_with()
+
     def __get_user_test_instance(self):
         return User("fakeemail1@test.com", "pwdpwdpwd", "master", "testnickname")
