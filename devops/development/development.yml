@@ -27,3 +27,22 @@ pdb_playground_mongodb:
   volumes:
     - '~/pdbenvironment/playground/mongodb/data:/data/db'
   restart: always
+
+pdb_app:
+  image: 'my_pdb_app:1.0.0'
+  ports:
+    - '8000:8000'
+  privileged: true
+  links:
+    - pdb_playground_mongodb
+    - pdb_mongodb
+  volumes:
+    - '~/pdbworkspace/Playgroundb/app:/opt/python/current/app'
+  command: /bin/bash -c "cd /opt/python/current/app/;invoke build --env api-development;python3 manage.py runserver 0.0.0.0:8000"
+
+pdb_web:
+  image: 'my_pdb_web:1.0.0'
+  ports:
+    - '3000:3000'
+  privileged: true
+  restart: always
