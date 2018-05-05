@@ -53,7 +53,7 @@ class InnerSignUpComponent extends Component {
                     "role": "student"
                 }
                 $.ajax({
-                    url: "http://127.0.0.1:8000/users/",
+                    url: process.env.REACT_APP_BASE_URL + "/users/",
                     type: 'post',
                     dataType: 'json',
                     data: formData,

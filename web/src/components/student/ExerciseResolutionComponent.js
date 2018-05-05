@@ -18,7 +18,7 @@ class ExerciseResolutionComponent extends React.Component {
     loadExercises() {
         const self = this;
         $.ajax({
-            url: "http://127.0.0.1:8000/exercises/",
+            url: process.env.REACT_APP_BASE_URL + "/exercises/",
             dataType: 'json',
             type: 'get',
             headers: generateAuthHeader(),
@@ -50,7 +50,7 @@ class ExerciseResolutionComponent extends React.Component {
                 "time_left": timeLeft,
             }
             $.ajax({
-                url: "http://127.0.0.1:8000/validations/",
+                url: process.env.REACT_APP_BASE_URL + "/validations/",
                 dataType: 'json',
                 type: 'post',
                 headers: generateAuthHeader(),
@@ -82,7 +82,7 @@ class ExerciseResolutionComponent extends React.Component {
             "exercise_id": self.state.exercises[0]["_id"]
         }
         $.ajax({
-            url: "http://127.0.0.1:8000/query-execution/execute-exercise-query/",
+            url: process.env.REACT_APP_BASE_URL +"/query-execution/execute-exercise-query/",
             type: 'post',
             dataType: 'json',
             data: formData,

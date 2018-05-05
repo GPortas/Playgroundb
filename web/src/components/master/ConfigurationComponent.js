@@ -13,7 +13,7 @@ const ConfigurationComponent = createReactClass({
             "query": inputQuery,
         }
         $.ajax({
-            url: "http://127.0.0.1:8000/query-execution/",
+            url: process.env.REACT_APP_BASE_URL + "/query-execution/",
             type: 'post',
             dataType: 'json',
             data: formData,

@@ -11,6 +11,7 @@ RUN apt-get update && \
 RUN mkdir -p /opt/pdb/web
 WORKDIR /opt/pdb/web
 ADD web/package.json .
+ADD web/.env .
 RUN npm install ; exit 0
 ADD web/public ./public
 ADD web/src ./src

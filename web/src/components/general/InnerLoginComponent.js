@@ -33,7 +33,7 @@ class InnerLoginComponent extends Component {
                     "password": userPassword
                 }
                 $.ajax({
-                    url: "http://127.0.0.1:8000/users/login/",
+                    url: process.env.REACT_APP_BASE_URL + "/users/login/",
                     type: 'post',
                     dataType: 'json',
                     data: formData,

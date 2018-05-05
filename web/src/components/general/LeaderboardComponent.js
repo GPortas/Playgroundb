@@ -15,7 +15,7 @@ class LeaderboardComponent extends Component {
     componentWillMount() {
         const self = this;
         $.ajax({
-            url: "http://127.0.0.1:8000/users/",
+            url: process.env.REACT_APP_BASE_URL + "/users/",
             dataType: 'json',
             type: 'get',
             headers: generateAuthHeader(),
