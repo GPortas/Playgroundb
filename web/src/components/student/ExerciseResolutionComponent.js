@@ -3,6 +3,8 @@ import $ from 'jquery';
 import CommandLineComponent from '../general/CommandLineComponent'
 import {generateAuthHeader} from "../../utils/utils"
 import ReactCountdownClock from 'react-countdown-clock'
+import statusscreenshot from '../../images/statusscreenshot.png';
+import mathexpression from '../../images/mathexpression.png';
 
 var React = require('react');
 
@@ -13,10 +15,12 @@ class ExerciseResolutionComponent extends React.Component {
         this.onExerciseOvercomed = this.onExerciseOvercomed.bind(this);
         this.onExecute = this.onExecute.bind(this);
         this.loadExercises = this.loadExercises.bind(this);
+        this.setState({noExercisesAvailable: false});
     }
 
     loadExercises() {
         const self = this;
+        $('#loadButton').attr('disabled', true);
         $.ajax({
             url: process.env.REACT_APP_BASE_URL + "/exercises/",
             dataType: 'json',
@@ -27,15 +31,15 @@ class ExerciseResolutionComponent extends React.Component {
                 const data = xhr.responseText;
                 const jsonResponse = $.parseJSON(data);
                 self.setState({exercises: jsonResponse["data"]});
+                if (!self.state.exercises[0]) {
+                    self.setState({noExercisesAvailable: true});
+                }
             },
             complete: function () {
+                $('#loadButton').attr('disabled', false);
             }
             //todo: Errors treatment!
         });
-    }
-
-    componentWillMount() {
-        this.loadExercises()
     }
 
     componentDidUpdate() {
@@ -109,11 +113,7 @@ class ExerciseResolutionComponent extends React.Component {
     onExerciseOvercomed() {
         let exercises = this.state.exercises;
         exercises.shift();
-        if (exercises.length > 0) {
-            this.setState({exercises: exercises});
-        } else {
-            this.loadExercises();
-        }
+        this.setState({exercises: exercises});
     }
 
     render() {
@@ -170,12 +170,56 @@ class ExerciseResolutionComponent extends React.Component {
                 </div>
             );
         } else {
-            // todo: Show loading
-            return (
-                <div className="common-div">
-                    <label className="common-label">We do not have new exercises for you :(<br/><br/>But you can come back later to check if new ones have been uploaded :)</label>
-                </div>
-            )
+            if (this.state && this.state.noExercisesAvailable) {
+                return (
+                    <div className="common-div">
+                        <div>
+                            <label className="exercise-section-title-label">Exercises section</label>
+                        </div>
+                        <br/><br/><br/>
+                        <label className="common-label">We do not have new exercises for you :(<br/><br/>But you can come back later to check if new ones have been uploaded :)</label>
+                    </div>
+                )
+            } else {
+                return (
+                    <div className="common-div">
+                        <div>
+                            <label className="exercise-section-title-label">Exercises section</label>
+                        </div>
+                        <br/><br/><br/>
+                        <div>
+                            <label className="common-label">In this section, you will find a collection of exercises to solve. Each exercise has a maximum time to be solved.</label>
+                        </div>
+                        <br/><br/>
+                        <br/><br/>
+                        <div>
+                            <label className="common-label">For each exercise you have the surrender option by pressing the red surrender button.</label>
+                        </div>
+                        <br/><br/>
+                        <br/><br/>
+                        <div>
+                            <img src={statusscreenshot}/>
+                        </div>
+                        <br/><br/>
+                        <div>
+                            <label className="common-label">The score for each solved exercise will be obtained from the following expression:</label>
+                        </div>
+                        <div>
+                            <img src={mathexpression}/>
+                        </div>
+                        <br/><br/>
+                        <div>
+                            <label className="common-label">If you surrender or time ends, the exercise will appear in future executions until it is solved, increasing the total number of attempts in each occurrence.</label>
+                        </div>
+                        <br/><br/>
+                        <br/><br/>
+                        <br/><br/>
+                        <div>
+                            <button id="loadButton" type="submit" className="btn btn-success ready-button" onClick={this.loadExercises}>Load Exercises</button>
+                        </div>
+                    </div>
+                )
+            }
         }
     }
 }

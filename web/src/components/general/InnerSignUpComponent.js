@@ -75,6 +75,7 @@ class InnerSignUpComponent extends Component {
     render() {
         return (
             <div className="login-div">
+                <label className="login-introduction-text">Welcome to Playgroundb! Please, fill the following form to complete the Sign Up process.</label>
                 <form>
                     <div className="form-group">
                         <input type="email" className="form-control sign-up-input" id="userEmail"

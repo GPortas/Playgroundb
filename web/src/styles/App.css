@@ -190,6 +190,11 @@ div.exercise-resolution-inner-div {
     width: 50%;
 }
 
+.ready-button {
+    width: 30%;
+    font-size: 2.5em;
+}
+
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);
