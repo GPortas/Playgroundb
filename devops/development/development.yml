@@ -43,6 +43,6 @@ pdb_app:
 pdb_web:
   image: 'my_pdb_web:1.0.0'
   ports:
-    - '3000:3000'
+    - '3001:3000'
   privileged: true
   restart: always

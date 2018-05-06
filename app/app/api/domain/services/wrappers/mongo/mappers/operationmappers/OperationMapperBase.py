@@ -1,6 +1,6 @@
 import re
 
-from demjson import decode
+from demjson import decode, JSONDecodeError
 
 
 class OperationMapperBase:
@@ -14,7 +14,11 @@ class OperationMapperBase:
         filtered_text = re.findall(object_id_re, operation_params)
         for element in filtered_text:
             operation_params = operation_params.replace(element, "'" + element + "'")
-        operation_params = str(decode(operation_params))
+        try:
+            operation_params = str(decode(operation_params))
+        except JSONDecodeError:
+            operation_params = str(decode('[' + operation_params + ']'))
+            operation_params = operation_params[1:-1]
         for element in filtered_text:
             operation_params = operation_params.replace("'" + element + "'", element)
         return operation_params
