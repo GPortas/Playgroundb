@@ -11,11 +11,10 @@ var React = require('react');
 class ExerciseResolutionComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.onExerciseNotOvercomed = this.onExerciseNotOvercomed.bind(this);
-        this.onExerciseOvercomed = this.onExerciseOvercomed.bind(this);
+        this.loadNextExercise = this.loadNextExercise.bind(this);
         this.onExecute = this.onExecute.bind(this);
         this.loadExercises = this.loadExercises.bind(this);
-        this.setState({noExercisesAvailable: false});
+        this.setState({noExercisesAvailable: false, shouldShowWrongSolutionLabel: false});
     }
 
     loadExercises() {
@@ -64,10 +63,11 @@ class ExerciseResolutionComponent extends React.Component {
                     const data = xhr.responseText;
                     const jsonResponse = $.parseJSON(data);
                     if (jsonResponse["data"]["is_correct"]) {
-                        self.onExerciseOvercomed()
+                        self.setState({shouldShowWrongSolutionLabel: false});
+                        self.loadNextExercise()
                     }
                     else {
-                        window.alert("failure")
+                        self.setState({shouldShowWrongSolutionLabel: true});
                     }
                 },
                 complete: function () {
@@ -104,16 +104,10 @@ class ExerciseResolutionComponent extends React.Component {
         });
     }
 
-    onExerciseNotOvercomed() {
+    loadNextExercise() {
         let exercises = this.state.exercises;
         exercises.shift();
-        this.setState({exercises: exercises});
-    }
-
-    onExerciseOvercomed() {
-        let exercises = this.state.exercises;
-        exercises.shift();
-        this.setState({exercises: exercises});
+        this.setState({exercises: exercises, shouldShowWrongSolutionLabel: false});
     }
 
     render() {
@@ -141,12 +135,15 @@ class ExerciseResolutionComponent extends React.Component {
                                                          color="#ffa54c"
                                                          alpha={0.9}
                                                          size={80}
-                                                         onComplete={this.onExerciseNotOvercomed}/>
+                                                         onComplete={this.loadNextExercise}/>
                                 </div>
                                 <div className="exercise-resolution-stats-inner-div-right">
                                     <button className="btn btn-danger exercise-surrender-button"
-                                            id="surrenderButton" onClick={this.onExerciseNotOvercomed}>Surrender
+                                            id="surrenderButton" onClick={this.loadNextExercise}>Surrender
                                     </button>
+                                    <div id="wrongSolutionLabel" style={{visibility: this.state.shouldShowWrongSolutionLabel ? 'visible' : 'hidden'}}>
+                                        <label className="exercise-wrong-solution-label">Wrong solution... Try again!</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>

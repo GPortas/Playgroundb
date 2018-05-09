@@ -157,6 +157,13 @@ label.exercise-section-title-label {
     font-size: x-large;
 }
 
+label.exercise-wrong-solution-label {
+    font-family: 'Open Sans';
+    font-size: large;
+    color: red;
+    margin-top: 2%;
+}
+
 div.exercise-resolution-div {
     overflow: hidden;
 }
@@ -171,7 +178,7 @@ div.exercise-resolution-div {
 }
 
 button.exercise-surrender-button {
-    margin-top: 7%;
+    margin-top: 5%;
     font-size: 1.4em;
 }
 
@@ -191,8 +198,7 @@ div.exercise-resolution-inner-div {
 }
 
 .ready-button {
-    width: 30%;
-    font-size: 2.5em;
+    font-size: 2em;
 }
 
 @keyframes App-logo-spin {
