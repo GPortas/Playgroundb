@@ -105,9 +105,15 @@ class ExerciseResolutionComponent extends React.Component {
     }
 
     loadNextExercise() {
+        this.clearTextAreas();
         let exercises = this.state.exercises;
         exercises.shift();
         this.setState({exercises: exercises, shouldShowWrongSolutionLabel: false});
+    }
+
+    clearTextAreas() {
+        this.refs.child.clearInputQueryTextArea();
+        $("#queryOutput").val("");
     }
 
     render() {
@@ -151,7 +157,7 @@ class ExerciseResolutionComponent extends React.Component {
                         <div className="exercise-resolution-div">
                             <div className="exercise-resolution-inner-div">
                                 <label className="exercise-section-title-label">Query:</label>
-                                <CommandLineComponent func={this.onExecute} rows={18}/>
+                                <CommandLineComponent func={this.onExecute} rows={18} ref="child"/>
                             </div>
                             <div className="exercise-resolution-inner-div">
                                 <label className="exercise-section-title-label">Solution:</label>
@@ -214,6 +220,7 @@ class ExerciseResolutionComponent extends React.Component {
                         <div>
                             <button id="loadButton" type="submit" className="btn btn-success ready-button" onClick={this.loadExercises}>Load Exercises</button>
                         </div>
+                        <br/><br/>
                     </div>
                 )
             }
