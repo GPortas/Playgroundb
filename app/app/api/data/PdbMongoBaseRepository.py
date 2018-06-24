@@ -13,6 +13,3 @@ class PdbMongoBaseRepository:
         self.client = MongoClient(connection_uri,
                                   readPreference=settings.PDB_MONGO_CONNECTION_PROPS['READ_PREFERENCE'])
         self.db = self.client[db_name]
-
-    def get_exercises_collection(self):
-        return self.db.exercises
