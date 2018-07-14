@@ -75,8 +75,7 @@ class InnerLoginComponent extends Component {
         }
         return (
             <div className="login-div">
-                <label className="login-introduction-text">The learning platform that offers teachers and students a
-                    cloud environment with all the necessary utilities to manage databases in real time.</label>
+                <label className="login-introduction-text">The database management learning platform that allows students to learn by solving competitive challenges created by their teachers.</label>
                 <form>
                     <div className="form-group">
                         <input type="email" className="form-control login-input" id="userEmail"
